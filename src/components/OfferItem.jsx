@@ -92,7 +92,7 @@ const OfferItem = (props, ref) => {
     }
   }, [offers]);
 
-  // console.log(hotel.offers);
+  console.log(hotel.images);
   return (
     <div className="offer-item">
       <div
@@ -164,13 +164,15 @@ const OfferItem = (props, ref) => {
                 // pagination={{ clickable: true }}
                 ref={sliderRef}
               >
-                {images.slice(0, images.length - 1).map((item, i) => (
-                  <SwiperSlide key={i}>
-                    <div className="img-item">
-                      <img src={item} alt="" />
-                    </div>
-                  </SwiperSlide>
-                ))}
+                {hotel?.images
+                  .slice(0, hotel?.images.length - 1)
+                  .map((item, i) => (
+                    <SwiperSlide key={i}>
+                      <div className="img-item">
+                        <img src={item.src} alt="" />
+                      </div>
+                    </SwiperSlide>
+                  ))}
               </Swiper>
               {/* {ticker ? (
                                 <span className="ticker d-md-none">

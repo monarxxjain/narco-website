@@ -181,7 +181,7 @@ const OfferPriceSlider = (
     }
   }, [endReached]);
 
-  console.log(offers);
+  //   console.log(offers);
   return (
     <>
       <div className="offer-item-middle-title gap-2 mb-3">
@@ -268,7 +268,14 @@ const OfferPriceSlider = (
                       item?.endDate,
                       item?.minStay,
                       item?.maxStay
-                    )}{" "}
+                    )}
+                    {(calculateNights(
+                      item?.endDate,
+                      item?.minStay,
+                      item?.maxStay
+                    ) === 1 &&
+                      " Night ") ||
+                      " Nights "}
                     -{" "}
                     {(item?.breakdown[2].price && "Mezza Pensione") ||
                       (item?.breakdown[1].price && "Mezza Pensione") ||
@@ -290,7 +297,9 @@ const OfferPriceSlider = (
                         item?.minStay,
                         item?.maxStay
                       )}
-                  €
+                  {(item?.breakdown[2].price && item?.breakdown[2].currency) ||
+                    (item?.breakdown[1].price && item?.breakdown[1].currency) ||
+                    (item?.breakdown[0].price && item?.breakdown[0].currency)}
                 </h3>
               </div>
             </SwiperSlide>
