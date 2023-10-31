@@ -92,6 +92,26 @@ const OfferItem = (props, ref) => {
     }
   }, [offers]);
 
+  const [lowestOffered, setLowOffer] = useState({});
+
+  useEffect(() => {
+    const offers = hotel?.offers || [];
+    let lowestOffer = null;
+
+    for (const offer of offers) {
+      if (
+        !lowestOffer ||
+        offer.lowestOfferPrice < lowestOffer.lowestOfferPrice
+      ) {
+        lowestOffer = offer;
+      }
+    }
+
+    setLowOffer(lowestOffer);
+  }, [hotel]);
+
+  console.log(lowestOffered.lowestOfferPrice);
+
   return (
     <div className="offer-item">
       <div
@@ -130,8 +150,8 @@ const OfferItem = (props, ref) => {
               className="font-bold align-self-end"
               style={{ color: "var(--title)" }}
             >
-              {hotel?.offers[0]?.lowestOfferPrice}
-              {hotel?.offers[0]?.breakdown[0]?.currency}
+              {lowestOffered?.lowestOfferPrice || 0}
+              {lowestOffered?.breakdown[0]?.currency}
             </h4>
           </div>
 
@@ -188,7 +208,7 @@ const OfferItem = (props, ref) => {
                 </a>
               </h5>
               <span className="location">
-                <LocationThree /> {hotel?.city}
+                <LocationThree /> {hotel?.state}
               </span>
 
               <h6 className="subtitle">

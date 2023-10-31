@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { CheckIcon, Minus, Plus } from "./Icon";
 
 export const FaqsItems = ({ data, id }) => {
-  console.log(data);
   const [open, setOpen] = useState(0);
   return (
     <div className="accordion" id={id}>
