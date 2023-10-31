@@ -95,10 +95,10 @@ function Home() {
     try {
       setloadingHotels(true);
 
-      const hotels = await axios.get(
+      const result = await axios.get(
         `${values.url}/app/hotels?startDate=${config.checkInDate}&endDate=${config.checkOutDate}`
       );
-      setHotels(hotels.data);
+      setHotels(result.data);
 
       setLastChange(null);
     } catch (err) {
@@ -134,12 +134,12 @@ function Home() {
       loadHotels().catch((err) => {});
       const checkInDateString = getDateString(config.checkInDate);
       const checkOutDateString = getDateString(config.checkOutDate);
-      setSearchParams(
-        `?${new URLSearchParams({
-          startDate: checkInDateString,
-          endDate: checkOutDateString,
-        })}`
-      );
+      // setSearchParams(
+      //   `?${new URLSearchParams({
+      //     startDate: checkInDateString,
+      //     endDate: checkOutDateString,
+      //   })}`
+      // );
     }
   }, [config]);
 

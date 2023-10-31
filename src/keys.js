@@ -1,5 +1,5 @@
-const BASE_API_URL = 'https://backend-for-ninox.web.app';
+const BASE_API_URL = "https://backend-for-ninox.web.app";
 
 module.exports = {
-    BASE_API_URL,
+  BASE_API_URL,
 };
