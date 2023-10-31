@@ -92,7 +92,6 @@ const OfferItem = (props, ref) => {
     }
   }, [offers]);
 
-  console.log(hotel.images);
   return (
     <div className="offer-item">
       <div

@@ -11,6 +11,7 @@ import {
   AngleUp,
   Bus,
   Car,
+  CheckIcon,
   NextIcon,
   PrevIcon,
   Ship,
@@ -181,7 +182,6 @@ const OfferPriceSlider = (
     }
   }, [endReached]);
 
-  //   console.log(offers);
   return (
     <>
       <div className="offer-item-middle-title gap-2 mb-3">
@@ -327,19 +327,34 @@ const OfferPriceSlider = (
               <div className="full-board-top">
                 <div>
                   <SelectDropDown
-                    selectedOption={activeData.selectedOption}
+                    selectedOption={[
+                      activeData?.breakdown.map((item) => item.name),
+                    ]}
                     handleChange={(i) => {
                       handleSelectedItemChange(index, i);
                     }}
-                    selectItems={activeData.selectItems}
+                    selectItems={activeData?.breakdown}
                   />
 
-                  <span>Bevande {activeData["Bevande"]}</span>
+                  <span>Bevande {activeData?.beverageAvailability}</span>
                 </div>
-                <h3>{activeData.dateString}</h3>
+                <h3>
+                  {calculateNights(
+                    activeData?.endDate,
+                    activeData?.minStay,
+                    activeData?.maxStay
+                  )}
+                  {(calculateNights(
+                    activeData?.endDate,
+                    activeData?.minStay,
+                    activeData?.maxStay
+                  ) === 1 &&
+                    " Night ") ||
+                    " Nights "}
+                </h3>
               </div>
-              {/* <ul className="check-lists">
-                {activeData?.tags.split("-")?.map((item, i) =>
+              <ul className="check-lists">
+                {activeData?.tags?.map((item, i) =>
                   item && item.length ? (
                     <li key={i}>
                       <CheckIcon />
@@ -349,7 +364,7 @@ const OfferPriceSlider = (
                     <></>
                   )
                 )}
-              </ul> */}
+              </ul>
               <blockquote className="mb-4 blockquote">
                 PER QUESTA OFFERTA PUOI PAGARE CON INTERESSI ZERO IN 3 COMODE
                 RATE CON SCALAPAY{" "}
@@ -360,7 +375,7 @@ const OfferPriceSlider = (
             </div>
           </div>
           <div className="col-lg-6">
-            <FaqsItems id={`package-${serial}`} data={faqs} />
+            <FaqsItems id={`package-${serial}`} data={hotel} />
           </div>
         </div>
         <div className="py-3"></div>

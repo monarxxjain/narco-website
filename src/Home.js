@@ -20,6 +20,7 @@ function Home() {
   const [initialConfigData, setInitialConfigData] = useState(null);
 
   const [lastChange, setLastChange] = useState(null);
+  const [startEndDate, setStartEndDate] = useState({});
 
   const [datePickerOpen, setDatePickerOpen] = useState(false);
 
@@ -94,7 +95,9 @@ function Home() {
     try {
       setloadingHotels(true);
 
-      const hotels = await axios.get(`${values.url}/app/hotels`);
+      const hotels = await axios.get(
+        `${values.url}/app/hotels?startDate=${config.checkInDate}&endDate=${config.checkOutDate}`
+      );
       setHotels(hotels.data);
 
       setLastChange(null);
@@ -133,8 +136,8 @@ function Home() {
       const checkOutDateString = getDateString(config.checkOutDate);
       setSearchParams(
         `?${new URLSearchParams({
-          checkin: checkInDateString,
-          checkout: checkOutDateString,
+          startDate: checkInDateString,
+          endDate: checkOutDateString,
         })}`
       );
     }
@@ -176,6 +179,7 @@ function Home() {
             </h1>
           )}
           <Footer
+            setStartEndDate={setStartEndDate}
             comunes={comunes}
             initialConfigData={initialConfigData}
             config={config}
