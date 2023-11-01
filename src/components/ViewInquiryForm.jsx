@@ -239,6 +239,8 @@ const ViewInquiryForm = (
     console.log(optionRef.current);
     optionRef.current.scrollIntoView({ behavior: "smooth" });
   };
+
+  console.log(selectedPackage);
   return (
     <>
       {userData ? (
@@ -439,23 +441,23 @@ const ViewInquiryForm = (
                                     /> */}
                 </div>
               </div>
-              {/* <div className="col-sm-6 col-md-3 col-lg-2">
-                                <Input
-                                    value={selectedPackage.text}
-                                    handleChange={(e) => {
-                                        let index = null;
-                                        selectItems.forEach((item, i) => {
-                                            if (item.text === e.target.value) index = i;
-                                            setSelectedPackage(index);
-                                        });
-                                    }}
-                                    name="packageBoard"
-                                    label="Pacchetto"
-                                    select
-                                    required
-                                    options={selectItems}
-                                />
-                            </div> */}
+              <div className="col-sm-6 col-md-3 col-lg-2">
+                <Input
+                  value={selectItems[selectedPackage]}
+                  handleChange={(e) => {
+                    let index = null;
+                    selectItems.forEach((item, i) => {
+                      if (item.name === e.target.value) index = i;
+                      setSelectedPackage(index);
+                    });
+                  }}
+                  name="packageBoard"
+                  label="Pacchetto"
+                  select
+                  required
+                  options={selectItems}
+                />
+              </div>
             </div>
 
             {/* <Room room={userData.rooms[0]} id={0} handleUpdateRoom={handleUpdateRooms} /> */}

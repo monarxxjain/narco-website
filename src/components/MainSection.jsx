@@ -12,6 +12,7 @@ const MainSection = ({
   checkInDate,
   checkOutDate,
   setDatePickerOpen,
+  config,
 }) => {
   const [userData, setUserData] = useState({
     Nome: "",
@@ -218,6 +219,7 @@ const MainSection = ({
               return (
                 <>
                   <OfferItem
+                    config={config}
                     setUserData={setUserData}
                     userData={userData}
                     sending={sending}

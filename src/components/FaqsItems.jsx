@@ -73,15 +73,19 @@ export const FaqsItems = ({ data, id }) => {
                         {data?.map((item, i) => (
                           <li key={i}>
                             <p>
-                              {item?.boardType} - from{" "}
+                              Bambini da{" "}
                               {(data.length === 1 && "0") ||
                               data[i - 1]?.agelimit + 1 < data[i]?.agelimit
                                 ? data[i - 1]?.agelimit + 1
                                 : (data.length > 1 &&
                                     data[i - 2]?.agelimit + 1) ||
                                   0}{" "}
-                              to {item?.agelimit}: {Math.abs(item?.discount)}
-                              {item?.discount && "% discount"}
+                              a {item?.agelimit} anni (esclusi):{" "}
+                              {Math.abs(item?.discount)}
+                              {(item?.discount &&
+                                item?.discount > -1 &&
+                                "%  di sconto") ||
+                                "€ (al giorno)"}
                             </p>
                           </li>
                         ))}

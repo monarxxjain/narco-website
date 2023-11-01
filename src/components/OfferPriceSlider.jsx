@@ -431,14 +431,12 @@ const OfferPriceSlider = (
           offer={activeData}
           Hotel={hotel["Nome Hotel"]}
           NomeModulo={hotel["NomeModulo"]}
-          //   totalPriceForUser={activeData.selectItems[
-          //     activeData.selectedOption
-          //   ].price.toFixed()}
+          totalPriceForUser={activeData?.breakdown || []}
           buttonDisabled={buttonDisabled}
           handleUpdateRooms={handleUpdateRooms}
           setDatePickerOpen={setDatePickerOpen}
-          //   selectItems={activeData.selectItems}
-          //   selectedPackage={activeData.selectItems[activeData.selectedOption]}
+          selectItems={activeData?.breakdown || []}
+          selectedPackage={0}
           handleOfferClose={handleOfferClose}
           setSelectedPackage={(i) => {
             handleSelectedItemChange(index, i);

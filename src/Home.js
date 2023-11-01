@@ -168,6 +168,7 @@ function Home() {
           />
           {hotels.length ? (
             <MainSection
+              config={config}
               hotels={hotels}
               checkInDate={config.checkInDate}
               checkOutDate={config.checkOutDate}

@@ -7,9 +7,7 @@ import bg_4 from "../assets/img/offer-bg-3.png";
 import bg_2 from "../assets/img/offer-bg.png";
 import bg_1 from "../assets/img/regular-bg.png";
 
-import axios from "axios";
 import loading from "../assets/img/dualLoading.gif";
-import { BASE_API_URL } from "../keys";
 import DistanzaSlider from "./DistanzaSlider";
 import {
   AngleDown,
@@ -38,6 +36,7 @@ const OfferItem = (props, ref) => {
     buttonDisabled,
     handleUpdateRooms,
     setDatePickerOpen,
+    config,
   } = props;
 
   const [loadingOffers, setLoadingOffers] = useState(false);
@@ -53,22 +52,6 @@ const OfferItem = (props, ref) => {
     ? hotel.immaginiUrl.split("\\\\n")
     : hotel.img;
 
-  const loadOffers = () => {
-    setLoadingOffers(true);
-    axios
-      .post(`${BASE_API_URL}/api/data/bestoffers`, {
-        checkInDate,
-        checkOutDate,
-        offertaIds: hotel.Offerte,
-      })
-      .then((res) => {
-        const sortedOffers = res.data.offers;
-        setOffers(sortedOffers);
-      })
-      .catch(() => {
-        setLoadingOffers(false);
-      });
-  };
   const handlePrev = useCallback(() => {
     if (!sliderRef.current) return;
     sliderRef.current.swiper.slidePrev();
@@ -81,7 +64,70 @@ const OfferItem = (props, ref) => {
 
   useEffect(() => {
     if (!offersLoaded) {
-      loadOffers();
+      // Assuming hotel.offers is an array of offer objects with properties like startDate, endDate, and minNightsRequired.
+
+      // Step 1: Filter offers that contain the current day
+      const currentDay = new Date();
+      const currentDayTimestamp = currentDay.getTime();
+
+      const validOffers = hotel.offers.filter((offer) => {
+        const offerStartDate = new Date(offer.startDate).getTime();
+        const offerEndDate = new Date(offer.endDate).getTime();
+
+        return offerStartDate >= currentDayTimestamp;
+      });
+
+      // Step 2: Apply logic for user-selected dates
+      const selectedStartDate = new Date(config?.startDate);
+      const selectedEndDate = new Date(config?.endDate);
+
+      const filteredOffers = validOffers.filter((offer) => {
+        const offerStartDate = new Date(offer.startDate).getTime();
+        const offerEndDate = new Date(offer.endDate).getTime();
+
+        // Check if the offer is within three days before and after selected dates
+        const startDateDifference = Math.abs(selectedStartDate.getTime());
+        const endDateDifference = Math.abs(selectedEndDate.getTime());
+
+        return (
+          startDateDifference >= 3 * 24 * 60 * 60 * 1000 ||
+          endDateDifference >= 3 * 24 * 60 * 60 * 1000
+        );
+      });
+
+      // Apply flexibility criteria for 2 nights stay
+      const flexibility = 1; // 1 night flexibility
+
+      const finalOffers = validOffers.sort((a, b) => {
+        const aStartDate = new Date(a.startDate).getTime();
+        const bStartDate = new Date(b.startDate).getTime();
+
+        const aEndDate = new Date(a.endDate).getTime();
+        const bEndDate = new Date(b.endDate).getTime();
+
+        const aFlexibility =
+          aStartDate - selectedStartDate.getTime() <=
+            flexibility * 24 * 60 * 60 * 1000 &&
+          selectedEndDate.getTime() - aEndDate <=
+            flexibility * 24 * 60 * 60 * 1000;
+
+        const bFlexibility =
+          bStartDate - selectedStartDate.getTime() <=
+            flexibility * 24 * 60 * 60 * 1000 &&
+          selectedEndDate.getTime() - bEndDate <=
+            flexibility * 24 * 60 * 60 * 1000;
+
+        if (aFlexibility && !bFlexibility) {
+          return -1;
+        } else if (!aFlexibility && bFlexibility) {
+          return 1;
+        }
+
+        return aEndDate - bEndDate; // Sort by end date
+      });
+
+      // Now finalOffers contains the offers that match the criteria and are sorted according to the specified logic.
+      setOffers(finalOffers);
     }
   }, []);
 
@@ -92,7 +138,9 @@ const OfferItem = (props, ref) => {
     }
   }, [offers]);
 
-  const [lowestOffered, setLowOffer] = useState(hotel?.offers[0]);
+  const [lowestOffered, setLowOffer] = useState(
+    (hotel?.offers && hotel?.offers.length && hotel?.offers[0]) || {}
+  );
 
   useEffect(() => {
     const offers = hotel?.offers || [];
@@ -271,7 +319,7 @@ const OfferItem = (props, ref) => {
           <div className="overlayer" />
           {loadingOffers ? (
             <OffersLoading />
-          ) : hotel?.offers && hotel?.offers.length ? (
+          ) : offers && offers.length ? (
             <OfferPriceSlider
               setUserData={setUserData}
               userData={userData}
@@ -279,7 +327,7 @@ const OfferItem = (props, ref) => {
               setvalue={setvalue}
               value={value}
               handleSubmit={handleSubmit}
-              offers={hotel?.offers}
+              offers={offers}
               hotel={hotel}
               checkInDate={checkInDate}
               checkOutDate={checkOutDate}
