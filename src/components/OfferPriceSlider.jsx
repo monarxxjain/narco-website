@@ -98,17 +98,17 @@ const OfferPriceSlider = (
 
   const [faqs, setFaqs] = useState([
     {
-      title: "Riassunto Hotel",
-      paragraph: hotel["Descrizione Generica"],
-    },
-    {
       title: "Descrizione",
-      paragraph: activeData["Descrizione offerta"],
+      paragraph: hotel?.summaryDescription ?? "",
       text: [],
     },
     {
-      title: "Pacchetto Incluso ",
-      paragraph: activeData["Pacchetto"],
+      title: "Descrizione Hotel",
+      paragraph: hotel?.hotelDescription ?? "",
+    },
+    {
+      title: "Dettagli Servizi",
+      paragraph: hotel?.serviceDetails ?? "",
       text: [],
     },
     {
@@ -375,7 +375,7 @@ const OfferPriceSlider = (
             </div>
           </div>
           <div className="col-lg-6">
-            <FaqsItems id={`package-${serial}`} data={hotel} />
+            <FaqsItems id={`package-${serial}`} data={faqs} />
           </div>
         </div>
         <div className="py-3"></div>
