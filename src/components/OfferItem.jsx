@@ -92,7 +92,7 @@ const OfferItem = (props, ref) => {
     }
   }, [offers]);
 
-  const [lowestOffered, setLowOffer] = useState({});
+  const [lowestOffered, setLowOffer] = useState(hotel?.offers[0]);
 
   useEffect(() => {
     const offers = hotel?.offers || [];
@@ -109,8 +109,6 @@ const OfferItem = (props, ref) => {
 
     setLowOffer(lowestOffer);
   }, [hotel]);
-
-  console.log(lowestOffered.lowestOfferPrice);
 
   return (
     <div className="offer-item">
@@ -150,8 +148,8 @@ const OfferItem = (props, ref) => {
               className="font-bold align-self-end"
               style={{ color: "var(--title)" }}
             >
-              {lowestOffered?.lowestOfferPrice || 0}
-              {lowestOffered?.breakdown[0]?.currency}
+              {(lowestOffered && lowestOffered?.lowestOfferPrice) || 0}
+              {lowestOffered && lowestOffered?.breakdown[0]?.currency}
             </h4>
           </div>
 
