@@ -91,37 +91,52 @@ const OfferPriceSlider = (
   const [innerOffers, setInnerOffers] = useState(offers);
 
   const [activeData, setActiveData] = useState(innerOffers[index]);
+  console.log(activeData);
 
   useEffect(() => {
     setActiveData(innerOffers[index]);
   }, [innerOffers]);
 
-  const [faqs, setFaqs] = useState([
-    {
-      title: "Descrizione",
-      paragraph: hotel?.summaryDescription ?? "",
-      text: [],
-    },
-    {
-      title: "Descrizione Hotel",
-      paragraph: hotel?.hotelDescription ?? "",
-    },
-    {
-      title: "Dettagli Servizi",
-      paragraph: hotel?.serviceDetails ?? "",
-      text: [],
-    },
-    {
-      title: "Supplementi",
-      paragraph: activeData["Supplementi offerta"],
-      text: [],
-    },
-    {
-      title: "Riduzioni",
-      paragraph: activeData["Riduzioni offerta"],
-      text: [],
-    },
-  ]);
+  const [faqs, setFaqs] = useState([]);
+
+  useEffect(() => {
+    setFaqs([
+      {
+        title: "Descrizione Offerta",
+        paragraph: hotel?.description ?? "",
+        text: [],
+      },
+      {
+        title: "Descrizione Hotel",
+        paragraph: hotel?.hotelDescription ?? "",
+      },
+      {
+        title: "Dettagli Servizi",
+        paragraph: hotel?.serviceDetails ?? "",
+        text: [],
+      },
+      {
+        title: "Pacchetto Incluso",
+        paragraph: activeData?.packages ?? "",
+
+        text: [],
+      },
+      {
+        title: "Supplementi",
+        supliment: activeData?.supplement ?? [],
+        paragraph: (activeData?.supplement && true) || false,
+        text: [],
+      },
+      {
+        title: "Riduzioni",
+        data:
+          activeData?.ageReduction.sort((a, b) => a.agelimit - b.agelimit) ??
+          [],
+        paragraph: (activeData?.ageReduction && true) || false,
+        text: [],
+      },
+    ]);
+  }, [activeData, hotel]);
 
   const handleSelectedItemChange = (i, nextIndex) => {
     const newOffers = innerOffers.map((offer, index) => {
