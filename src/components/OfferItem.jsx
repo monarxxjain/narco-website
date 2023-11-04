@@ -203,6 +203,7 @@ const OfferItem = (props, ref) => {
                 {Array.from({ length: hotel?.rating }, (_, index) => (
                   <Star key={index} />
                 ))}
+                <span>({hotel?.rating})</span>
               </>
             )}
           </div>

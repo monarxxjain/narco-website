@@ -202,6 +202,8 @@ const MainSection = ({
         toast.error(err.response?.data.message || "Internal server error");
       });
   };
+  console.log(hotels)
+
   return (
     <>
       <section className="main-section">
