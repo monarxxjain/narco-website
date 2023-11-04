@@ -158,6 +158,23 @@ const OfferItem = (props, ref) => {
     setLowOffer(lowestOffer);
   }, [hotel]);
 
+
+  const subtitleRef = useRef(null);
+  const [lineClamp, setLineClamp] = useState(10);
+
+  useEffect(() => {
+    if (subtitleRef.current) {
+      console.log(subtitleRef.current)
+      const computedStyle = window.getComputedStyle(subtitleRef.current);
+      console.log(computedStyle)
+      const lineHeight = parseInt(computedStyle.lineHeight, 10);
+      const maxHeight = parseInt(computedStyle.webkitLineClamp, 10);
+      console.log(maxHeight)
+      const numberOfLines = Math.floor(maxHeight / lineHeight);
+      setLineClamp(10 - numberOfLines);
+    }
+  }, []);
+
   return (
     <div className="offer-item">
       <div
@@ -257,15 +274,11 @@ const OfferItem = (props, ref) => {
                 <LocationThree /> {hotel?.state}
               </span>
 
-              <h6 className="subtitle">
-                {hotel?.summaryDescription?.length > 80
-                  ? hotel?.summaryDescription?.substring(0, 120) + "..."
-                  : hotel?.summaryDescription}
+              <h6 className="subtitle" ref={subtitleRef}>
+                {hotel?.summaryDescription}
               </h6>
-              <div className="lorem">
-                {hotel?.hotelDescription?.length > 80
-                  ? hotel?.hotelDescription?.substring(0, 120) + "..."
-                  : hotel?.hotelDescription}
+              <div className={`lorem -webkit-line-clamp-${lineClamp}`}>
+                {hotel?.hotelDescription}
               </div>
             </div>
           </div>

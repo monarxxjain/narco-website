@@ -202,7 +202,6 @@ const MainSection = ({
         toast.error(err.response?.data.message || "Internal server error");
       });
   };
-
   return (
     <>
       <section className="main-section">

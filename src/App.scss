@@ -1028,16 +1028,21 @@ input[type="date"]:not(.has-value) {
       margin-bottom: 12px;
       font-family: var(--heading-fonts);
       margin-top: 16px;
-    }
+      overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+      }
     .lorem {
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 170%;
-      // display: -webkit-box;
-      // -webkit-box-orient: vertical;
-      // -webkit-line-clamp: 3;
-      // overflow: hidden;
-      // text-overflow: ellipsis;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 170%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 5;
       color: #131313;
     }
   }

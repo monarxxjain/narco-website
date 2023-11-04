@@ -624,6 +624,7 @@ const ViewInquiryForm = (
                         name="numeroBagagliViaggio"
                         handleChange={handleChange}
                         label="Città di Partenza"
+                        placeholder="Inserisci la città di partenza"
                       />
                     </div>
                   </div>
