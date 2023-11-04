@@ -293,7 +293,7 @@ const OfferItem = (props, ref) => {
                 className="outline-0 bg-transparent whatsapp-btn"
               >
                 <a
-                  href={`https://api.whatsapp.com/send/?phone=3908119758555&text=Richiesta Informazioni da InfoIschia per L'hotel ${hotel["Nome Hotel"]}&type=phone_number&app_absent=0`}
+                  href={`https://api.whatsapp.com/send/?phone=3908119758555&text=${process.env.REACT_APP_WHATSAPP_TEXT} &type=phone_number&app_absent=0`}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -306,7 +306,7 @@ const OfferItem = (props, ref) => {
                 </div>
                 <div className="cont">
                   <div>Parliamone!</div>
-                  <div className="subtxt">08118555211</div>
+                  <div className="subtxt">{process.env.REACT_APP_PHONE_NUMBER}</div>
                 </div>
               </a>
             </div>
