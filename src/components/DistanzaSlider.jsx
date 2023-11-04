@@ -41,7 +41,7 @@ const DistanzaSlider = ({ distanzaData }) => {
         <SwiperSlide key={i}>
           <div className="destanza-slide-item">
             <div className="icon">
-              {(i <= 3 && icons[i].icon) || icons[i].icon}
+              {(icons[i].icon)}
             </div>
             <h5>{item?.distance + " " + item?.scale}</h5>
             <div>{item?.label}</div>
