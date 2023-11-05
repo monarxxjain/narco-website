@@ -202,33 +202,50 @@ const OfferPriceSlider = (
       setBeginningReached(false);
     }
   }, [endReached]);
-  let offerNum = filterOffers(offers,checkInDate,checkOutDate);
+  let offerNum = filterOffers(offers, checkInDate, checkOutDate);
+
   function filterOffers(offers, tempStartDate, tempEndDate) {
     const maxDaysDifference = 3;
   
-    return offers.filter((offer) => {
-      const offerStartDate = new Date(offer.startDate);
-      const offerEndDate = new Date(offer.endDate);
-      offerStartDate.setHours(0, 0, 0, 0);
-      offerEndDate.setHours(0, 0, 0, 0);
-      const tempStartDateObj = new Date(tempStartDate);
-      const tempEndDateObj = new Date(tempEndDate);
+    const requiredNights = Math.abs((new Date(tempEndDate) - new Date(tempStartDate)) / (1000 * 60 * 60 * 24));
   
-      // Calculate the difference in days
-      const daysDiffStart = Math.abs((offerStartDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
-      const daysDiffEnd = Math.abs((offerEndDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
-      if(daysDiffStart <= maxDaysDifference &&daysDiffEnd <= maxDaysDifference){
-        console.log(offerStartDate,offerEndDate,tempStartDateObj,tempEndDateObj)
-      }
-      return (
-        daysDiffStart <= maxDaysDifference &&
-        tempStartDateObj >= offerStartDate &&
-        daysDiffEnd <= maxDaysDifference &&
-        tempEndDateObj <= offerEndDate
-      );
-    });
+    return offers
+      .filter((offer) => {
+        const offerStartDate = new Date(offer.startDate);
+        const offerEndDate = new Date(offer.endDate);
+        offerStartDate.setHours(0, 0, 0, 0);
+        offerEndDate.setHours(0, 0, 0, 0);
+        const tempStartDateObj = new Date(tempStartDate);
+        const tempEndDateObj = new Date(tempEndDate);
+  
+        const daysDiffStart = Math.abs((offerStartDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
+        const daysDiffEnd = Math.abs((offerEndDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
+  
+        let numofnights = 0;
+        if(offer.minStay==offer.maxStay){
+           numofnights = offer.maxStay
+        }
+        else{
+          numofnights =  Math.abs((offerEndDate - offerStartDate) / (1000 * 60 * 60 * 24));
+        }
+  
+        return (
+          daysDiffStart <= maxDaysDifference &&
+          tempStartDateObj >= offerStartDate &&
+          daysDiffEnd <= maxDaysDifference &&
+          tempEndDateObj <= offerEndDate &&
+          (offer.numofnights = numofnights)
+        );
+      })
+      .sort((a, b) => {
+        const diffA = Math.abs(requiredNights - a.numofnights);
+        const diffB = Math.abs(requiredNights - b.numofnights);
+  
+        return diffA - diffB;
+      });
   }
-
+  
+  
   return (
     <>
       <div className="offer-item-middle-title gap-2 mb-3">
