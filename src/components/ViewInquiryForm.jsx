@@ -157,6 +157,7 @@ const ViewInquiryForm = (
 
   useEffect(() => {
     calculateInitialMinAndMaxDates(offer, checkInDate, checkOutDate);
+    console.log(offer)
 
     let { nights } = calculateDaysAndNights(
       offer["Valida dal"],
@@ -349,11 +350,12 @@ const ViewInquiryForm = (
                 <div className="right-sm-0 w-100">
                   <CustomDatePicker
                     setDatePickerOpen={setDatePickerOpen}
-                    minDate={minDepartureDate}
-                    maxDate={maxDepartureDate}
+                    minDate={offer.startDate < Date() ? offer.startDate : Date()+1}
+                    maxDate={offer.endDate}
                     selected={departure}
                     label="Data Check In"
                     placeholder="Seleziona la data"
+
                     handleChange={(value) => {
                       setDeparture(value);
                       handleDepartureChange(value);
@@ -413,6 +415,7 @@ const ViewInquiryForm = (
 
                 <div className="right-sm-0 w-100 ">
                   <CustomDatePicker
+
                     minDate={minArrivalDate}
                     maxDate={maxArrivalDate}
                     setDatePickerOpen={setDatePickerOpen}
