@@ -116,40 +116,37 @@ function Home() {
         `${values.url}/app/hotels?startDate=${config.checkInDate}&endDate=${config.checkOutDate}`
       );
       
-      // let tempHotels=result.data;
-      // function filterOffers(offers, tempStartDate, tempEndDate) {
-      //   const maxDaysDifference = 3;
+      let tempHotels=result.data;
+      function filterOffers(offers, tempStartDate, tempEndDate) {
+        const maxDaysDifference = 3;
       
-      //   return offers.filter((offer) => {
-      //     const offerStartDate = new Date(offer.startDate);
-      //     const offerEndDate = new Date(offer.endDate);
-      //     const tempStartDateObj = new Date(tempStartDate);
-      //     const tempEndDateObj = new Date(tempEndDate);
+        return offers.filter((offer) => {
+          const offerStartDate = new Date(offer.startDate);
+          const offerEndDate = new Date(offer.endDate);
+          const tempStartDateObj = new Date(tempStartDate);
+          const tempEndDateObj = new Date(tempEndDate);
       
-      //     // Calculate the difference in days
-      //     const daysDiffStart = Math.abs((offerStartDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
-      //     const daysDiffEnd = Math.abs((offerEndDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
-      
-      //     return (
-      //       daysDiffStart <= maxDaysDifference &&
-      //       tempStartDateObj <= offerStartDate &&
-      //       daysDiffEnd <= maxDaysDifference &&
-      //       tempEndDateObj >= offerEndDate
-      //     );
-      //   });
-      // }
-      // const tempArray = [];
-      // for(let i=0;i<tempHotels.length;i++){
-      //   const offerNum= filterOffers(tempHotels[i].offers,config.checkInDate,config.checkCheckOut);
-      //   if(offerNum>0){
-      //     tempArray.push(tempHotels[i]);
-      //   }
-      // }
-      // setHotels(tempArray);
-      console.log("SDAas")
-      // console.log(tempArray);
-      console.log(result.data);
-
+          // Calculate the difference in days
+          const daysDiffStart = Math.abs((offerStartDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
+          const daysDiffEnd = Math.abs((offerEndDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
+          console.log(daysDiffStart,daysDiffEnd)
+          return (
+            daysDiffStart <= maxDaysDifference &&
+            tempStartDateObj >= offerStartDate &&
+            daysDiffEnd <= maxDaysDifference &&
+            tempEndDateObj <= offerEndDate
+          );
+        });
+      }
+      const tempArray = [];
+      for(let i=0;i<tempHotels.length;i++){
+        const offerNum= filterOffers(tempHotels[i].offers,config.checkInDate,config.checkOutDate);
+        console.log(offerNum)
+        if(offerNum.length>0){
+          tempArray.push(tempHotels[i]);
+        }
+      }
+      setHotels(tempArray);
       setLastChange(null);
     } catch (err) {
       console.log(err);

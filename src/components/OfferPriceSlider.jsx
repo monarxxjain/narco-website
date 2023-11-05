@@ -284,9 +284,10 @@ const OfferPriceSlider = (
             },
           }}
         >
+          
           {innerOffers?.map((item, i) => (
             // checkFilters(checkInDate, checkOutDate, item.startDate, item.endDate) ?
-            item.startDate >= checkInDate && item.endDate <= checkOutDate  ? 
+            1==1 || item.startDate >= checkInDate && item.endDate <= checkOutDate  ? 
             <SwiperSlide key={i}>
               <div
                 className={`offer-price-slider-item ${
