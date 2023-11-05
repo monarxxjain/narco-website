@@ -213,6 +213,7 @@ const OfferPriceSlider = (
       .filter((offer) => {
         const offerStartDate = new Date(offer.startDate);
         const offerEndDate = new Date(offer.endDate);
+        const current = new Date();
         offerStartDate.setHours(0, 0, 0, 0);
         offerEndDate.setHours(0, 0, 0, 0);
         const tempStartDateObj = new Date(tempStartDate);
@@ -220,6 +221,8 @@ const OfferPriceSlider = (
   
         const daysDiffStart = Math.abs((offerStartDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
         const daysDiffEnd = Math.abs((offerEndDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
+        const specialCase = Math.abs((offerEndDate - current) / (1000 * 60 * 60 * 24));
+        
   
         let numofnights = 0;
         if(offer.minStay==offer.maxStay){
@@ -234,6 +237,7 @@ const OfferPriceSlider = (
           tempStartDateObj >= offerStartDate &&
           daysDiffEnd <= maxDaysDifference &&
           tempEndDateObj <= offerEndDate &&
+          specialCase>=(numofnights+1) &&
           (offer.numofnights = numofnights)
         );
       })
