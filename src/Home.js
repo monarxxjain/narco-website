@@ -146,10 +146,11 @@ function Home() {
             }
 
             return (
-              daysDiffStart <= maxDaysDifference &&
-              tempStartDateObj >= offerStartDate &&
-              daysDiffEnd <= maxDaysDifference &&
-              tempEndDateObj <= offerEndDate &&
+              (daysDiffStart <= maxDaysDifference &&
+              daysDiffStart >= (maxDaysDifference * (-1))) ||
+
+              (daysDiffEnd <= maxDaysDifference &&
+              daysDiffEnd >= (maxDaysDifference * (-1)) )&&
               specialCase >= (numofnights + 1) &&
               (offer.numofnights = numofnights)
             );

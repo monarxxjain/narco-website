@@ -157,7 +157,6 @@ const ViewInquiryForm = (
 
   useEffect(() => {
     calculateInitialMinAndMaxDates(offer, checkInDate, checkOutDate);
-    console.log(offer)
 
     let { nights } = calculateDaysAndNights(
       offer["Valida dal"],

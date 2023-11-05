@@ -231,12 +231,14 @@ const OfferPriceSlider = (
         else{
           numofnights =  Math.abs((offerEndDate - offerStartDate) / (1000 * 60 * 60 * 24));
         }
-  
+        
         return (
-          daysDiffStart <= maxDaysDifference &&
-          tempStartDateObj >= offerStartDate &&
-          daysDiffEnd <= maxDaysDifference &&
-          tempEndDateObj <= offerEndDate &&
+          (daysDiffStart <= maxDaysDifference &&
+            daysDiffStart >= (maxDaysDifference * (-1))) ||
+
+          (daysDiffEnd <= maxDaysDifference &&
+            daysDiffEnd >= (maxDaysDifference * (-1))) &&
+
           specialCase>=(numofnights+1) &&
           (offer.numofnights = numofnights)
         );
@@ -249,7 +251,7 @@ const OfferPriceSlider = (
       });
   }
   
-  
+
   return (
     <>
       <div className="offer-item-middle-title gap-2 mb-3">

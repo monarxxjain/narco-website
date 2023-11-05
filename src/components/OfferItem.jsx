@@ -38,7 +38,6 @@ const OfferItem = (props, ref) => {
     setDatePickerOpen,
     config,
   } = props;
-
   const [loadingOffers, setLoadingOffers] = useState(false);
 
   const [offersLoaded, setOffersLoaded] = useState(false);
@@ -193,7 +192,7 @@ const OfferItem = (props, ref) => {
             )}
           </div>
 
-          <div className="price-area d-flex flex-col">
+          <div className={`price-area d-flex flex-col ${index<=2 ? "bestOffers" : ""}`}>
             <div>A PARTIRE DA (giorno)</div>
             <h4
               className="font-bold align-self-end"
@@ -204,9 +203,9 @@ const OfferItem = (props, ref) => {
             </h4>
           </div>
 
-          {hotel.ticker ? (
+          {index<=2 || hotel.ticker ? (
             <span className="ticker d-none d-md-flex ">
-              <span>{hotel.ticker}</span>
+              <span>{(index === 1 && "Più venduto") || (index === 2 && "Prezzo più basso")}</span>
             </span>
           ) : (
             ""
