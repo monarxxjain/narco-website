@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import img1 from "../assets/img/offers/1.png";
 
 import { toast, Toaster } from "react-hot-toast";
@@ -202,7 +202,85 @@ const MainSection = ({
         toast.error(err.response?.data.message || "Internal server error");
       });
   };
-  console.log(hotels)
+  const [filters, setFilters] = useState({
+    fascio: { min: 0, max: 5000 },
+    distance: { min: 0, max: 5000 },
+    stelle: 0,
+  });
+
+  useEffect(() => {
+    // Make changes to a newFilters object and update filters once at the end
+    let newFilters = { ...filters }; // Make a copy of the current filters
+
+    if (config.fascio.name === "fino a 40€") {
+      newFilters = {
+        ...newFilters,
+        fascio: { min: 0, max: 40 },
+      };
+    } else if (config.fascio.name === "tra 40€ e 80€") {
+      newFilters = {
+        ...newFilters,
+        fascio: { min: 40, max: 80 },
+      };
+    } else if (config.fascio.name === "più di 80€") {
+      newFilters = {
+        ...newFilters,
+        fascio: { min: 80, max: 5000 },
+      };
+    } else if (config.fascio.name === "Tutti") {
+      newFilters = {
+        ...newFilters,
+        fascio: { min: 0, max: 5000 },
+      };
+    }
+
+    if (config.stelle.name === "Tutti") {
+      newFilters = {
+        ...newFilters,
+        stelle: 0,
+      };
+    } else if (config.stelle.name === "2 stelle") {
+      newFilters = {
+        ...newFilters,
+        stelle: 2,
+      };
+    } else if (config.stelle.name === "3 stelle") {
+      newFilters = {
+        ...newFilters,
+        stelle: 3,
+      };
+    } else if (config.stelle.name === "4 stelle") {
+      newFilters = {
+        ...newFilters,
+        stelle: 4,
+      };
+    } else if (config.stelle.name === "5 stelle") {
+      newFilters = {
+        ...newFilters,
+        stelle: 5,
+      };
+    }
+
+    if (config.distance.name === "0 mt - 500 mt") {
+      newFilters = {
+        ...newFilters,
+        distance: { min: 0, max: 500 },
+      };
+    } else if (config.distance.name === "500 mt - 1 km") {
+      newFilters = {
+        ...newFilters,
+        distance: { min: 500, max: 1000 },
+      };
+    } else if (config.distance.name === "1 km+") {
+      newFilters = {
+        ...newFilters,
+        distance: { min: 1000, max: 5000 },
+      };
+    }
+
+    // Update filters only once at the end with all the changes
+    setFilters(newFilters);
+  }, [config]);
 
   return (
     <>
@@ -219,7 +297,31 @@ const MainSection = ({
             {hotels.slice(0, 2).map((hotel, i) => {
               return (
                 <>
-                  <OfferItem
+                  {/* {console.log(hotel)} */}
+                  {hotel?.offers[0].breakdown[0].price <= filters.fascio.max &&
+                  hotel?.offers[0].breakdown[0].price >= filters.fascio.min &&
+                  hotel?.rating >= filters.stelle && hotel?.distance[1].distance >=filters.distance.min && hotel?.distance[1].distance <=filters.distance.max
+                  ? (
+                    <OfferItem
+                      config={config}
+                      setUserData={setUserData}
+                      userData={userData}
+                      sending={sending}
+                      setvalue={setValue}
+                      value={value}
+                      handleSubmit={handleSubmit}
+                      buttonDisabled={buttonDisabled}
+                      handleUpdateRooms={handleUpdateRooms}
+                      offer
+                      key={i}
+                      index={i + 1}
+                      checkInDate={checkInDate}
+                      checkOutDate={checkOutDate}
+                      setDatePickerOpen={setDatePickerOpen}
+                      hotel={{ ...hotel, img: [img1, img1, img1] }}
+                    />
+                  ) : null}
+                  {/* <OfferItem
                     config={config}
                     setUserData={setUserData}
                     userData={userData}
@@ -236,7 +338,7 @@ const MainSection = ({
                     checkOutDate={checkOutDate}
                     setDatePickerOpen={setDatePickerOpen}
                     hotel={{ ...hotel, img: [img1, img1, img1] }}
-                  />
+                  /> */}
                 </>
               );
             })}
