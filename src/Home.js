@@ -47,8 +47,6 @@ function Home() {
 
       response.data && setInitialConfigData((prevData) => response.data);
       setInitialDataLoaded(true);
-        console.log("ADs");
-        console.log(response.data.comunes)
       response.data && setComunes(response.data.comunes);
       response.data && setStelles(response.data.stelles);
       response.data && setFascias(response.data?.fascio);

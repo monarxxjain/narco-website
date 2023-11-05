@@ -91,7 +91,9 @@ const OfferPriceSlider = (
 
   // to test
   // console.log(offers[0].breakdown[0].price)
-  // offers[2].breakdown[0].price=0
+  // offers[0].breakdown[0].price=1000
+  // offers[0].breakdown[1].price=0
+  // offers[0].breakdown[2].price=100
   // offers[0].breakdown[1].price=100
   const [innerOffers, setInnerOffers] = useState(offers);
 
@@ -288,20 +290,22 @@ const OfferPriceSlider = (
 
                   <h3 className="price">
                     {(item?.minStay === item?.maxStay &&
-                      (item?.breakdown[2].price ||
+                      (
+                        item?.breakdown[0].price)||
                         item?.breakdown[1].price ||
-                        item?.breakdown[0].price)) ||
-                      (item?.breakdown[2].price ||
+                        item?.breakdown[2].price 
+                        ) ||
+                      (item?.breakdown[0].price ||
                         item?.breakdown[1].price ||
-                        item?.breakdown[0].price) *
+                        item?.breakdown[2].price) *
                         calculateNights(
                           item?.endDate,
                           item?.minStay,
                           item?.maxStay
                         )}
-                    {(item?.breakdown[2].price && item?.breakdown[2].currency) ||
+                    {(item?.breakdown[2].price && item?.breakdown[0].currency) ||
                       (item?.breakdown[1].price && item?.breakdown[1].currency) ||
-                      (item?.breakdown[0].price && item?.breakdown[0].currency)}
+                      (item?.breakdown[0].price && item?.breakdown[2].currency)}
                   </h3>
 
                 </div>
@@ -357,7 +361,7 @@ const OfferPriceSlider = (
                     handleChange={(i) => {
                       handleSelectedItemChange(index, i);
                     }}
-                    selectItems={activeData?.breakdown}
+                    selectItems={activeData?.breakdown?.filter(item => item.price != 0)}
                   />
 
                   <span>Bevande {activeData?.beverageAvailability}</span>

@@ -282,6 +282,8 @@ const MainSection = ({
     setFilters(newFilters);
   }, [config]);
 
+  console.log(hotels)
+
   return (
     <>
       <section className="main-section">

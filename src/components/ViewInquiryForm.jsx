@@ -247,7 +247,6 @@ const ViewInquiryForm = (
   useEffect(() => {
     getAllCities(setOptions, userData.country)
   }, [userData.country]);
-  console.log(selectedPackage);
 
   return (
     <>

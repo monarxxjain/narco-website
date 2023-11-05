@@ -3,9 +3,9 @@ import { AngleDown, AngleUp } from "./Icon";
 
 function SelectDropDown({ selectedOption, selectItems, handleChange }) {
   const [activeSelectIndex, setActiveSelectIndex] = useState(
-    (selectItems[2].price && 2) ||
-      (selectItems[1].price && 1) ||
-      (selectItems[0].price && 0)
+    (selectItems[0].price!=0 && "0") ||
+    (selectItems[1].price!=0 && "1") ||
+    (selectItems[2].price && "2")
   );
   const [selectOpen, setSelectOpen] = useState(false);
 
@@ -24,7 +24,7 @@ function SelectDropDown({ selectedOption, selectItems, handleChange }) {
 
               <ul className="bg-white rounded-md absolute p-2 top-0 left-0 w-[8rem]">
                 {selectItems?.map((item, i) => (
-                  <li
+                  item.price!=0 && <li
                     className=" "
                     key={i}
                     onClick={() => {

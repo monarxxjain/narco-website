@@ -15,7 +15,6 @@ const Input1 = React.forwardRef((props, ref) => {
         ...rest
     } = props;
 
-    console.log(options);
 
     return (
         <div className="position-relative">
