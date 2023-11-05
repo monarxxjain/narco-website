@@ -299,7 +299,6 @@ const MainSection = ({
             {hotels.slice(0, 2).map((hotel, i) => {
               return (
                 <>
-                  {/* {console.log(hotel)} */}
                   {hotel?.offers[0].breakdown[0].price <= filters.fascio.max &&
                   hotel?.offers[0].breakdown[0].price >= filters.fascio.min &&
                   hotel?.rating >= filters.stelle && hotel?.distance[1].distance >=filters.distance.min && hotel?.distance[1].distance <=filters.distance.max
@@ -358,7 +357,10 @@ const MainSection = ({
             
             return (
               <div style={{ marginTop: "2rem" }}>
-                <OfferItem
+                {hotel?.offers[0].breakdown[0].price <= filters.fascio.max &&
+                  hotel?.offers[0].breakdown[0].price >= filters.fascio.min &&
+                  hotel?.rating >= filters.stelle && hotel?.distance[1].distance >=filters.distance.min && hotel?.distance[1].distance <=filters.distance.max
+                  ? <OfferItem
                   setUserData={setUserData}
                   userData={userData}
                   sending={sending}
@@ -374,7 +376,8 @@ const MainSection = ({
                   checkOutDate={checkOutDate}
                   setDatePickerOpen={setDatePickerOpen}
                   hotel={{ ...hotel, img: [img1, img1, img1] }}
-                />
+                /> : null}
+                
               </div>
             );
           })}

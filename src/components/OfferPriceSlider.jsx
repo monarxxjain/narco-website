@@ -204,7 +204,6 @@ const OfferPriceSlider = (
   }, [endReached]);
 
   const checkFilters = (checkInDate, checkOutDate, startDate, endDate) => {
-    // Parse the ISO date strings to Date objects
     const checkIn = new Date(checkInDate);
     const checkOut = new Date(checkOutDate);
     const start = new Date(startDate);
