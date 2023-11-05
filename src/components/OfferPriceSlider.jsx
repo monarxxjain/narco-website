@@ -202,24 +202,32 @@ const OfferPriceSlider = (
       setBeginningReached(false);
     }
   }, [endReached]);
-
-  const checkFilters = (checkInDate, checkOutDate, startDate, endDate) => {
-    const checkIn = new Date(checkInDate);
-    const checkOut = new Date(checkOutDate);
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
-    // Calculate the difference in days between checkInDate and startDate
-    const daysDiffCheckIn = Math.floor((start - checkIn) / (24 * 60 * 60 * 1000));
-
-    // Calculate the difference in days between checkOutDate and endDate
-    const daysDiffCheckOut = Math.floor((end - checkOut) / (24 * 60 * 60 * 1000));
-    if (daysDiffCheckIn >= 0 && daysDiffCheckIn <= 3 && daysDiffCheckOut >= 0 && daysDiffCheckOut <= 3){
-      return true;
-    }
-    else{return false;}
-
-  };
+  let offerNum = filterOffers(offers,checkInDate,checkOutDate);
+  function filterOffers(offers, tempStartDate, tempEndDate) {
+    const maxDaysDifference = 3;
+  
+    return offers.filter((offer) => {
+      const offerStartDate = new Date(offer.startDate);
+      const offerEndDate = new Date(offer.endDate);
+      offerStartDate.setHours(0, 0, 0, 0);
+      offerEndDate.setHours(0, 0, 0, 0);
+      const tempStartDateObj = new Date(tempStartDate);
+      const tempEndDateObj = new Date(tempEndDate);
+  
+      // Calculate the difference in days
+      const daysDiffStart = Math.abs((offerStartDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
+      const daysDiffEnd = Math.abs((offerEndDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
+      if(daysDiffStart <= maxDaysDifference &&daysDiffEnd <= maxDaysDifference){
+        console.log(offerStartDate,offerEndDate,tempStartDateObj,tempEndDateObj)
+      }
+      return (
+        daysDiffStart <= maxDaysDifference &&
+        tempStartDateObj >= offerStartDate &&
+        daysDiffEnd <= maxDaysDifference &&
+        tempEndDateObj <= offerEndDate
+      );
+    });
+  }
 
   return (
     <>
@@ -285,9 +293,7 @@ const OfferPriceSlider = (
           }}
         >
           
-          {innerOffers?.map((item, i) => (
-            // checkFilters(checkInDate, checkOutDate, item.startDate, item.endDate) ?
-            1==1 || item.startDate >= checkInDate && item.endDate <= checkOutDate  ? 
+          {offerNum?.map((item, i) => (
             <SwiperSlide key={i}>
               <div
                 className={`offer-price-slider-item ${
@@ -351,7 +357,7 @@ const OfferPriceSlider = (
                     ""}
                 </div>
               </div>
-            </SwiperSlide> : null
+            </SwiperSlide> 
           ))}
         </Swiper>
       </div>
