@@ -203,7 +203,7 @@ const OfferPriceSlider = (
     }
   }, [endReached]);
   let offerNum = filterOffers(offers, checkInDate, checkOutDate);
-
+  const [price, setPrice] = useState()
   function filterOffers(offers, tempStartDate, tempEndDate) {
     const maxDaysDifference = 3;
   
@@ -328,7 +328,7 @@ const OfferPriceSlider = (
               >
                 <div className="short-info">
                   <div className="info">
-                    <div className="duration">Dal {item.id}</div>
+                    <div className="duration">Dal</div>
                     <div className="duration">
                       {formatItalianDate(new Date(item?.startDate))} al{" "}
                       {formatItalianDate(new Date(item?.endDate))}
