@@ -53,9 +53,9 @@ const MainSection = ({
     setUserData({ ...userData, rooms: updatedRooms });
   };
 
-  const handleChangeValue = (value) => {};
+  const handleChangeValue = (value) => { };
 
-  const handleChange = (name, value) => {};
+  const handleChange = (name, value) => { };
 
   const handleSubmit = (
     arrival,
@@ -299,29 +299,29 @@ const MainSection = ({
             {hotels.slice(0, 2).map((hotel, i) => {
               return (
                 <>
-                  {hotel?.offers[0].breakdown[0].price <= filters.fascio.max &&
-                  hotel?.offers[0].breakdown[0].price >= filters.fascio.min &&
-                  hotel?.rating >= filters.stelle && hotel?.distance[1].distance >=filters.distance.min && hotel?.distance[1].distance <=filters.distance.max
-                  ? (
-                    <OfferItem
-                      config={config}
-                      setUserData={setUserData}
-                      userData={userData}
-                      sending={sending}
-                      setvalue={setValue}
-                      value={value}
-                      handleSubmit={handleSubmit}
-                      buttonDisabled={buttonDisabled}
-                      handleUpdateRooms={handleUpdateRooms}
-                      offer
-                      key={i}
-                      index={i + 1}
-                      checkInDate={checkInDate}
-                      checkOutDate={checkOutDate}
-                      setDatePickerOpen={setDatePickerOpen}
-                      hotel={{ ...hotel, img: [img1, img1, img1] }}
-                    />
-                  ) : null}
+                  {hotel?.offers[0].breakdown[0]?.price <= filters.fascio.max &&
+                    hotel?.offers[0].breakdown[0]?.price >= filters.fascio.min &&
+                    hotel?.rating >= filters.stelle && hotel?.distance[1].distance >= filters.distance.min && hotel?.distance[1].distance <= filters.distance.max
+                    ? (
+                      <OfferItem
+                        config={config}
+                        setUserData={setUserData}
+                        userData={userData}
+                        sending={sending}
+                        setvalue={setValue}
+                        value={value}
+                        handleSubmit={handleSubmit}
+                        buttonDisabled={buttonDisabled}
+                        handleUpdateRooms={handleUpdateRooms}
+                        offer
+                        key={i}
+                        index={i + 1}
+                        checkInDate={checkInDate}
+                        checkOutDate={checkOutDate}
+                        setDatePickerOpen={setDatePickerOpen}
+                        hotel={{ ...hotel, img: [img1, img1, img1] }}
+                      />
+                    ) : null}
                   {/* <OfferItem
                     config={config}
                     setUserData={setUserData}
@@ -354,30 +354,30 @@ const MainSection = ({
             <></>
           )}
           {hotels.slice(2).map((hotel, i) => {
-            
+
             return (
               <div style={{ marginTop: "2rem" }}>
-                {hotel?.offers[0].breakdown[0].price <= filters.fascio.max &&
-                  hotel?.offers[0].breakdown[0].price >= filters.fascio.min &&
-                  hotel?.rating >= filters.stelle && hotel?.distance[1].distance >=filters.distance.min && hotel?.distance[1].distance <=filters.distance.max
+                {hotel?.offers[0].breakdown[0]?.price <= filters.fascio.max &&
+                  hotel?.offers[0].breakdown[0]?.price >= filters.fascio.min &&
+                  hotel?.rating >= filters.stelle && hotel?.distance[1].distance >= filters.distance.min && hotel?.distance[1].distance <= filters.distance.max
                   ? <OfferItem
-                  setUserData={setUserData}
-                  userData={userData}
-                  sending={sending}
-                  setvalue={setValue}
-                  value={value}
-                  handleSubmit={handleSubmit}
-                  handleUpdateRooms={handleUpdateRooms}
-                  buttonDisabled={buttonDisabled}
-                  offer={false}
-                  key={i}
-                  index={i + "--" + 1}
-                  checkInDate={checkInDate}
-                  checkOutDate={checkOutDate}
-                  setDatePickerOpen={setDatePickerOpen}
-                  hotel={{ ...hotel, img: [img1, img1, img1] }}
-                /> : null}
-                
+                    setUserData={setUserData}
+                    userData={userData}
+                    sending={sending}
+                    setvalue={setValue}
+                    value={value}
+                    handleSubmit={handleSubmit}
+                    handleUpdateRooms={handleUpdateRooms}
+                    buttonDisabled={buttonDisabled}
+                    offer={false}
+                    key={i}
+                    index={i + "--" + 1}
+                    checkInDate={checkInDate}
+                    checkOutDate={checkOutDate}
+                    setDatePickerOpen={setDatePickerOpen}
+                    hotel={{ ...hotel, img: [img1, img1, img1] }}
+                  /> : null}
+
               </div>
             );
           })}

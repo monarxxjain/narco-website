@@ -37,9 +37,8 @@ export const FaqsItems = ({ data, id }) => {
                 </h2>
                 <div
                   id={`accordion-${id}-${i}`}
-                  className={`accordion-collapse collapse ${
-                    i == 0 ? "show" : ""
-                  }`}
+                  className={`accordion-collapse collapse ${i == 0 ? "show" : ""
+                    }`}
                   data-bs-parent={`#${id}`}
                 >
                   <div className="accordion-body">

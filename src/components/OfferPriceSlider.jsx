@@ -90,11 +90,11 @@ const OfferPriceSlider = (
   const sliderRef = useRef(null);
 
   // to test
-  // console.log(offers[0].breakdown[0].price)
-  // offers[0].breakdown[0].price=1000
-  // offers[0].breakdown[1].price=0
-  // offers[0].breakdown[2].price=100
-  // offers[0].breakdown[1].price=100
+  // console.log(offers[0].breakdown[0]?.price)
+  // offers[0].breakdown[0]?.price=1000
+  // offers[0].breakdown[1]?.price=0
+  // offers[0].breakdown[2]?.price=100
+  // offers[0].breakdown[1]?.price=100
   const [innerOffers, setInnerOffers] = useState(offers);
 
   const [activeData, setActiveData] = useState(innerOffers[index]);
@@ -102,7 +102,7 @@ const OfferPriceSlider = (
   useEffect(() => {
     setActiveData(innerOffers[index]);
   }, [innerOffers]);
-  window.innerOffers=innerOffers
+  window.innerOffers = innerOffers
   const [faqs, setFaqs] = useState([]);
 
   useEffect(() => {
@@ -206,9 +206,9 @@ const OfferPriceSlider = (
   const [price, setPrice] = useState()
   function filterOffers(offers, tempStartDate, tempEndDate) {
     const maxDaysDifference = 3;
-  
+
     const requiredNights = Math.abs((new Date(tempEndDate) - new Date(tempStartDate)) / (1000 * 60 * 60 * 24));
-  
+
     return offers
       .filter((offer) => {
         const offerStartDate = new Date(offer.startDate);
@@ -218,20 +218,20 @@ const OfferPriceSlider = (
         offerEndDate.setHours(0, 0, 0, 0);
         const tempStartDateObj = new Date(tempStartDate);
         const tempEndDateObj = new Date(tempEndDate);
-  
+
         const daysDiffStart = Math.abs((offerStartDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
         const daysDiffEnd = Math.abs((offerEndDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
         const specialCase = Math.abs((offerEndDate - current) / (1000 * 60 * 60 * 24));
-        
-  
+
+
         let numofnights = 0;
-        if(offer.minStay==offer.maxStay){
-           numofnights = offer.maxStay
+        if (offer.minStay == offer.maxStay) {
+          numofnights = offer.maxStay
         }
-        else{
-          numofnights =  Math.abs((offerEndDate - offerStartDate) / (1000 * 60 * 60 * 24));
+        else {
+          numofnights = Math.abs((offerEndDate - offerStartDate) / (1000 * 60 * 60 * 24));
         }
-        
+
         return (
           (daysDiffStart <= maxDaysDifference &&
             daysDiffStart >= (maxDaysDifference * (-1))) ||
@@ -239,18 +239,18 @@ const OfferPriceSlider = (
           (daysDiffEnd <= maxDaysDifference &&
             daysDiffEnd >= (maxDaysDifference * (-1))) &&
 
-          specialCase>=(numofnights+1) &&
+          specialCase >= (numofnights + 1) &&
           (offer.numofnights = numofnights)
         );
       })
       .sort((a, b) => {
         const diffA = Math.abs(requiredNights - a.numofnights);
         const diffB = Math.abs(requiredNights - b.numofnights);
-  
+
         return diffA - diffB;
       });
   }
-  
+
 
   return (
     <>
@@ -259,20 +259,18 @@ const OfferPriceSlider = (
         {innerOffers.length > 1 ? (
           <div className="d-flex gap-2">
             <span
-              className={`prev ${
-                beginningReached
+              className={`prev ${beginningReached
                   ? "swiper-control-disabled"
                   : "swiper-control-active"
-              }`}
-              onClick={!beginningReached ? handlePrev : () => {}}
+                }`}
+              onClick={!beginningReached ? handlePrev : () => { }}
             >
               <PrevIcon />
             </span>
             <span
-              className={`next ${
-                endReached ? "swiper-control-disabled" : "swiper-control-active"
-              }`}
-              onClick={!endReached ? handleNext : () => {}}
+              className={`next ${endReached ? "swiper-control-disabled" : "swiper-control-active"
+                }`}
+              onClick={!endReached ? handleNext : () => { }}
             >
               <NextIcon />
             </span>
@@ -315,13 +313,12 @@ const OfferPriceSlider = (
             },
           }}
         >
-          
+
           {offerNum?.map((item, i) => (
             <SwiperSlide key={i}>
               <div
-                className={`offer-price-slider-item ${
-                  i === index ? "active" : ""
-                }`}
+                className={`offer-price-slider-item ${i === index ? "active" : ""
+                  }`}
                 onClick={() => {
                   setIndex(i);
                   setActiveData(innerOffers[i]);
@@ -335,27 +332,27 @@ const OfferPriceSlider = (
                       {formatItalianDate(new Date(item?.startDate))} al{" "}
                       {formatItalianDate(new Date(item?.endDate))}
                     </div>
-                    
+
                   </div>
 
                   <h3 className="price">
                     {(item?.minStay === item?.maxStay &&
                       (
-                        item?.breakdown[0].price)||
-                        item?.breakdown[1].price ||
-                        item?.breakdown[2].price 
-                        ) ||
-                      (item?.breakdown[0].price ||
-                        item?.breakdown[1].price ||
-                        item?.breakdown[2].price) *
-                        calculateNights(
-                          item?.endDate,
-                          item?.minStay,
-                          item?.maxStay
-                        )}
-                    {(item?.breakdown[2].price && item?.breakdown[0].currency) ||
-                      (item?.breakdown[1].price && item?.breakdown[1].currency) ||
-                      (item?.breakdown[0].price && item?.breakdown[2].currency)}
+                        item?.breakdown[0]?.price) ||
+                      item?.breakdown[1]?.price ||
+                      item?.breakdown[2]?.price
+                    ) ||
+                      (item?.breakdown[0]?.price ||
+                        item?.breakdown[1]?.price ||
+                        item?.breakdown[2]?.price) *
+                      calculateNights(
+                        item?.endDate,
+                        item?.minStay,
+                        item?.maxStay
+                      )}
+                    {(item?.breakdown[2]?.price && item?.breakdown[0].currency) ||
+                      (item?.breakdown[1]?.price && item?.breakdown[1].currency) ||
+                      (item?.breakdown[0]?.price && item?.breakdown[2].currency)}
                   </h3>
 
                 </div>
@@ -373,14 +370,14 @@ const OfferPriceSlider = (
                     " Night ") ||
                     " Nights "}
                   -{" "}
-                  { 
-                    (item?.breakdown[0].price!=0 && "Pensione Completa") ||
-                    (item?.breakdown[1].price!=0 && "Mezza pensione") ||
-                    (item?.breakdown[2].price!=null && "Bed & Breakfast") ||
+                  {
+                    (item?.breakdown[0]?.price != 0 && "Pensione Completa") ||
+                    (item?.breakdown[1]?.price != 0 && "Mezza pensione") ||
+                    (item?.breakdown[2]?.price != null && "Bed & Breakfast") ||
                     ""}
                 </div>
               </div>
-            </SwiperSlide> 
+            </SwiperSlide>
           ))}
         </Swiper>
       </div>
@@ -411,7 +408,7 @@ const OfferPriceSlider = (
                     handleChange={(i) => {
                       handleSelectedItemChange(index, i);
                     }}
-                    selectItems={activeData?.breakdown?.filter(item => item.price != 0)}
+                    selectItems={activeData?.breakdown?.filter(item => item?.price != 0)}
                   />
 
                   <span>Bevande {activeData?.beverageAvailability}</span>
