@@ -49,7 +49,6 @@ function Home() {
       setInitialDataLoaded(true);
 
       response.data && setComunes(response.data.comunes);
-      console.log(response.data)
       response.data && setStelles(response.data.stelles);
       response.data && setFascias(response.data?.fascio);
       response.data && setDistances(response.data.distances);

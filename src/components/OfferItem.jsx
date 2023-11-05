@@ -226,6 +226,13 @@ const OfferItem = (props, ref) => {
               <div className="next-arrow" onClick={handleNext}>
                 <NextArrow />
               </div>
+              {hotel.ticker ? (
+                <span className="ticker d-md-none d-flex ">
+                  <span>{hotel.ticker}</span>
+                </span>
+              ) : (
+                ""
+              )}
               <Swiper
                 spaceBetween={20}
                 modules={[Pagination, Navigation]}

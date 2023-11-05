@@ -61,6 +61,8 @@ function calculateNights(endDate, minStay, maxStay) {
   }
 }
 
+
+
 const OfferPriceSlider = (
   {
     offers,
@@ -85,9 +87,12 @@ const OfferPriceSlider = (
 ) => {
   const [index, setIndex] = useState(0);
   const [innerCollapse, setInnerCollapse] = useState(false);
-
   const sliderRef = useRef(null);
 
+  // to test
+  // console.log(offers[0].breakdown[0].price)
+  // offers[2].breakdown[0].price=0
+  // offers[0].breakdown[1].price=100
   const [innerOffers, setInnerOffers] = useState(offers);
 
   const [activeData, setActiveData] = useState(innerOffers[index]);
@@ -95,7 +100,7 @@ const OfferPriceSlider = (
   useEffect(() => {
     setActiveData(innerOffers[index]);
   }, [innerOffers]);
-
+  window.innerOffers=innerOffers
   const [faqs, setFaqs] = useState([]);
 
   useEffect(() => {
@@ -273,7 +278,7 @@ const OfferPriceSlider = (
               >
                 <div className="short-info">
                   <div className="info">
-                    <div className="duration">Dal</div>
+                    <div className="duration">Dal {item.id}</div>
                     <div className="duration">
                       {formatItalianDate(new Date(item?.startDate))} al{" "}
                       {formatItalianDate(new Date(item?.endDate))}
@@ -314,9 +319,10 @@ const OfferPriceSlider = (
                     " Night ") ||
                     " Nights "}
                   -{" "}
-                  {(item?.breakdown[2].price && "Mezza Pensione") ||
-                    (item?.breakdown[1].price && "Mezza Pensione") ||
-                    (item?.breakdown[0].price && "Pensione Completa") ||
+                  { 
+                    (item?.breakdown[0].price!=0 && "Pensione Completa") ||
+                    (item?.breakdown[1].price!=0 && "Mezza pensione") ||
+                    (item?.breakdown[2].price!=null && "Bed & Breakfast") ||
                     ""}
                 </div>
               </div>
