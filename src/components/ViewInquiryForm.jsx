@@ -5,6 +5,8 @@ import Room from "./Room";
 
 import loading from "../assets/img/dualLoading.gif";
 import CustomDatePicker from "./calender/CalenderEnquiry";
+import { europeanCountries, getAllCities } from "./Cities";
+import Input1 from "./Input1";
 
 const formatDate = (ogDate) => {
   let date = new Date(ogDate);
@@ -240,7 +242,13 @@ const ViewInquiryForm = (
     optionRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
+  const [options, setOptions] = useState(["Select Your City", 1 , 2]);
+
+  useEffect(() => {
+    getAllCities(setOptions, userData.country)
+  }, [userData.country]);
   console.log(selectedPackage);
+
   return (
     <>
       {userData ? (
@@ -607,7 +615,7 @@ const ViewInquiryForm = (
                 </div>
                 {value == "viaggio" && (
                   <div className="row g-3 mt-2">
-                    <div className="col-sm-6">
+                    <div className="col-sm-4">
                       <Input
                         name="trasporto"
                         handleChange={handleChange}
@@ -617,14 +625,24 @@ const ViewInquiryForm = (
                         options={options3}
                       />
                     </div>
-                    <div className="col-sm-6">
-                      <Input
-                        type="text"
-                        value={userData.numeroBagagliViaggio}
+                    <div className="col-sm-4">
+                      <Input1
+                        name="country"
+                        handleChange={handleChange}
+                        value={userData.country}
+                        label="Country di Partenza"
+                        select
+                        options={europeanCountries}
+                      />
+                    </div>
+                    <div className="col-sm-4">
+                      <Input1
                         name="numeroBagagliViaggio"
                         handleChange={handleChange}
+                        value={userData.numeroBagagliViaggio}
                         label="Città di Partenza"
-                        placeholder="Inserisci la città di partenza"
+                        select
+                        options={options}
                       />
                     </div>
                   </div>

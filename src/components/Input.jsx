@@ -56,8 +56,8 @@ const Input = React.forwardRef((props, ref) => {
               onChange={(e) => handleChange(e)}
               className="form-control __form-control form-select"
             >
-              {options.map((item, i) => (
-                <option key={i} value={item.text || item.name}>
+              {options && options?.map((item, i) => (
+                <option key={i} value={item.text || item.name } style={{color: "black"}}>
                   {item.text || item.name}
                 </option>
               ))}

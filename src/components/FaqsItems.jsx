@@ -3,7 +3,7 @@ import { CheckIcon, Minus, Plus } from "./Icon";
 
 export const FaqsItems = ({ data, id }) => {
   const [open, setOpen] = useState(0);
-
+  console.log(data)
   return (
     <div className="accordion" id={id}>
       {Array.isArray(data) &&

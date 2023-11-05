@@ -91,7 +91,6 @@ const OfferPriceSlider = (
   const [innerOffers, setInnerOffers] = useState(offers);
 
   const [activeData, setActiveData] = useState(innerOffers[index]);
-  console.log(activeData);
 
   useEffect(() => {
     setActiveData(innerOffers[index]);
@@ -103,7 +102,7 @@ const OfferPriceSlider = (
     setFaqs([
       {
         title: "Descrizione Offerta",
-        paragraph: hotel?.description ?? "",
+        paragraph: activeData?.description ?? "",
         text: [],
       },
       {
@@ -272,50 +271,54 @@ const OfferPriceSlider = (
                 }}
                 style={{ margin: "1px" }}
               >
-                <div className="info">
-                  <div className="duration">Dal</div>
-                  <div className="duration">
-                    {formatItalianDate(new Date(item?.startDate))} al{" "}
-                    {formatItalianDate(new Date(item?.endDate))}
+                <div className="short-info">
+                  <div className="info">
+                    <div className="duration">Dal</div>
+                    <div className="duration">
+                      {formatItalianDate(new Date(item?.startDate))} al{" "}
+                      {formatItalianDate(new Date(item?.endDate))}
+                    </div>
+                    
                   </div>
-                  <div className="text--small">
-                    {calculateNights(
-                      item?.endDate,
-                      item?.minStay,
-                      item?.maxStay
-                    )}
-                    {(calculateNights(
-                      item?.endDate,
-                      item?.minStay,
-                      item?.maxStay
-                    ) === 1 &&
-                      " Night ") ||
-                      " Nights "}
-                    -{" "}
-                    {(item?.breakdown[2].price && "Mezza Pensione") ||
-                      (item?.breakdown[1].price && "Mezza Pensione") ||
-                      (item?.breakdown[0].price && "Pensione Completa") ||
-                      ""}
-                  </div>
-                </div>
 
-                <h3 className="price">
-                  {(item?.minStay === item?.maxStay &&
-                    (item?.breakdown[2].price ||
-                      item?.breakdown[1].price ||
-                      item?.breakdown[0].price)) ||
-                    (item?.breakdown[2].price ||
-                      item?.breakdown[1].price ||
-                      item?.breakdown[0].price) *
-                      calculateNights(
-                        item?.endDate,
-                        item?.minStay,
-                        item?.maxStay
-                      )}
-                  {(item?.breakdown[2].price && item?.breakdown[2].currency) ||
-                    (item?.breakdown[1].price && item?.breakdown[1].currency) ||
-                    (item?.breakdown[0].price && item?.breakdown[0].currency)}
-                </h3>
+                  <h3 className="price">
+                    {(item?.minStay === item?.maxStay &&
+                      (item?.breakdown[2].price ||
+                        item?.breakdown[1].price ||
+                        item?.breakdown[0].price)) ||
+                      (item?.breakdown[2].price ||
+                        item?.breakdown[1].price ||
+                        item?.breakdown[0].price) *
+                        calculateNights(
+                          item?.endDate,
+                          item?.minStay,
+                          item?.maxStay
+                        )}
+                    {(item?.breakdown[2].price && item?.breakdown[2].currency) ||
+                      (item?.breakdown[1].price && item?.breakdown[1].currency) ||
+                      (item?.breakdown[0].price && item?.breakdown[0].currency)}
+                  </h3>
+
+                </div>
+                <div className="text--small">
+                  {calculateNights(
+                    item?.endDate,
+                    item?.minStay,
+                    item?.maxStay
+                  )}
+                  {(calculateNights(
+                    item?.endDate,
+                    item?.minStay,
+                    item?.maxStay
+                  ) === 1 &&
+                    " Night ") ||
+                    " Nights "}
+                  -{" "}
+                  {(item?.breakdown[2].price && "Mezza Pensione") ||
+                    (item?.breakdown[1].price && "Mezza Pensione") ||
+                    (item?.breakdown[0].price && "Pensione Completa") ||
+                    ""}
+                </div>
               </div>
             </SwiperSlide>
           ))}

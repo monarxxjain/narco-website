@@ -12,8 +12,8 @@ function SelectDropDown({ selectedOption, selectItems, handleChange }) {
   if (!selectItems) return <></>;
 
   return (
-    <h6>
-      {selectItems[activeSelectIndex]?.name}
+    <h6 className="pointer">
+      <p onClick={() => setSelectOpen(!selectOpen)}>{selectItems[activeSelectIndex]?.name}</p>
       {selectedOption.length > 0 ? (
         <>
           {selectOpen ? (

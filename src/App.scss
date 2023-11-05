@@ -1119,11 +1119,13 @@ input[type="date"]:not(.has-value) {
   }
 }
 .offer-price-slider-item {
-  display: flex;
-  justify-content: space-between;
   padding: 16px;
   border-radius: 12px;
   border: 1px solid var(--base);
+  .short-info{
+    display: flex;
+    justify-content: space-between;
+  }
   .info {
     .duration {
       font-weight: 500;
@@ -1160,6 +1162,9 @@ input[type="date"]:not(.has-value) {
   cursor: pointer;
   &.active {
     background: var(--base);
+    .text--small{
+      color: var(--white);
+    }
     .info {
       color: var(--white);
     }
@@ -1208,6 +1213,7 @@ input[type="date"]:not(.has-value) {
 .check-lists {
   display: flex;
   flex-wrap: wrap;
+  column-gap: 10px;
   row-gap: 12px;
   font-weight: 500;
   font-size: 18px;
@@ -1216,7 +1222,7 @@ input[type="date"]:not(.has-value) {
   li {
     display: flex;
     gap: 10px;
-    width: 180px;
+    max-width: 180px;
     letter-spacing: -0.05em;
   }
 }
@@ -1958,4 +1964,18 @@ body {
 
 select.form-control.__form-control.form-select {
   padding-right: 30px;
+}
+
+
+.pointer {
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+  padding: 2px 5px;
+  margin-left: -5px;
+}
+
+.pointer:hover {
+  border: 1px solid #f25684;
+  border-radius: 4px;
 }
