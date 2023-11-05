@@ -225,23 +225,21 @@ const OfferPriceSlider = (
         const daysDiffEnd = Math.abs((offerEndDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
         const specialCase = Math.abs((offerEndDate - current) / (1000 * 60 * 60 * 24));
 
-
         let numofnights = 0;
         if (offer.minStay == offer.maxStay) {
-          numofnights = offer.maxStay
-        }
-        else {
+          numofnights = offer.maxStay;
+        } else {
           numofnights = Math.abs((offerEndDate - offerStartDate) / (1000 * 60 * 60 * 24));
         }
 
-        return (
-          ((daysDiffStart <= maxDaysDifference &&
-            daysDiffStart >= (maxDaysDifference * (-1))) ||
+        const startDateValid = (daysDiffStart <= maxDaysDifference && daysDiffStart >= (maxDaysDifference * -1));
+        const endDateValid = (daysDiffEnd <= maxDaysDifference && daysDiffEnd >= (maxDaysDifference * -1));
+        const nightsDifferenceValid = Math.abs(requiredNights - numofnights) <= 2;
 
-          (daysDiffEnd <= maxDaysDifference &&
-            daysDiffEnd >= (maxDaysDifference * (-1)))) &&
-          (offer.minStay == offer.maxStay ? requiredNights <= numofnights + 1 : 1) &&
-          specialCase >= (numofnights + 1) &&
+        return (
+          (startDateValid || endDateValid) &&
+          nightsDifferenceValid &&
+          specialCase >= numofnights + 1 &&
           (offer.numofnights = numofnights)
         );
       })
@@ -252,6 +250,8 @@ const OfferPriceSlider = (
         return diffA - diffB;
       });
   }
+
+
 
 
   return (
