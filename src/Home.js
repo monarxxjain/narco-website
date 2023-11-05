@@ -151,6 +151,9 @@ function Home() {
 
               (daysDiffEnd <= maxDaysDifference &&
               daysDiffEnd >= (maxDaysDifference * (-1)) ))&&
+
+              (offer.minStay == offer.maxStay ? requiredNights <= numofnights + 1 : 1) &&
+
               specialCase >= (numofnights + 1) &&
               (offer.numofnights = numofnights)
             );

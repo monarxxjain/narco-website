@@ -157,7 +157,7 @@ const OfferItem = (props, ref) => {
     setLowOffer(lowestOffer);
   }, [hotel]);
 
-
+  const [bestPossiblePrice, setBestPossiblePrice] = useState(0)
 
   return (
     <div className="offer-item">
@@ -326,6 +326,8 @@ const OfferItem = (props, ref) => {
             <OffersLoading />
           ) : offers && offers.length ? (
             <OfferPriceSlider
+              bestPossiblePrice={bestPossiblePrice}
+              setBestPossiblePrice={setBestPossiblePrice}
               setUserData={setUserData}
               userData={userData}
               sending={sending}
