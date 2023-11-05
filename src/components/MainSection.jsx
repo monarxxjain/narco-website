@@ -355,6 +355,7 @@ const MainSection = ({
             <></>
           )}
           {hotels.slice(2).map((hotel, i) => {
+            
             return (
               <div style={{ marginTop: "2rem" }}>
                 <OfferItem

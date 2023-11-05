@@ -203,6 +203,25 @@ const OfferPriceSlider = (
     }
   }, [endReached]);
 
+  const checkFilters = (checkInDate, checkOutDate, startDate, endDate) => {
+    // Parse the ISO date strings to Date objects
+    const checkIn = new Date(checkInDate);
+    const checkOut = new Date(checkOutDate);
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // Calculate the difference in days between checkInDate and startDate
+    const daysDiffCheckIn = Math.floor((start - checkIn) / (24 * 60 * 60 * 1000));
+
+    // Calculate the difference in days between checkOutDate and endDate
+    const daysDiffCheckOut = Math.floor((end - checkOut) / (24 * 60 * 60 * 1000));
+    if (daysDiffCheckIn >= 0 && daysDiffCheckIn <= 3 && daysDiffCheckOut >= 0 && daysDiffCheckOut <= 3){
+      return true;
+    }
+    else{return false;}
+
+  };
+
   return (
     <>
       <div className="offer-item-middle-title gap-2 mb-3">
@@ -267,6 +286,8 @@ const OfferPriceSlider = (
           }}
         >
           {innerOffers?.map((item, i) => (
+            // checkFilters(checkInDate, checkOutDate, item.startDate, item.endDate) ?
+            item.startDate >= checkInDate && item.endDate <= checkOutDate  ? 
             <SwiperSlide key={i}>
               <div
                 className={`offer-price-slider-item ${
@@ -330,7 +351,7 @@ const OfferPriceSlider = (
                     ""}
                 </div>
               </div>
-            </SwiperSlide>
+            </SwiperSlide> : null
           ))}
         </Swiper>
       </div>

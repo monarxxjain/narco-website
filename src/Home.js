@@ -71,6 +71,7 @@ function Home() {
     if (!checkin || !checkout) {
       config.checkInDate = initialConfigData.dateAfterTwoDays;
       config.checkOutDate = initialConfigData.dateAfterAWeek;
+
     }
 
     try {
@@ -90,10 +91,31 @@ function Home() {
     setConfig(config);
   };
 
+  function isISOString(dateString) {
+    // Regular expression to match ISO 8601 date format
+    const isoDatePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z$/;
+    return isoDatePattern.test(dateString);
+  }
+
+
   const loadHotels = async () => {
     try {
       setloadingHotels(true);
 
+      const checkCheckIn = isISOString(config.checkInDate)
+      const checkCheckOut = isISOString(config.checkOutDate)
+      console.log(checkCheckIn)
+      console.log(checkCheckOut)
+      if(!checkCheckIn && !checkCheckOut){
+        const parsedInDate = new Date(config.checkInDate)
+        const parsedOutDate = new Date(config.checkOutDate)
+        config.checkInDate=parsedInDate.toISOString()
+        config.checkOutDate=parsedOutDate.toISOString()
+      }
+      console.log("=======================")
+      console.log(config.checkInDate)
+      console.log(config.checkOutDate)
+      console.log("=======================")
       const result = await axios.get(
         `${values.url}/app/hotels?startDate=${config.checkInDate}&endDate=${config.checkOutDate}`
       );
