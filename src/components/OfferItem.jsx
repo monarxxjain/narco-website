@@ -157,7 +157,138 @@ const OfferItem = (props, ref) => {
     setLowOffer(lowestOffer);
   }, [hotel]);
 
-  const [bestPossiblePrice, setBestPossiblePrice] = useState(0)
+  function calculateNights(endDate, minStay, maxStay) {
+    const today = new Date();
+    const end = new Date(endDate);
+
+    // If end date is in the past, set it to one week from today
+    if (end.getTime() < today.getTime()) {
+      const oneWeekFromToday = new Date();
+      oneWeekFromToday.setDate(today.getDate() + 7);
+      end.setDate(oneWeekFromToday.getDate());
+      end.setMonth(oneWeekFromToday.getMonth());
+      end.setFullYear(oneWeekFromToday.getFullYear());
+    }
+
+    // Calculate the time difference in milliseconds
+    const timeDifference = end.getTime() - today.getTime();
+
+    // Convert milliseconds to days
+    const nights = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+    // Check if nights is within minStay and maxStay range
+    if (nights >= minStay && nights <= maxStay) {
+      return Math.abs(nights); // Ensure nights is always positive
+    } else {
+      // If not, return the closest value within the range
+      if (nights < minStay) {
+        return minStay;
+      } else {
+        return maxStay;
+      }
+    }
+  }
+
+  const [bestPossiblePrice, setBestPossiblePrice] = useState(10000)
+
+  
+
+  let offerNum = filterOffers(offers, checkInDate, checkOutDate);
+  function filterOffers(offers, tempStartDate, tempEndDate) {
+    const maxDaysDifference = 3;
+
+    const requiredNights = Math.abs((new Date(tempEndDate) - new Date(tempStartDate)) / (1000 * 60 * 60 * 24));
+
+    return offers?.filter((offer) => {
+
+      
+        const offerStartDate = new Date(offer.startDate);
+        const offerEndDate = new Date(offer.endDate);
+        const current = new Date();
+        offerStartDate.setHours(0, 0, 0, 0);
+        offerEndDate.setHours(0, 0, 0, 0);
+        const tempStartDateObj = new Date(tempStartDate);
+        const tempEndDateObj = new Date(tempEndDate);
+
+        const daysDiffStart = Math.abs((offerStartDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
+        const daysDiffEnd = Math.abs((offerEndDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
+        const specialCase = Math.abs((offerEndDate - current) / (1000 * 60 * 60 * 24));
+
+        let numofnights = 0;
+        if (offer.minStay == offer.maxStay) {
+          numofnights = offer.maxStay;
+        } else {
+          numofnights = Math.abs((offerEndDate - offerStartDate) / (1000 * 60 * 60 * 24));
+        }
+
+        const startDateValid = (daysDiffStart <= maxDaysDifference && daysDiffStart >= (maxDaysDifference * -1));
+        const endDateValid = (daysDiffEnd <= maxDaysDifference && daysDiffEnd >= (maxDaysDifference * -1));
+        const nightsDifferenceValid = Math.abs(requiredNights - numofnights) <= 2;
+
+
+        if (Math.abs(requiredNights - numofnights) >= 0 && nightsDifferenceValid) {
+          return (
+            (startDateValid || endDateValid) &&
+            specialCase >= numofnights + 1 &&
+            (offer.numofnights = numofnights)
+          );
+        }
+        if ((0 >= (offerStartDate - tempStartDateObj) && 0 >= (tempStartDateObj - offerEndDate)) && (0 >= (offerStartDate - tempEndDateObj) && 0 >= (tempEndDateObj - offerEndDate))) {
+          return (
+            requiredNights + 2 > numofnights &&
+            specialCase >= numofnights + 1 &&
+            (offer.numofnights = numofnights)
+          );
+        }
+        else if ((0 >= (offerStartDate - tempStartDateObj) && 0 >= (tempStartDateObj - offerEndDate)) || (0 >= (offerStartDate - tempEndDateObj) && 0 >= (tempEndDateObj - offerEndDate))) {
+          const userNight = Math.abs((offerEndDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
+          return (
+            requiredNights - 2 - userNight > 0 &&
+            requiredNights + 2 >= numofnights &&
+            specialCase >= numofnights + 1 &&
+            (offer.numofnights = numofnights)
+          );
+        }
+
+      })
+      .sort((a, b) => {
+        const diffA = Math.abs(requiredNights - a.numofnights);
+        const diffB = Math.abs(requiredNights - b.numofnights);
+
+        return diffA - diffB;
+      });
+  }
+
+
+    offerNum?.map((item, id) => {
+
+      if (item?.minStay === item?.maxStay) {
+        const myVar = item?.breakdown[0]?.price || item?.breakdown[1]?.price || item?.breakdown[2]?.price
+        if (bestPossiblePrice > myVar) {
+          setBestPossiblePrice(myVar)
+        }
+      }
+      else {
+        let calculatedNights =  Math.abs((new Date(checkInDate) - new Date(checkOutDate)) / (1000 * 60 * 60 * 24));
+        if(calculatedNights<item?.minStay){
+          calculatedNights=item.minStay
+        }
+        else if(calculatedNights>item?.maxStay){
+          calculatedNights=item.maxStay
+        }
+        const myVar2 = (item?.breakdown[0]?.price ||
+          item?.breakdown[1]?.price ||
+          item?.breakdown[2]?.price) * calculatedNights
+
+
+        if (bestPossiblePrice > myVar2) {
+          setBestPossiblePrice(myVar2)
+        }
+      }
+
+    })
+
+
 
   return (
     <div className="offer-item">
@@ -198,8 +329,10 @@ const OfferItem = (props, ref) => {
               className="font-bold align-self-end"
               style={{ color: "var(--title)" }}
             >
-              {(lowestOffered && lowestOffered?.lowestOfferPrice) || 0}
+              {/* {(lowestOffered && lowestOffered?.lowestOfferPrice) || 0} */}
+              {bestPossiblePrice}
               {lowestOffered && lowestOffered?.breakdown[0]?.currency}
+              
             </h4>
           </div>
 
@@ -334,7 +467,7 @@ const OfferItem = (props, ref) => {
               setvalue={setvalue}
               value={value}
               handleSubmit={handleSubmit}
-              offers={offers}
+              offers={offerNum}
               hotel={hotel}
               checkInDate={checkInDate}
               checkOutDate={checkOutDate}

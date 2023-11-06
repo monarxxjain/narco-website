@@ -63,6 +63,8 @@ function calculateNights(endDate, minStay, maxStay) {
 
 
 
+
+
 const OfferPriceSlider = (
   {
     bestPossiblePrice,
@@ -90,6 +92,17 @@ const OfferPriceSlider = (
   const [index, setIndex] = useState(0);
   const [innerCollapse, setInnerCollapse] = useState(false);
   const sliderRef = useRef(null);
+
+  let calculatedNights = Math.abs((new Date(checkInDate) - new Date(checkOutDate)) / (1000 * 60 * 60 * 24))
+  const calculateNightsNew= ( minStay, maxStay) =>{
+    if (calculatedNights < minStay) {
+      calculatedNights = minStay
+    }
+    else if (calculatedNights > maxStay) {
+      calculatedNights = maxStay
+    }
+    return calculatedNights
+  }
 
   // to test
   // console.log(offers[0].breakdown[0]?.price)
@@ -204,71 +217,71 @@ const OfferPriceSlider = (
       setBeginningReached(false);
     }
   }, [endReached]);
-  let offerNum = filterOffers(offers, checkInDate, checkOutDate);
-  const [price, setPrice] = useState()
-  function filterOffers(offers, tempStartDate, tempEndDate) {
-    const maxDaysDifference = 3;
+  // let offerNum = filterOffers(offers, checkInDate, checkOutDate);
+  // const [price, setPrice] = useState()
+  // function filterOffers(offers, tempStartDate, tempEndDate) {
+  //   const maxDaysDifference = 3;
 
-    const requiredNights = Math.abs((new Date(tempEndDate) - new Date(tempStartDate)) / (1000 * 60 * 60 * 24));
+  //   const requiredNights = Math.abs((new Date(tempEndDate) - new Date(tempStartDate)) / (1000 * 60 * 60 * 24));
 
-    return offers
-      .filter((offer) => {
-        const offerStartDate = new Date(offer.startDate);
-        const offerEndDate = new Date(offer.endDate);
-        const current = new Date();
-        offerStartDate.setHours(0, 0, 0, 0);
-        offerEndDate.setHours(0, 0, 0, 0);
-        const tempStartDateObj = new Date(tempStartDate);
-        const tempEndDateObj = new Date(tempEndDate);
+  //   return offers
+  //     .filter((offer) => {
+  //       const offerStartDate = new Date(offer.startDate);
+  //       const offerEndDate = new Date(offer.endDate);
+  //       const current = new Date();
+  //       offerStartDate.setHours(0, 0, 0, 0);
+  //       offerEndDate.setHours(0, 0, 0, 0);
+  //       const tempStartDateObj = new Date(tempStartDate);
+  //       const tempEndDateObj = new Date(tempEndDate);
 
-        const daysDiffStart = Math.abs((offerStartDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
-        const daysDiffEnd = Math.abs((offerEndDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
-        const specialCase = Math.abs((offerEndDate - current) / (1000 * 60 * 60 * 24));
+  //       const daysDiffStart = Math.abs((offerStartDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
+  //       const daysDiffEnd = Math.abs((offerEndDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
+  //       const specialCase = Math.abs((offerEndDate - current) / (1000 * 60 * 60 * 24));
 
-        let numofnights = 0;
-        if (offer.minStay == offer.maxStay) {
-          numofnights = offer.maxStay;
-        } else {
-          numofnights = Math.abs((offerEndDate - offerStartDate) / (1000 * 60 * 60 * 24));
-        }
+  //       let numofnights = 0;
+  //       if (offer.minStay == offer.maxStay) {
+  //         numofnights = offer.maxStay;
+  //       } else {
+  //         numofnights = Math.abs((offerEndDate - offerStartDate) / (1000 * 60 * 60 * 24));
+  //       }
 
-        const startDateValid = (daysDiffStart <= maxDaysDifference && daysDiffStart >= (maxDaysDifference * -1));
-        const endDateValid = (daysDiffEnd <= maxDaysDifference && daysDiffEnd >= (maxDaysDifference * -1));
-        const nightsDifferenceValid = Math.abs(requiredNights - numofnights) <= 2;
+  //       const startDateValid = (daysDiffStart <= maxDaysDifference && daysDiffStart >= (maxDaysDifference * -1));
+  //       const endDateValid = (daysDiffEnd <= maxDaysDifference && daysDiffEnd >= (maxDaysDifference * -1));
+  //       const nightsDifferenceValid = Math.abs(requiredNights - numofnights) <= 2;
 
         
-        if(Math.abs(requiredNights - numofnights) >=0 && nightsDifferenceValid){
-          return (
-            (startDateValid || endDateValid) &&
-            specialCase >= numofnights + 1 &&
-            (offer.numofnights = numofnights)
-          );
-        }
-        if((0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj -offerEndDate)) && (0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate))){
-            return (
-              requiredNights +2 > numofnights && 
-              specialCase >= numofnights + 1 &&
-              (offer.numofnights = numofnights)
-            );
-        }
-          else if((0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj -offerEndDate)) || (0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate))){
-            const userNight = Math.abs((offerEndDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
-            return (
-              requiredNights-2-userNight>0 &&
-              requiredNights +2 >= numofnights && 
-              specialCase >= numofnights + 1 &&
-              (offer.numofnights = numofnights)
-            );
-        }
+  //       if(Math.abs(requiredNights - numofnights) >=0 && nightsDifferenceValid){
+  //         return (
+  //           (startDateValid || endDateValid) &&
+  //           specialCase >= numofnights + 1 &&
+  //           (offer.numofnights = numofnights)
+  //         );
+  //       }
+  //       if((0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj -offerEndDate)) && (0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate))){
+  //           return (
+  //             requiredNights +2 > numofnights && 
+  //             specialCase >= numofnights + 1 &&
+  //             (offer.numofnights = numofnights)
+  //           );
+  //       }
+  //         else if((0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj -offerEndDate)) || (0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate))){
+  //           const userNight = Math.abs((offerEndDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
+  //           return (
+  //             requiredNights-2-userNight>0 &&
+  //             requiredNights +2 >= numofnights && 
+  //             specialCase >= numofnights + 1 &&
+  //             (offer.numofnights = numofnights)
+  //           );
+  //       }
 
-      })
-      .sort((a, b) => {
-        const diffA = Math.abs(requiredNights - a.numofnights);
-        const diffB = Math.abs(requiredNights - b.numofnights);
+  //     })
+  //     .sort((a, b) => {
+  //       const diffA = Math.abs(requiredNights - a.numofnights);
+  //       const diffB = Math.abs(requiredNights - b.numofnights);
 
-        return diffA - diffB;
-      });
-  }
+  //       return diffA - diffB;
+  //     });
+  // }
 
 
 
@@ -335,7 +348,9 @@ const OfferPriceSlider = (
           }}
         >
 
-          {offerNum?.map((item, i) => (
+          {offers?.map((item, i) => {
+            calculateNightsNew(item?.minStay, item?.maxStay)
+          return(
             <SwiperSlide key={i}>
               <div
                 className={`offer-price-slider-item ${i === index ? "active" : ""
@@ -357,20 +372,13 @@ const OfferPriceSlider = (
                   </div>
 
                   <h3 className="price">
-                    {(item?.minStay === item?.maxStay &&
-                      (
-                        item?.breakdown[0]?.price) ||
-                      item?.breakdown[1]?.price ||
-                      item?.breakdown[2]?.price
-                    ) ||
+                    {(item?.minStay === item?.maxStay 
+                      &&
                       (item?.breakdown[0]?.price ||
-                        item?.breakdown[1]?.price ||
-                        item?.breakdown[2]?.price) *
-                      calculateNights(
-                        item?.endDate,
-                        item?.minStay,
-                        item?.maxStay
-                      )}
+                      item?.breakdown[1]?.price ||
+                      item?.breakdown[2]?.price)) 
+                      ||
+                      ((item?.breakdown[0]?.price || item?.breakdown[1]?.price || item?.breakdown[2]?.price) *calculatedNights)}
                     {(item?.breakdown[2]?.price && item?.breakdown[0].currency) ||
                       (item?.breakdown[1]?.price && item?.breakdown[1].currency) ||
                       (item?.breakdown[0]?.price && item?.breakdown[2].currency)}
@@ -399,7 +407,8 @@ const OfferPriceSlider = (
                 </div>
               </div>
             </SwiperSlide>
-          ))}
+          )}
+          )}
         </Swiper>
       </div>
       <div className="py-4">
