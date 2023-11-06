@@ -336,7 +336,6 @@ const OfferItem = (props, ref) => {
                 {Array.from({ length: hotel?.rating }, (_, index) => (
                   <Star key={index} />
                 ))}
-                <span>({hotel?.rating})</span>
               </>
             )}
           </div>
@@ -414,7 +413,7 @@ const OfferItem = (props, ref) => {
                 </a>
               </h5>
               <span className="location">
-                <LocationThree /> {hotel?.city}
+                <LocationThree /> {hotel?.state}
               </span>
 
               <h6 className="subtitle">
