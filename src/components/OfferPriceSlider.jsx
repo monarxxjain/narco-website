@@ -236,12 +236,31 @@ const OfferPriceSlider = (
         const endDateValid = (daysDiffEnd <= maxDaysDifference && daysDiffEnd >= (maxDaysDifference * -1));
         const nightsDifferenceValid = Math.abs(requiredNights - numofnights) <= 2;
 
-        return (
-          (startDateValid || endDateValid) &&
-          nightsDifferenceValid &&
-          specialCase >= numofnights + 1 &&
-          (offer.numofnights = numofnights)
-        );
+        
+        if(Math.abs(requiredNights - numofnights) >=0 && nightsDifferenceValid){
+          return (
+            (startDateValid || endDateValid) &&
+            specialCase >= numofnights + 1 &&
+            (offer.numofnights = numofnights)
+          );
+        }
+        if((0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj -offerEndDate)) && (0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate))){
+            return (
+              requiredNights +2 > numofnights && 
+              specialCase >= numofnights + 1 &&
+              (offer.numofnights = numofnights)
+            );
+        }
+          else if((0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj -offerEndDate)) || (0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate))){
+            const userNight = Math.abs((offerEndDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
+            return (
+              requiredNights-2-userNight>0 &&
+              requiredNights +2 >= numofnights && 
+              specialCase >= numofnights + 1 &&
+              (offer.numofnights = numofnights)
+            );
+        }
+
       })
       .sort((a, b) => {
         const diffA = Math.abs(requiredNights - a.numofnights);
