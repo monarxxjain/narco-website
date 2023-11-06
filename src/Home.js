@@ -146,14 +146,8 @@ function Home() {
             const nightsDifferenceValid = Math.abs(requiredNights - numofnights) <= 2;
     
             
-            if(Math.abs(requiredNights - numofnights) >=0 && nightsDifferenceValid){
-              return (
-                (startDateValid || endDateValid) &&
-                specialCase >= numofnights + 1 &&
-                (offer.numofnights = numofnights)
-              );
-            }
-            if((0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj -offerEndDate)) && (0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate))){
+            
+            if((0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj - offerEndDate)) && (0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate))){
                 return (
                   requiredNights +2 > numofnights && 
                   specialCase >= numofnights + 1 &&
@@ -163,11 +157,17 @@ function Home() {
               else if((0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj -offerEndDate)) || (0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate))){
                 const userNight = Math.abs((offerEndDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
                 return (
-                  requiredNights-2-userNight>0 &&
+                  requiredNights-2-userNight<=userNight &&
                   requiredNights +2 >= numofnights && 
                   specialCase >= numofnights + 1 &&
                   (offer.numofnights = numofnights)
                 );
+            }if(Math.abs(requiredNights - numofnights) >=0 && nightsDifferenceValid){
+              return (
+                (startDateValid || endDateValid) &&
+                specialCase >= numofnights + 1 &&
+                (offer.numofnights = numofnights)
+              );
             }
     
           })
@@ -182,6 +182,7 @@ function Home() {
 
       const tempArray = [];
       for(let i=0;i<tempHotels.length;i++){
+        tempHotels[i].bestPossiblePrice = 0;
         const offerNum= filterOffers(tempHotels[i].offers,config.checkInDate,config.checkOutDate);
         if(offerNum.length>0){
           tempArray.push(tempHotels[i]);
