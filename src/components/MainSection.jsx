@@ -301,7 +301,7 @@ const MainSection = ({
                 <>
                   {hotel?.offers[0].breakdown[0]?.price <= filters.fascio.max &&
                     hotel?.offers[0].breakdown[0]?.price >= filters.fascio.min &&
-                    hotel?.rating >= filters.stelle && hotel?.distance[1].distance >= filters.distance.min && hotel?.distance[1].distance <= filters.distance.max
+                    (filters.stelle ==0 ? 1: filters.stelle == hotel?.rating )&& hotel?.distance[1].distance >= filters.distance.min && hotel?.distance[1].distance <= filters.distance.max
                     ? (
                       <OfferItem
                         config={config}

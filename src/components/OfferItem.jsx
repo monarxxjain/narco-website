@@ -314,10 +314,10 @@ const OfferItem = (props, ref) => {
   }
 
 
-  // let offerNum2 = filterOffers(offers, checkInDate, checkOutDate);
-  // let offerNum = reFilterOffers(offerNum2);
+  let offerNum2 = filterOffers(offers, checkInDate, checkOutDate);
+  let offerNum = reFilterOffers(offerNum2);
 
-  let offerNum = filterOffers(offers, checkInDate, checkOutDate);
+  // let offerNum = filterOffers(offers, checkInDate, checkOutDate);
 
     offerNum?.map((item, id) => {
 
