@@ -130,16 +130,18 @@ const OfferPriceSlider = (
       {
         title: "Descrizione Hotel",
         paragraph: hotel?.hotelDescription ?? "",
+        title2: "Dettagli Servizi",
+        paragraph2: hotel?.serviceDetails ?? "",
+        text2: [],
       },
-      {
-        title: "Dettagli Servizi",
-        paragraph: hotel?.serviceDetails ?? "",
-        text: [],
-      },
+      // {
+      //   title: "Dettagli Servizi",
+      //   paragraph: hotel?.serviceDetails ?? "",
+      //   text: [],
+      // },
       {
         title: "Pacchetto Incluso",
         paragraph: activeData?.packages ?? "",
-
         text: [],
       },
       {
@@ -480,7 +482,7 @@ const OfferPriceSlider = (
             </div>
           </div>
           <div className="col-lg-6">
-            <FaqsItems id={`package-${serial}`} data={faqs} />
+            <FaqsItems id={`package-${serial}`} data={faqs}  />
           </div>
         </div>
         <div className="py-3"></div>

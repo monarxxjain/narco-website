@@ -126,6 +126,7 @@ function Home() {
       );
       
       let tempHotels=result.data;
+        console.log(tempHotels,"dafs")
       function filterOffers(offers, tempStartDate, tempEndDate) {
         const maxDaysDifference = 3;
     
@@ -151,13 +152,9 @@ function Home() {
             } else {
               numofnights = Math.abs((offerEndDate - offerStartDate) / (1000 * 60 * 60 * 24));
             }
-    
             const startDateValid = (daysDiffStart <= maxDaysDifference && daysDiffStart >= (maxDaysDifference * -1));
             const endDateValid = (daysDiffEnd <= maxDaysDifference && daysDiffEnd >= (maxDaysDifference * -1));
             const nightsDifferenceValid = Math.abs(requiredNights - numofnights) <= 2;
-    
-            
-            
             if((0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj - offerEndDate)) && (0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate))){
                 return (
                   requiredNights +2 > numofnights && 
@@ -190,25 +187,27 @@ function Home() {
                 (offer.numofnights = numofnights)
               );
             }
-    
           })
           .sort((a, b) => {
-            const diffA = Math.abs(requiredNights - a.numofnights);
-            const diffB = Math.abs(requiredNights - b.numofnights);
-
+            const startDiffA = Math.abs(new Date(a.startDate) - new Date(tempStartDate));
+            const startDiffB = Math.abs(new Date(b.startDate) - new Date(tempStartDate));
+            const endDiffA = Math.abs(new Date(a.endDate) - new Date(tempEndDate));
+            const endDiffB = Math.abs(new Date(b.endDate) - new Date(tempEndDate));
+            const diffA = Math.abs(startDiffA+endDiffA);
+            const diffB = Math.abs(startDiffB+endDiffB);
             if (diffA === diffB) {
-              // If the night difference is the same, compare prices
-              const priceA = calculateOfferPrice(a);
-              const priceB = calculateOfferPrice(b);
-
-              return priceA - priceB;
+              const numofnightsA = a.numofnights;
+              const numofnightsB = b.numofnights;
+              if (numofnightsA === numofnightsB) {
+                const priceA = calculateOfferPrice(a);
+                const priceB = calculateOfferPrice(b);
+                return priceA - priceB;
+              }
+              return numofnightsA - numofnightsB;
             }
-
             return diffA - diffB;
           });
       }
-
-
       const tempArray = [];
       for(let i=0;i<tempHotels.length;i++){
         tempHotels[i].bestPossiblePrice = 0;
@@ -217,6 +216,7 @@ function Home() {
           tempArray.push(tempHotels[i]);
         }
       }
+      
       setHotels(tempArray);
       setLastChange(null);
     } catch (err) {
