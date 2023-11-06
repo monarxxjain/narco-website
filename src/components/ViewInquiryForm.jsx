@@ -94,6 +94,7 @@ const ViewInquiryForm = (
   const [dateValid, setDateValid] = useState(
     checkDateValidity(offer, checkInDate, checkOutDate)
   );
+  const cityInput = useRef()
 
   const [maxDepartureDate, setMaxDepatureDate] = useState("");
   const [minDepartureDate, setMinDepartureDate] = useState("");
@@ -246,19 +247,32 @@ const ViewInquiryForm = (
   const [suggestions, setSuggestions] = useState([]);
 
   const handleInputChange = (event) => {
+    cityInput.current.style.display = "block"
+    console.log(cityInput.current)
     const inputValue = event.target.value;
     setCity(inputValue);
+    const apiKey = '59773023-6517-48e4-9394-141f9d829d5b'; // Replace with your SwiftComplete API key
 
-    // Call API to get city suggestions based on inputValue
-    fetch(`https://api.openweathermap.org/data/2.5/find?q=${inputValue}&type=like&appid=be2b97dd0364d51a7dc5c8d1bf530d52`)
-      .then((response) => response.json())
-      .then((data) => {
-        // Extract city names from the API response
-        console.log(data)
-        const cityNames = data.list.map((item) => item.name);
-        setSuggestions(cityNames);
-      })
-      .catch((error) => console.error('Error fetching city suggestions:', error));
+    const europeanCountries = [
+      'al', 'ad', 'at', 'by', 'be', 'ba', 'bg', 'hr', 'cy', 'cz', 'dk', 'ee', 'fi', 'fr', 'de', 'gr', 'hu',
+      'is', 'ie', 'it', 'kosovo', 'lv', 'li', 'lt', 'lu', 'mk', 'mt', 'md', 'mc', 'me', 'nl', 'no', 'pl', 'pt',
+      'ro', 'ru', 'sm', 'rs', 'sk', 'si', 'es', 'se', 'ch', 'ua', 'gb', 'va'
+    ];
+
+    const europeanCountriesString = europeanCountries.join(',');
+
+    const url = `https://api.swiftcomplete.com/v1/places/?key=${apiKey}&countries=${europeanCountriesString}&text=${inputValue}&maxResults=5`;
+
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data)
+          // Extract suggestions from the API response
+          const citySuggestions = data.map((result) => result.primary.text);
+          setSuggestions(citySuggestions)
+          // Now you can use citySuggestions in your application.
+        })
+        .catch((error) => console.error('Error fetching city suggestions:', error));
   };
 
   return (
@@ -651,15 +665,16 @@ const ViewInquiryForm = (
                     </div> */}
                     <div className="col-sm-6">
                       <Input
+                        
                         type="text"
                         label="Città de Partenza"
                         placeholder="Inserisci la città di partenza"
                         value={city}
                         onChange={handleInputChange}
                       />
-                      <ul className="city-suggestion-list">
+                      <ul className="city-suggestion-list" ref={cityInput}>
                         {suggestions.map((suggestion, index) => (
-                          <li key={index} className="city-suggestion">{suggestion}</li>
+                          <li key={index} onClick={()=>{cityInput.current.style.display="none";setCity(suggestion)}} className="city-suggestion">{suggestion}</li>
                         ))}
                       </ul>
 
