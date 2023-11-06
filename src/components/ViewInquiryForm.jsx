@@ -242,11 +242,24 @@ const ViewInquiryForm = (
     optionRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
-  const [options, setOptions] = useState(["Select Your City", 1 , 2]);
+  const [city, setCity] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
 
-  useEffect(() => {
-    getAllCities(setOptions, userData.country)
-  }, [userData.country]);
+  const handleInputChange = (event) => {
+    const inputValue = event.target.value;
+    setCity(inputValue);
+
+    // Call API to get city suggestions based on inputValue
+    fetch(`https://api.openweathermap.org/data/2.5/find?q=${inputValue}&type=like&appid=be2b97dd0364d51a7dc5c8d1bf530d52`)
+      .then((response) => response.json())
+      .then((data) => {
+        // Extract city names from the API response
+        console.log(data)
+        const cityNames = data.list.map((item) => item.name);
+        setSuggestions(cityNames);
+      })
+      .catch((error) => console.error('Error fetching city suggestions:', error));
+  };
 
   return (
     <>
@@ -616,7 +629,7 @@ const ViewInquiryForm = (
                 </div>
                 {value == "viaggio" && (
                   <div className="row g-3 mt-2">
-                    <div className="col-sm-4">
+                    <div className="col-sm-6">
                       <Input
                         name="trasporto"
                         handleChange={handleChange}
@@ -626,7 +639,7 @@ const ViewInquiryForm = (
                         options={options3}
                       />
                     </div>
-                    <div className="col-sm-4">
+                    {/* <div className="col-sm-4">
                       <Input1
                         name="country"
                         handleChange={handleChange}
@@ -635,16 +648,21 @@ const ViewInquiryForm = (
                         select
                         options={europeanCountries}
                       />
-                    </div>
-                    <div className="col-sm-4">
-                      <Input1
-                        name="numeroBagagliViaggio"
-                        handleChange={handleChange}
-                        value={userData.numeroBagagliViaggio}
-                        label="Città di Partenza"
-                        select
-                        options={options}
+                    </div> */}
+                    <div className="col-sm-6">
+                      <Input
+                        type="text"
+                        label="Città de Partenza"
+                        placeholder="Inserisci la città di partenza"
+                        value={city}
+                        onChange={handleInputChange}
                       />
+                      <ul className="city-suggestion-list">
+                        {suggestions.map((suggestion, index) => (
+                          <li key={index} className="city-suggestion">{suggestion}</li>
+                        ))}
+                      </ul>
+
                     </div>
                   </div>
                 )}

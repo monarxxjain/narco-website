@@ -272,6 +272,14 @@ const OfferItem = (props, ref) => {
         const diffA = Math.abs(requiredNights - a.numofnights);
         const diffB = Math.abs(requiredNights - b.numofnights);
 
+        if (diffA === diffB) {
+          // If the night difference is the same, compare prices
+          const priceA = calculateOfferPrice(a);
+          const priceB = calculateOfferPrice(b);
+
+          return priceA - priceB;
+        }
+
         return diffA - diffB;
       });
   }
