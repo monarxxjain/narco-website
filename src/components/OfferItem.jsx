@@ -222,6 +222,8 @@ const OfferItem = (props, ref) => {
         }
       }
     }
+
+  console.log(offerNum,"FDAS")
     return offerNum?.filter(itemB => !tempArray.includes(itemB));
   }
   
@@ -316,7 +318,6 @@ const OfferItem = (props, ref) => {
 
   let offerNum2 = filterOffers(offers, checkInDate, checkOutDate);
   let offerNum = reFilterOffers(offerNum2);
-
   // let offerNum = filterOffers(offers, checkInDate, checkOutDate);
 
     offerNum?.map((item, id) => {
@@ -518,7 +519,8 @@ const OfferItem = (props, ref) => {
           <div className="overlayer" />
           {loadingOffers ? (
             <OffersLoading />
-          ) : offers && offers.length ? (
+          ) : offerNum && offerNum.length ? (
+            
             <OfferPriceSlider
               bestPossiblePrice={bestPossiblePrice}
               setBestPossiblePrice={setBestPossiblePrice}
