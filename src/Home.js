@@ -154,7 +154,7 @@ function Home() {
                   (offer.numofnights = numofnights)
                 );
             }
-              else if((0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj -offerEndDate)) || (0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate))){
+              else if((0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj -offerEndDate)) && !(0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate))){
                 const userNight = Math.abs((offerEndDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
                 return (
                   requiredNights-2-userNight<=userNight &&
@@ -162,7 +162,17 @@ function Home() {
                   specialCase >= numofnights + 1 &&
                   (offer.numofnights = numofnights)
                 );
-            }if(Math.abs(requiredNights - numofnights) >=0 && nightsDifferenceValid){
+            }
+              else if(!(0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj -offerEndDate)) && (0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate))){
+                const userNight = Math.abs((offerStartDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
+                return (
+                  requiredNights-2-userNight<=userNight &&
+                  requiredNights +2 >= numofnights && 
+                  specialCase >= numofnights + 1 &&
+                  (offer.numofnights = numofnights)
+                );
+            }
+            if(Math.abs(requiredNights - numofnights) >=0 && nightsDifferenceValid){
               return (
                 (startDateValid || endDateValid) &&
                 specialCase >= numofnights + 1 &&
