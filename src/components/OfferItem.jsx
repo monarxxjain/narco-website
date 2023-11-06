@@ -209,8 +209,6 @@ const OfferItem = (props, ref) => {
     const requiredNights = Math.abs((new Date(tempEndDate) - new Date(tempStartDate)) / (1000 * 60 * 60 * 24));
 
     return offers?.filter((offer) => {
-
-      
         const offerStartDate = new Date(offer.startDate);
         const offerEndDate = new Date(offer.endDate);
         const current = new Date();
@@ -235,6 +233,7 @@ const OfferItem = (props, ref) => {
         const nightsDifferenceValid = Math.abs(requiredNights - numofnights) <= 2;
 
 
+
         if ((0 >= (offerStartDate - tempStartDateObj) && 0 >= (tempStartDateObj - offerEndDate)) && (0 >= (offerStartDate - tempEndDateObj) && 0 >= (tempEndDateObj - offerEndDate))) {
           return (
             requiredNights + 2 > numofnights &&
@@ -242,10 +241,19 @@ const OfferItem = (props, ref) => {
             (offer.numofnights = numofnights)
           );
         }
-        else if ((0 >= (offerStartDate - tempStartDateObj) && 0 >= (tempStartDateObj - offerEndDate)) || (0 >= (offerStartDate - tempEndDateObj) && 0 >= (tempEndDateObj - offerEndDate))) {
+        else if ((0 >= (offerStartDate - tempStartDateObj) && 0 >= (tempStartDateObj - offerEndDate)) && !(0 >= (offerStartDate - tempEndDateObj) && 0 >= (tempEndDateObj - offerEndDate))) {
           const userNight = Math.abs((offerEndDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
           return (
-            requiredNights - 2 - userNight <=userNight &&
+            requiredNights - 2 - userNight <= userNight &&
+            requiredNights + 2 >= numofnights &&
+            specialCase >= numofnights + 1 &&
+            (offer.numofnights = numofnights)
+          );
+        }
+        else if (!(0 >= (offerStartDate - tempStartDateObj) && 0 >= (tempStartDateObj - offerEndDate)) && (0 >= (offerStartDate - tempEndDateObj) && 0 >= (tempEndDateObj - offerEndDate))) {
+          const userNight = Math.abs((offerStartDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
+          return (
+            requiredNights - 2 - userNight <= userNight &&
             requiredNights + 2 >= numofnights &&
             specialCase >= numofnights + 1 &&
             (offer.numofnights = numofnights)
@@ -263,14 +271,6 @@ const OfferItem = (props, ref) => {
       .sort((a, b) => {
         const diffA = Math.abs(requiredNights - a.numofnights);
         const diffB = Math.abs(requiredNights - b.numofnights);
-
-        if (diffA === diffB) {
-          // If the night difference is the same, compare prices
-          const priceA = calculateOfferPrice(a);
-          const priceB = calculateOfferPrice(b);
-
-          return priceA - priceB;
-        }
 
         return diffA - diffB;
       });
