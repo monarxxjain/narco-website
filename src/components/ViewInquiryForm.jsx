@@ -86,6 +86,7 @@ const ViewInquiryForm = (
     setDatePickerOpen,
     selectItems,
     selectedPackage,
+    breakdownNames,
     setSelectedPackage,
     handleOfferClose,
   },
@@ -483,7 +484,7 @@ const ViewInquiryForm = (
                   handleChange={(e) => {
                     let index = null;
                     selectItems.forEach((item, i) => {
-                      if (item.name === e.target.value) index = i;
+                      if (item?.price != 0)
                       setSelectedPackage(index);
                     });
                   }}
@@ -491,7 +492,7 @@ const ViewInquiryForm = (
                   label="Pacchetto"
                   select
                   required
-                  options={selectItems}
+                  options={breakdownNames}
                 />
               </div>
             </div>

@@ -2315,3 +2315,23 @@ select.form-control.__form-control.form-select {
 .city-suggestion:hover{
   background-color: rgba(0, 0, 0, 0.063);
 }
+
+input {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+select {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.__form-label{
+  white-space: nowrap;
+}
+
+.form-select{
+  margin-left: 10px;
+}

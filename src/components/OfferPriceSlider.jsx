@@ -517,6 +517,7 @@ const OfferPriceSlider = (
           sending={sending}
           setvalue={setvalue}
           value={value}
+          breakdownNames={activeData?.breakdown?.filter(item => item?.price != 0)}
           handleSubmit={handleSubmit}
           checkInDate={checkInDate}
           checkOutDate={checkOutDate}
