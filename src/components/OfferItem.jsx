@@ -191,7 +191,16 @@ const OfferItem = (props, ref) => {
 
   const [bestPossiblePrice, setBestPossiblePrice] = useState(10000)
 
-  
+  function calculateOfferPrice(offer) {
+    if (offer.minStay === offer.maxStay) {
+      return offer.breakdown[0]?.price || offer.breakdown[1]?.price || offer.breakdown[2]?.price;
+    } else {
+      const calculatedNights = Math.abs((new Date(checkInDate) - new Date(checkOutDate)) / (1000 * 60 * 60 * 24));
+      const clampedNights = Math.max(offer.minStay, Math.min(calculatedNights, offer.maxStay));
+
+      return (offer.breakdown[0]?.price || offer.breakdown[1]?.price || offer.breakdown[2]?.price) * clampedNights;
+    }
+  }
 
   let offerNum = filterOffers(offers, checkInDate, checkOutDate);
   function filterOffers(offers, tempStartDate, tempEndDate) {
@@ -254,6 +263,14 @@ const OfferItem = (props, ref) => {
       .sort((a, b) => {
         const diffA = Math.abs(requiredNights - a.numofnights);
         const diffB = Math.abs(requiredNights - b.numofnights);
+
+        if (diffA === diffB) {
+          // If the night difference is the same, compare prices
+          const priceA = calculateOfferPrice(a);
+          const priceB = calculateOfferPrice(b);
+
+          return priceA - priceB;
+        }
 
         return diffA - diffB;
       });
