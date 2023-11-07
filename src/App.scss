@@ -995,6 +995,10 @@ input[type="date"]:not(.has-value) {
     line-height: 100%;
     color: var(--white);
   }
+
+    @include breakpoint(max-md) {
+      width: 340px;
+    }
 }
 
 .offer-left-side {

@@ -419,8 +419,7 @@ const OfferItem = (props, ref) => {
               className="font-bold align-self-end"
               style={{ color: "var(--title)" }}
             >
-              {/* {(lowestOffered && lowestOffered?.lowestOfferPrice) || 0} */}
-              {bestPossiblePrice}
+              {(lowestOffered && lowestOffered?.lowestOfferPrice) || bestPossiblePrice}
               {lowestOffered && lowestOffered?.breakdown[0]?.currency}
               
             </h4>
@@ -448,9 +447,9 @@ const OfferItem = (props, ref) => {
               <div className="next-arrow" onClick={handleNext}>
                 <NextArrow />
               </div>
-              {hotel.ticker ? (
-                <span className="ticker d-md-none d-flex ">
-                  <span>{hotel.ticker}</span>
+              {index <= 2|| hotel.ticker ? (
+                <span className="ticker d-md-none ">
+                  <span>{hotel.ticker ? hotel.ticker : (index === 1 && "Più venduto") || (index === 2 && "Prezzo più basso")}</span>
                 </span>
               ) : (
                 ""
