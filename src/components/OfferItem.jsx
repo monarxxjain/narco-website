@@ -211,11 +211,13 @@ const OfferItem = (props, ref) => {
               if((offerNum[i]?.breakdown[1]?.price !== 0 && offerNum[j].breakdown[1]?.price === 0 ) || (offerNum[i]?.breakdown[1]?.price === 0 && offerNum[j].breakdown[1]?.price !== 0 ) || (offerNum[i]?.breakdown[1]?.price === 0 && offerNum[j].breakdown[1]?.price === 0 )){
                 if((offerNum[i]?.breakdown[2]?.price !== 0 && offerNum[j].breakdown[2]?.price === 0 ) || (offerNum[i]?.breakdown[2]?.price === 0 && offerNum[j].breakdown[2]?.price !== 0 ) || (offerNum[i]?.breakdown[2]?.price === 0 && offerNum[j].breakdown[2]?.price === 0 )){
                   tempArray.push(offerNum[i]);
-                  let temp = offerNum[i];
+                  let temp = JSON.parse(JSON.stringify(offerNum[i]));
                   temp.breakdown[0].price = Math.max(offerNum[i].breakdown[0]?.price,offerNum[j].breakdown[0]?.price);
                   temp.breakdown[1].price = Math.max(offerNum[i].breakdown[1]?.price,offerNum[j].breakdown[1]?.price);
                   temp.breakdown[2].price = Math.max(offerNum[i].breakdown[2]?.price,offerNum[j].breakdown[2]?.price);
-                  offerNum[j]=temp;
+                  
+                  offerNum[i]=temp;
+                  offerNum.splice(j,1)
                   break;
                 }
               }
@@ -261,7 +263,6 @@ const OfferItem = (props, ref) => {
           else{
             numofnights=requiredNights
           }
-          // numofnights = Math.abs((offerEndDate - offerStartDate) / (1000 * 60 * 60 * 24));
         }
 
         // const startDateValid = (daysDiffStart <= maxDaysDifference && daysDiffStart >= (maxDaysDifference * -1));
@@ -345,10 +346,11 @@ const OfferItem = (props, ref) => {
   for(let i =bestOfferIndex;i<offerNum?.length;i++){
     newOfferArray.push(offerNum[i]);
   }
+  newOfferArray=reFilterOffers(newOfferArray)
   
 
     newOfferArray?.map((item, id) => {
-      // {console.log(item)}
+      // {console.log(item, " ::: Offer")}
       if (item?.minStay === item?.maxStay) {
         const myVar = item?.breakdown[0]?.price || item?.breakdown[1]?.price || item?.breakdown[2]?.price
         if (bestPossiblePrice > myVar) {

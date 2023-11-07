@@ -121,9 +121,10 @@ function Home() {
         config.checkInDate=parsedInDate.toISOString()
         config.checkOutDate=parsedOutDate.toISOString()
       }
-      const result = await axios.get(
-        `${values.url}/app/hotels?startDate=${config.checkInDate}&endDate=${config.checkOutDate}`
-      );
+      const query_string = String(`${values.url}/app/hotels?startDate=${config.checkInDate}&endDate=${config.checkOutDate}`)
+      const result = await axios.get(query_string);
+      console.log("result")
+      console.log(result.data)
       let tempHotels=result.data;
       function filterOffers(offers, tempStartDate, tempEndDate) {
         const maxDaysDifference = 3;
