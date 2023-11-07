@@ -205,17 +205,19 @@ const OfferItem = (props, ref) => {
     let tempArray = [];
     for(let i=0;i<offerNum?.length - 1;i++){
       for(let j =i+1;j<offerNum?.length;j++){
-        if((offerNum[i]?.minStay===offerNum[j].minStay) && (offerNum[i]?.maxStay===offerNum[j].maxStay)){
-          if((offerNum[i]?.breakdown[0]?.price !== 0 && offerNum[j].breakdown[0]?.price === 0 ) || (offerNum[i]?.breakdown[0]?.price === 0 && offerNum[j].breakdown[0]?.price !== 0 ) || (offerNum[i]?.breakdown[0]?.price === 0 && offerNum[j].breakdown[0]?.price === 0 )){
-            if((offerNum[i]?.breakdown[1]?.price !== 0 && offerNum[j].breakdown[1]?.price === 0 ) || (offerNum[i]?.breakdown[1]?.price === 0 && offerNum[j].breakdown[1]?.price !== 0 ) || (offerNum[i]?.breakdown[1]?.price === 0 && offerNum[j].breakdown[1]?.price === 0 )){
-              if((offerNum[i]?.breakdown[2]?.price !== 0 && offerNum[j].breakdown[2]?.price === 0 ) || (offerNum[i]?.breakdown[2]?.price === 0 && offerNum[j].breakdown[2]?.price !== 0 ) || (offerNum[i]?.breakdown[2]?.price === 0 && offerNum[j].breakdown[2]?.price === 0 )){
-                tempArray.push(offerNum[i]);
-                let temp = offerNum[i];
-                temp.breakdown[0].price = Math.max(offerNum[i].breakdown[0]?.price,offerNum[j].breakdown[0]?.price);
-                temp.breakdown[1].price = Math.max(offerNum[i].breakdown[1]?.price,offerNum[j].breakdown[1]?.price);
-                temp.breakdown[2].price = Math.max(offerNum[i].breakdown[2]?.price,offerNum[j].breakdown[2]?.price);
-                offerNum[j]=temp;
-                break;
+        if(offerNum[i].startDate==offerNum[j].startDate && offerNum[i].endDate==offerNum[j].endDate){
+          if((offerNum[i]?.minStay===offerNum[j].minStay) && (offerNum[i]?.maxStay===offerNum[j].maxStay)){
+            if((offerNum[i]?.breakdown[0]?.price !== 0 && offerNum[j].breakdown[0]?.price === 0 ) || (offerNum[i]?.breakdown[0]?.price === 0 && offerNum[j].breakdown[0]?.price !== 0 ) || (offerNum[i]?.breakdown[0]?.price === 0 && offerNum[j].breakdown[0]?.price === 0 )){
+              if((offerNum[i]?.breakdown[1]?.price !== 0 && offerNum[j].breakdown[1]?.price === 0 ) || (offerNum[i]?.breakdown[1]?.price === 0 && offerNum[j].breakdown[1]?.price !== 0 ) || (offerNum[i]?.breakdown[1]?.price === 0 && offerNum[j].breakdown[1]?.price === 0 )){
+                if((offerNum[i]?.breakdown[2]?.price !== 0 && offerNum[j].breakdown[2]?.price === 0 ) || (offerNum[i]?.breakdown[2]?.price === 0 && offerNum[j].breakdown[2]?.price !== 0 ) || (offerNum[i]?.breakdown[2]?.price === 0 && offerNum[j].breakdown[2]?.price === 0 )){
+                  tempArray.push(offerNum[i]);
+                  let temp = offerNum[i];
+                  temp.breakdown[0].price = Math.max(offerNum[i].breakdown[0]?.price,offerNum[j].breakdown[0]?.price);
+                  temp.breakdown[1].price = Math.max(offerNum[i].breakdown[1]?.price,offerNum[j].breakdown[1]?.price);
+                  temp.breakdown[2].price = Math.max(offerNum[i].breakdown[2]?.price,offerNum[j].breakdown[2]?.price);
+                  offerNum[j]=temp;
+                  break;
+                }
               }
             }
           }
@@ -242,8 +244,11 @@ const OfferItem = (props, ref) => {
         const tempStartDateObj = new Date(tempStartDate);
         const tempEndDateObj = new Date(tempEndDate);
 
-        const daysDiffStart = Math.abs((offerStartDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
-        const daysDiffEnd = Math.abs((offerEndDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
+        const oneAndHalfMonthsLater = new Date(tempEndDateObj);
+        oneAndHalfMonthsLater.setMonth(oneAndHalfMonthsLater.getMonth() + 1);
+        oneAndHalfMonthsLater.setDate(oneAndHalfMonthsLater.getDate() + 15); 
+        // const daysDiffStart = Math.abs((offerStartDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
+        // const daysDiffEnd = Math.abs((offerEndDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
         const specialCase = Math.abs((offerEndDate - current) / (1000 * 60 * 60 * 24));
 
         let numofnights = 0;
@@ -253,45 +258,44 @@ const OfferItem = (props, ref) => {
           numofnights = Math.abs((offerEndDate - offerStartDate) / (1000 * 60 * 60 * 24));
         }
 
-        const startDateValid = (daysDiffStart <= maxDaysDifference && daysDiffStart >= (maxDaysDifference * -1));
-        const endDateValid = (daysDiffEnd <= maxDaysDifference && daysDiffEnd >= (maxDaysDifference * -1));
-        const nightsDifferenceValid = Math.abs(requiredNights - numofnights) <= 2;
+        // const startDateValid = (daysDiffStart <= maxDaysDifference && daysDiffStart >= (maxDaysDifference * -1));
+        // const endDateValid = (daysDiffEnd <= maxDaysDifference && daysDiffEnd >= (maxDaysDifference * -1));
+        // const nightsDifferenceValid = Math.abs(requiredNights - numofnights) <= 2;
 
+        // if ((0 >= (offerStartDate - tempStartDateObj) && 0 >= (tempStartDateObj - offerEndDate)) && (0 >= (offerStartDate - tempEndDateObj) && 0 >= (tempEndDateObj - offerEndDate))) {
+        //   return (
+        //     requiredNights + 2 >= numofnights &&
+        //     requiredNights -2 <= numofnights &&
+        //     specialCase >= numofnights + 1 &&
+        //     (offer.numofnights = numofnights)
+        //   );
+        // }
+        // else if ((0 >= (offerStartDate - tempStartDateObj) && 0 >= (tempStartDateObj - offerEndDate)) && !(0 >= (offerStartDate - tempEndDateObj) && 0 >= (tempEndDateObj - offerEndDate))) {
+        //   const userNight = Math.abs((offerEndDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
+        //   return (
+        //     requiredNights - 2 - userNight <= userNight &&
+        //     requiredNights + 2 >= numofnights &&
+        //     specialCase >= numofnights + 1 &&
+        //     (offer.numofnights = numofnights)
+        //   );
+        // }
+        // else if (!(0 >= (offerStartDate - tempStartDateObj) && 0 >= (tempStartDateObj - offerEndDate)) && (0 >= (offerStartDate - tempEndDateObj) && 0 >= (tempEndDateObj - offerEndDate))) {
+        //   const userNight = Math.abs((offerStartDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
+        //   return (
+        //     requiredNights - 2 - userNight <= userNight &&
+        //     requiredNights + 2 >= numofnights &&
+        //     specialCase >= numofnights + 1 &&
+        //     (offer.numofnights = numofnights)
+        //   );
+        // }
 
-
-        if ((0 >= (offerStartDate - tempStartDateObj) && 0 >= (tempStartDateObj - offerEndDate)) && (0 >= (offerStartDate - tempEndDateObj) && 0 >= (tempEndDateObj - offerEndDate))) {
-          return (
-            requiredNights + 2 >= numofnights &&
-            requiredNights -2 <= numofnights &&
-            specialCase >= numofnights + 1 &&
-            (offer.numofnights = numofnights)
-          );
-        }
-        else if ((0 >= (offerStartDate - tempStartDateObj) && 0 >= (tempStartDateObj - offerEndDate)) && !(0 >= (offerStartDate - tempEndDateObj) && 0 >= (tempEndDateObj - offerEndDate))) {
-          const userNight = Math.abs((offerEndDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
-          return (
-            requiredNights - 2 - userNight <= userNight &&
-            requiredNights + 2 >= numofnights &&
-            specialCase >= numofnights + 1 &&
-            (offer.numofnights = numofnights)
-          );
-        }
-        else if (!(0 >= (offerStartDate - tempStartDateObj) && 0 >= (tempStartDateObj - offerEndDate)) && (0 >= (offerStartDate - tempEndDateObj) && 0 >= (tempEndDateObj - offerEndDate))) {
-          const userNight = Math.abs((offerStartDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
-          return (
-            requiredNights - 2 - userNight <= userNight &&
-            requiredNights + 2 >= numofnights &&
-            specialCase >= numofnights + 1 &&
-            (offer.numofnights = numofnights)
-          );
-        }
-        if (Math.abs(requiredNights - numofnights) >= 0 && nightsDifferenceValid) {
-          return (
-            (startDateValid || endDateValid) &&
-            specialCase >= numofnights + 1 &&
-            (offer.numofnights = numofnights)
-          );
-        }
+        return (
+              requiredNights + 2 >= numofnights &&
+              requiredNights -2 <= numofnights &&
+              oneAndHalfMonthsLater>=offerStartDate &&
+              specialCase >= numofnights + 1 &&
+              (offer.numofnights = numofnights)
+            );
 
       })
       .sort((a, b) => {
