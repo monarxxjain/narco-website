@@ -240,7 +240,6 @@ const ViewInquiryForm = (
   const optionRef = useRef(null);
 
   const handleScroll = () => {
-    console.log(optionRef.current);
     optionRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -249,7 +248,6 @@ const ViewInquiryForm = (
 
   const handleInputChange = (event) => {
     cityInput.current.style.display = "block"
-    console.log(cityInput.current)
     const inputValue = event.target.value;
     setCity(inputValue);
     const apiKey = '59773023-6517-48e4-9394-141f9d829d5b'; // Replace with your SwiftComplete API key
@@ -267,7 +265,6 @@ const ViewInquiryForm = (
       fetch(url)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data)
           // Extract suggestions from the API response
           const citySuggestions = data.map((result) => result.primary.text);
           setSuggestions(citySuggestions)

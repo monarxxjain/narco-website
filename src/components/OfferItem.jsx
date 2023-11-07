@@ -226,7 +226,7 @@ const OfferItem = (props, ref) => {
       }
     }
 
-  console.log(offerNum,"FDAS")
+    console.log(offerNum," ::: Offers")
     return offerNum?.filter(itemB => !tempArray.includes(itemB));
   }
   

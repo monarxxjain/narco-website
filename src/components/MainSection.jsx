@@ -14,6 +14,8 @@ const MainSection = ({
   setDatePickerOpen,
   config,
 }) => {
+  // console.log(hotels)
+
   const [userData, setUserData] = useState({
     Nome: "",
     Cognome: "",
@@ -282,7 +284,7 @@ const MainSection = ({
     setFilters(newFilters);
   }, [config]);
 
-  console.log(hotels)
+  // console.log(hotels)
 
   return (
     <>

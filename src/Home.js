@@ -125,8 +125,6 @@ function Home() {
       const result = await axios.get(
         `${values.url}/app/hotels?startDate=${config.checkInDate}&endDate=${config.checkOutDate}`
       );
-      console.log("result")
-      console.log(result)
       let tempHotels=result.data;
         console.log(tempHotels,"dafs")
       function filterOffers(offers, tempStartDate, tempEndDate) {
@@ -268,6 +266,7 @@ function Home() {
       setloadingHotels(false);
     }
   }, [hotels]);
+
 
   return (
     <>
