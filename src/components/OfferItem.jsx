@@ -226,18 +226,15 @@ const OfferItem = (props, ref) => {
       }
     }
 
-    console.log(offerNum," ::: Offers")
+    // console.log(offerNum," ::: Offers")
     return offerNum?.filter(itemB => !tempArray.includes(itemB));
   }
-  
+  const requiredNights = Math.abs((new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24));
   function filterOffers(offers, tempStartDate, tempEndDate) {
     const maxDaysDifference = 3;
-
-    const requiredNights = Math.abs((new Date(tempEndDate) - new Date(tempStartDate)) / (1000 * 60 * 60 * 24));
-
     return offers?.filter((offer) => {
-        const offerStartDate = new Date(offer.startDate);
-        const offerEndDate = new Date(offer.endDate);
+        const offerStartDate = new Date(offer?.startDate);
+        const offerEndDate = new Date(offer?.endDate);
         const current = new Date();
         offerStartDate.setHours(0, 0, 0, 0);
         offerEndDate.setHours(0, 0, 0, 0);
@@ -255,7 +252,16 @@ const OfferItem = (props, ref) => {
         if (offer.minStay == offer.maxStay) {
           numofnights = offer.maxStay;
         } else {
-          numofnights = Math.abs((offerEndDate - offerStartDate) / (1000 * 60 * 60 * 24));
+          if(requiredNights<offer.minStay){
+            numofnights=offer.minStay
+          }
+          else if(requiredNights>offer.maxStay){
+            numofnights=offer.maxStay
+          }
+          else{
+            numofnights=requiredNights
+          }
+          // numofnights = Math.abs((offerEndDate - offerStartDate) / (1000 * 60 * 60 * 24));
         }
 
         // const startDateValid = (daysDiffStart <= maxDaysDifference && daysDiffStart >= (maxDaysDifference * -1));
@@ -288,46 +294,61 @@ const OfferItem = (props, ref) => {
         //     (offer.numofnights = numofnights)
         //   );
         // }
-
-        return (
-              requiredNights + 2 >= numofnights &&
-              requiredNights -2 <= numofnights &&
-              oneAndHalfMonthsLater>=offerStartDate &&
-              specialCase >= numofnights + 1 &&
-              (offer.numofnights = numofnights)
-            );
+          return (
+            requiredNights + 2 >= numofnights &&
+            requiredNights -2 <= numofnights &&
+            oneAndHalfMonthsLater>offerStartDate &&
+            // specialCase >= numofnights + 1 &&
+            (offer.numofnights = numofnights)
+          );
 
       })
       .sort((a, b) => {
-        const startDiffA = Math.abs(new Date(a.startDate) - new Date(tempStartDate));
-        const startDiffB = Math.abs(new Date(b.startDate) - new Date(tempStartDate));
-        const endDiffA = Math.abs(new Date(a.endDate) - new Date(tempEndDate));
-        const endDiffB = Math.abs(new Date(b.endDate) - new Date(tempEndDate));
-        const diffA = Math.abs(startDiffA+endDiffA);
-        const diffB = Math.abs(startDiffB+endDiffB);
-        if (diffA === diffB) {
-          const numofnightsA = a.numofnights;
-          const numofnightsB = b.numofnights;
-          if (numofnightsA === numofnightsB) {
-            const priceA = calculateOfferPrice(a);
-            const priceB = calculateOfferPrice(b);
-          return priceA - priceB;
-          return priceA - priceB;
+        if (a?.startDate === b?.startDate) {
+          if(a?.endDate===b?.endDate){
+            const numofnightsA = a?.numofnights;
+            const numofnightsB = b?.numofnights;
+            if ((numofnightsA-requiredNights) === (numofnightsB-requiredNights)) {
+              const priceA = calculateOfferPrice(a);
+              const priceB = calculateOfferPrice(b);
             return priceA - priceB;
+            }
+            return Math.abs(numofnightsA-requiredNights) - Math.abs(numofnightsB-requiredNights);
           }
-          return numofnightsA - numofnightsB;
+          return new Date(a?.endDate) - new Date(b?.endDate);
         }
-        return diffA - diffB;
+        return new Date(a?.startDate) - new Date(b?.startDate);
       });
   }
-
-
-  let offerNum2 = filterOffers(offers, checkInDate, checkOutDate);
-  let offerNum = reFilterOffers(offerNum2);
+  let offerNum = filterOffers(offers, checkInDate, checkOutDate);
+  // let offerNum = reFilterOffers(offerNum2);
   // let offerNum = filterOffers(offers, checkInDate, checkOutDate);
+  let bestOfferIndex =0;
+  let diffOffer = 10000000;
+    for(let i = 0;i<offerNum?.length;i++){
+      const startDiff = Math.abs((new Date(offerNum[i]?.startDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24));
+        const endDiff = Math.abs((new Date(offerNum[i]?.endDate) - new Date(checkOutDate)) / (1000 * 60 * 60 * 24));
+        const diff = Math.abs(startDiff+endDiff);
+        if(diff < diffOffer){
+          diffOffer=diff;
+          bestOfferIndex=i;
+        }
+  }
+  console.log(bestOfferIndex);
+  let newOfferArray = [];
+  if(bestOfferIndex!=0) {
+    let tempo=offerNum[bestOfferIndex];
+    offerNum[bestOfferIndex]=offerNum[bestOfferIndex-1];
+    offerNum[bestOfferIndex-1] = tempo;
+    bestOfferIndex=bestOfferIndex-1;
+  }
+  for(let i =bestOfferIndex;i<offerNum?.length;i++){
+    newOfferArray.push(offerNum[i]);
+  }
+  
 
-    offerNum?.map((item, id) => {
-
+    newOfferArray?.map((item, id) => {
+      // {console.log(item)}
       if (item?.minStay === item?.maxStay) {
         const myVar = item?.breakdown[0]?.price || item?.breakdown[1]?.price || item?.breakdown[2]?.price
         if (bestPossiblePrice > myVar) {
@@ -525,7 +546,7 @@ const OfferItem = (props, ref) => {
           <div className="overlayer" />
           {loadingOffers ? (
             <OffersLoading />
-          ) : offerNum && offerNum.length ? (
+          ) : newOfferArray && newOfferArray.length ? (
             
             <OfferPriceSlider
               bestPossiblePrice={bestPossiblePrice}
@@ -536,7 +557,7 @@ const OfferItem = (props, ref) => {
               setvalue={setvalue}
               value={value}
               handleSubmit={handleSubmit}
-              offers={offerNum}
+              offers={newOfferArray}
               hotel={hotel}
               checkInDate={checkInDate}
               checkOutDate={checkOutDate}

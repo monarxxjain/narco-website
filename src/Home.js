@@ -121,12 +121,10 @@ function Home() {
         config.checkInDate=parsedInDate.toISOString()
         config.checkOutDate=parsedOutDate.toISOString()
       }
-      console.log(config.checkInDate,config.checkOutDate)
       const result = await axios.get(
         `${values.url}/app/hotels?startDate=${config.checkInDate}&endDate=${config.checkOutDate}`
       );
       let tempHotels=result.data;
-        console.log(tempHotels,"dafs")
       function filterOffers(offers, tempStartDate, tempEndDate) {
         const maxDaysDifference = 3;
     
@@ -188,25 +186,6 @@ function Home() {
               );
             }
           })
-          .sort((a, b) => {
-            const startDiffA = Math.abs(new Date(a.startDate) - new Date(tempStartDate));
-            const startDiffB = Math.abs(new Date(b.startDate) - new Date(tempStartDate));
-            const endDiffA = Math.abs(new Date(a.endDate) - new Date(tempEndDate));
-            const endDiffB = Math.abs(new Date(b.endDate) - new Date(tempEndDate));
-            const diffA = Math.abs(startDiffA+endDiffA);
-            const diffB = Math.abs(startDiffB+endDiffB);
-            if (diffA === diffB) {
-              const numofnightsA = a.numofnights;
-              const numofnightsB = b.numofnights;
-              if (numofnightsA === numofnightsB) {
-                const priceA = calculateOfferPrice(a);
-                const priceB = calculateOfferPrice(b);
-                return priceA - priceB;
-              }
-              return numofnightsA - numofnightsB;
-            }
-            return diffA - diffB;
-          });
       }
       const tempArray = [];
       for(let i=0;i<tempHotels.length;i++){
