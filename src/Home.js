@@ -145,7 +145,6 @@ function Home() {
             const daysDiffStart = Math.abs((offerStartDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
             const daysDiffEnd = Math.abs((offerEndDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
             const specialCase = Math.abs((offerEndDate - current) / (1000 * 60 * 60 * 24));
-    
             let numofnights = 0;
             if (offer.minStay == offer.maxStay) {
               numofnights = offer.maxStay;
@@ -157,7 +156,8 @@ function Home() {
             const nightsDifferenceValid = Math.abs(requiredNights - numofnights) <= 2;
             if((0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj - offerEndDate)) && (0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate))){
                 return (
-                  requiredNights +2 > numofnights && 
+                  requiredNights + 2 >= numofnights &&
+                  requiredNights -2 <= numofnights &&
                   specialCase >= numofnights + 1 &&
                   (offer.numofnights = numofnights)
                 );
