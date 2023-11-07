@@ -122,7 +122,7 @@ export const FaqsItems = ({ data, id }) => {
                           {data.map((item, i) => {
                             let ageRangeStart = 0;
                             if (i > 0) {
-                              ageRangeStart = data[i - 1]?.agelimit + 1;
+                              ageRangeStart = data[i - 1]?.agelimit;
                             }
 
                             const ageRangeEnd = item?.agelimit - 0.01;
@@ -130,10 +130,15 @@ export const FaqsItems = ({ data, id }) => {
 
                             let discountInfo = "";
                             if (item?.discount) {
-                              if (discountValue > 0) {
-                                discountInfo = `${discountValue}% di sconto`;
-                              } else {
+                              if (discountValue == 100) {
                                 discountInfo = "Gratis";
+                              }
+                              else if (discountValue > 0) {
+                                discountInfo = `${discountValue}% di sconto`;
+                              } 
+                               
+                              else{
+                                discountInfo = `${discountValue}€ al giorno`;
                               }
                             }
 
