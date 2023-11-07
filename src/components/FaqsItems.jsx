@@ -21,9 +21,11 @@ export const FaqsItems = ({ data, id }) => {
               data,
               supliment,
               icon,
-              title2,
-              paragraph2,
-              text2,
+
+              
+              hotelDescriptionProps, 
+              serviceTitle,
+              serviceDetails,
             },
             i
           ) => (
@@ -93,41 +95,27 @@ export const FaqsItems = ({ data, id }) => {
                           ))}
                         </ul>
                       )}
-                      <button className="detatagli-servizi">{title2} </button>
-                      {paragraph2 && (
+
+                      {hotelDescriptionProps?.map((descAttribute, id)=>{
+                        return (
+                          <div key={id}>
+                            <div className="detatagli-servizi">{descAttribute.title} </div>
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: descAttribute.description !== true ? descAttribute.description : "",
+                              }}
+                            ></div>
+                          </div>
+                        )
+                      })}
+                      <button className="detatagli-servizi">{serviceTitle} </button>
+                      {serviceDetails && (
                         <p
                           dangerouslySetInnerHTML={{
-                            __html: paragraph2 !== true ? paragraph2 : "",
+                            __html: serviceDetails !== true ? serviceDetails : "",
                           }}
                         ></p>
                       )}
-
-                      {/* {sex && sex.length && (
-                      <ul>
-                        {sex.map((item, i) => {
-                          const ageRangeStart =
-                            (sex.length === 1 && 0) ||
-                            (sex[i - 1]?.agelimit + 1 < item?.agelimit
-                              ? sex[i - 1]?.agelimit + 1
-                              : (sex.length > 1 && sex[i - 2]?.agelimit + 1) || 0);
-
-                          const discountValue = Math.abs(item?.discount);
-
-                          let discountInfo = "";
-                          if (item?.discount && discountValue > 0) {
-                            discountInfo = `${discountValue}€ al giorno`;
-                          } else if (item?.discount && discountValue === 0) {
-                            discountInfo = "Gratis";
-                          }
-
-                          return (
-                            <li key={i}>
-                              {`Bambini da ${ageRangeStart} a ${item?.agelimit - 0.01}: ${discountInfo}`}
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    )} */}
 
                       {data && data.length > 0 && (
                         <ul>

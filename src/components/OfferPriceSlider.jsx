@@ -124,15 +124,26 @@ const OfferPriceSlider = (
       {
         title: "Descrizione Hotel",
         paragraph: hotel?.hotelDescription ?? "",
-        title2: "Dettagli Servizi",
-        paragraph2: hotel?.serviceDetails ?? "",
-        text2: [],
+
+        hotelDescriptionProps: [
+          {
+            title: hotel?.roomsTitle ?? "Rooms Title",
+            description: hotel?.roomsDescription ?? "Rooms Description",
+          },
+          {
+            title: hotel?.spaTitle ?? "SPA Title",
+            description: hotel?.spaDescription ?? "SPA Description",
+          },
+          {
+            title: hotel?.restaurantTitle ?? "Restaurant Title",
+            description: hotel?.restaurantDescription ?? "Restaurant Description",
+          }
+        ],
+
+        serviceTitle: "Dettagli Servizi",
+        serviceDetails: hotel?.serviceDetails ?? "",
+
       },
-      // {
-      //   title: "Dettagli Servizi",
-      //   paragraph: hotel?.serviceDetails ?? "",
-      //   text: [],
-      // },
       {
         title: "Pacchetto Incluso",
         paragraph: activeData?.packages ?? "",

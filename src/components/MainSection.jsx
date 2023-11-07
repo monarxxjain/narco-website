@@ -14,7 +14,7 @@ const MainSection = ({
   setDatePickerOpen,
   config,
 }) => {
-  // console.log(hotels)
+  console.log(hotels)
 
   const [userData, setUserData] = useState({
     Nome: "",
@@ -214,7 +214,7 @@ const MainSection = ({
   useEffect(() => {
     // Make changes to a newFilters object and update filters once at the end
     let newFilters = { ...filters }; // Make a copy of the current filters
-      console.log(config,"FASD")
+      // console.log(config,"FASD")
       newFilters = {
         ...newFilters,
         comune : config.comune.name
