@@ -2339,3 +2339,12 @@ select {
 .form-select{
   margin-left: 10px;
 }
+
+.breakdown-selector{
+  width: 14rem;
+  transition: all 0.2s;
+}
+
+.breakdown-selector:hover{
+  background-color: #0000001e;
+}

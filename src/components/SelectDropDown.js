@@ -22,10 +22,10 @@ function SelectDropDown({ selectedOption, selectItems, handleChange }) {
                 <AngleUp color="var(--title)" />
               </span>
 
-              <ul className="bg-white rounded-md absolute p-2 top-0 left-0 w-[8rem]">
+              <ul className="bg-white rounded-md absolute p-2 top-8 left-[-12rem] w-[14rem]">
                 {selectItems?.map((item, i) => (
                   item?.price != 0 && <li
-                    className=" "
+                    className="breakdown-selector"
                     key={i}
                     onClick={() => {
                       setActiveSelectIndex(i);
