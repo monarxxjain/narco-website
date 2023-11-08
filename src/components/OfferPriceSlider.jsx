@@ -338,8 +338,8 @@ const OfferPriceSlider = (
                     item?.minStay,
                     item?.maxStay
                   ) === 1 &&
-                    " Night ") ||
-                    " Nights "}
+                    " Notte ") ||
+                    " Notti "}
                   -{" "}
                   {
                     (item?.breakdown[1]?.price && "Mezza pensione") ||
