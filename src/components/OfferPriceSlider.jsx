@@ -396,8 +396,8 @@ const OfferPriceSlider = (
                     activeData?.minStay,
                     activeData?.maxStay
                   ) === 1 &&
-                    " Night ") ||
-                    " Nights "}
+                    " Notte ") ||
+                    " Notti "}
                 </h3>
               </div>
               <ul className="check-lists">
