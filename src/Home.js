@@ -255,6 +255,9 @@ function Home() {
   let newprice = [{name: "Tutti", value: 0}]
   let priceSet = new Set(newprice.map(item => item.name));
 
+  let distanceprice = [{name: "Tutti", value: 0}]
+  let distanceSet = new Set(distanceprice.map(item => item.name));
+
   hotels.forEach(hotel => {
     if (!communeSet.has(hotel?.state)) {
       communeSet.add(hotel?.state);
@@ -278,6 +281,13 @@ function Home() {
       priceSet.add("più di 80€");
       newprice.push({ name: "più di 80€", value: newprice.length });
     }
+
+    const distFilterKey = "Mare"
+    hotel?.distance.map((dist,idx)=>{
+      if(dist.label.includes(distFilterKey)){
+        
+      }
+    })    
  
 
   });
