@@ -272,7 +272,31 @@ const ViewInquiryForm = (
         })
         .catch((error) => console.error('Error fetching city suggestions:', error));
   };
+  // function calculateSelectableCheckInDates() {
+  //   const selectableCheckInDates = [];
+  //   let currentDateIterator = new Date(offer.startDate);
+  
+  //   while (currentDateIterator < new Date(new Date(offer.endDate).getTime() - (offer.maxStay * 24 * 60 * 60 * 1000))) {
+  //     if (currentDateIterator > Date()) {
+  //       selectableCheckInDates.push(new Date(currentDateIterator));
+  //     }
+  //     currentDateIterator.setDate(currentDateIterator.getDate() + offer.minStay);
+  //   }
+  
+  //   return selectableCheckInDates;
+  // }
+  // function calculateSelectableCheckOutDates(selectedCheckInDate) {
+  //   const selectableCheckOutDates = [];
+  //   let currentCheckOutDate = new Date(selectedCheckInDate);
+  
+  //   while (currentCheckOutDate < new Date(offer.endDate)) {
+  //     selectableCheckOutDates.push(new Date(currentCheckOutDate));
+  //     currentCheckOutDate.setDate(new Date(currentCheckOutDate).getDate() + offer.minStay);
+  //   }
 
+  //   return selectableCheckOutDates;
+  // }
+  // console.log(offer.minStay != offer.maxStay ? new Date(new Date(offer.endDate).getTime() - offer.minStay* 24 * 60 * 60 * 1000) :new Date(offer.endDate),"VDFSZ")
   return (
     <>
       {userData ? (
@@ -374,8 +398,8 @@ const ViewInquiryForm = (
                 <div className="right-sm-0 w-100">
                   <CustomDatePicker
                     setDatePickerOpen={setDatePickerOpen}
-                    minDate={offer.startDate < Date() ? offer.startDate : Date()+1}
-                    maxDate={offer.endDate}
+                    minDate={new Date(offer.startDate) <  Date() ? new Date(offer.startDate) :  Date() + 1}
+                    maxDate={new Date(offer.minStay != offer.maxStay ? new Date(new Date(offer.endDate).getTime() - offer.minStay * 24 * 60 * 60 * 1000) : new Date(offer.endDate))}
                     selected={departure}
                     label="Data Check In"
                     placeholder="Seleziona la data"
@@ -440,13 +464,12 @@ const ViewInquiryForm = (
                 <div className="right-sm-0 w-100 ">
                   <CustomDatePicker
 
-                    minDate={minArrivalDate}
-                    maxDate={maxArrivalDate}
+                    minDate={offer.minStay != offer.maxStay ? new Date(new Date(departure).getTime() + offer.minStay* 24 * 60 * 60 * 1000) : new Date(offer.startDate)}
+                    maxDate={ new Date(offer.endDate)}
                     setDatePickerOpen={setDatePickerOpen}
                     selected={arrival}
                     label="Data Check Out"
                     placeholder="Seleziona la data di arrivo"
-                    // selectableDates={calculateSelectableCheckOutDates(new Date(arrival))}
                     handleChange={(value) => {
                       setArrival(value);
                       handleArrivalChange(value);
