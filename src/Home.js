@@ -255,8 +255,8 @@ function Home() {
   let newprice = [{name: "Tutti", value: 0}]
   let priceSet = new Set(newprice.map(item => item.name));
 
-  let distanceprice = [{name: "Tutti", value: 0}]
-  let distanceSet = new Set(distanceprice.map(item => item.name));
+  let newdistance = [{name: "Tutti", value: 0}]
+  let distanceSet = new Set(newdistance.map(item => item.name));
 
   hotels.forEach(hotel => {
     if (!communeSet.has(hotel?.state)) {
@@ -285,7 +285,24 @@ function Home() {
     const distFilterKey = "Mare"
     hotel?.distance.map((dist,idx)=>{
       if(dist.label.includes(distFilterKey)){
-        
+
+        let distance = dist?.distance;
+        if(dist.scale==="Km"){
+          distance = distance * 1000;
+        }
+
+        if(distance<=500 && !distanceSet.has("0mt - 500mt")){
+          distanceSet.add("0mt - 500mt");
+          newdistance.push({ name: "0mt - 500mt", value: newprice.length });
+        }
+        else if(distance>500 && distance<=1000 && !distanceSet.has("500mt - 1km")){
+          distanceSet.add("500mt - 1km");
+          newdistance.push({ name: "500mt - 1km", value: newprice.length });
+        }
+        else if(distance>1000 && !distanceSet.has("1km+")){
+          distanceSet.add("1km+");
+          newdistance.push({ name: "1km+", value: newprice.length });
+        }
       }
     })    
  
@@ -295,6 +312,10 @@ function Home() {
   let finalComunes = newcomunes;
   let finalStars = newstars;
   let finalPrice = newprice;
+  let finalDistance = newdistance;
+
+  console.log(finalDistance)
+  console.log(distances)
 
   return (
     <>
@@ -309,7 +330,7 @@ function Home() {
             comunes={finalComunes}
             stelles={finalStars}
             fascias={finalPrice}
-            distances={distances}
+            distances={finalDistance}
             config={config}
             handleConfigChange={handleConfigChange}
           />

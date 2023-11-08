@@ -14,6 +14,8 @@ const Banner = ({ config, handleConfigChange, comunes, stelles, distances, fasci
         scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
     }, []);
 
+    console.log(distances)
+
     return (
         <>
             <section className="banner-section">

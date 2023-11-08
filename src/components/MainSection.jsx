@@ -268,17 +268,17 @@ const MainSection = ({
       };
     }
 
-    if (config.distance.name === "0 mt - 500 mt") {
+    if (config.distance.name === "0mt - 500mt") {
       newFilters = {
         ...newFilters,
         distance: { min: 0, max: 500 },
       };
-    } else if (config.distance.name === "500 mt - 1 km") {
+    } else if (config.distance.name === "500mt - 1km") {
       newFilters = {
         ...newFilters,
         distance: { min: 500, max: 1000 },
       };
-    } else if (config.distance.name === "1 km+") {
+    } else if (config.distance.name === "1km+") {
       newFilters = {
         ...newFilters,
         distance: { min: 1000, max: 5000 },
@@ -338,6 +338,14 @@ const MainSection = ({
                 }
                 hotel.bestPossiblePrice = bestPossiblePrice;
               });
+              let dalMareDistance = hotel?.distance.find(obj => obj.label.includes("Mare"))?.distance
+              if(hotel?.distance.find(obj => obj.label.includes("Mare"))?.scale=="Km"){
+                dalMareDistance=dalMareDistance*1000
+              }
+              // console.log(dalMareDistance)
+              console.log(((dalMareDistance >=filters.distance.min &&  dalMareDistance <= filters.distance.max)))
+              console.log(filters.distance.min)
+              console.log(filters.distance.max)
               return (
                 <>
                   {
@@ -349,8 +357,7 @@ const MainSection = ({
                     (filters.stelle == 0
                       ? 1
                       : filters.stelle == hotel?.rating) &&
-                    hotel?.distance[1].distance >= filters.distance.min &&
-                    hotel?.distance[1].distance <= filters.distance.max ? (
+                      (dalMareDistance ? (dalMareDistance >=filters.distance.min &&  dalMareDistance <= filters.distance.max) : 1) ? (
                       <OfferItem
                         config={config}
                         bestPossiblePrice={bestPossiblePrice}
@@ -437,6 +444,12 @@ const MainSection = ({
               }
               hotel.bestPossiblePrice = bestPossiblePrice;
             });
+
+            let dalMareDistance = hotel?.distance.find(obj => obj.label.includes("Mare"))?.distance
+              if(hotel?.distance.find(obj => obj.label.includes("Mare"))?.scale=="Km"){
+                dalMareDistance=dalMareDistance*1000
+              }
+              console.log(dalMareDistance)
             return (
               <div style={{ marginTop: "2rem" }}>
                 {
@@ -446,10 +459,8 @@ const MainSection = ({
                       ? 1
                       : hotel?.state == filters.comune) &&
                     (filters.stelle == 0 ? 1 : filters.stelle == hotel?.rating) &&
-                    (hotel?.distance[1].distance ? (
-                      hotel?.distance[1].distance >= filters.distance.min &&
-                      hotel?.distance[1].distance <= filters.distance.max
-                    ) : 1) ? (
+                    (dalMareDistance ? (dalMareDistance >=filters.distance.min &&  dalMareDistance <= filters.distance.max) : 1)
+                     ? (
                     <OfferItem
                       setUserData={setUserData}
                       userData={userData}
