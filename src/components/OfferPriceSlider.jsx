@@ -469,7 +469,7 @@ const OfferPriceSlider = (
           handleUpdateRooms={handleUpdateRooms}
           setDatePickerOpen={setDatePickerOpen}
           selectItems={activeData?.breakdown || []}
-          selectedPackage={0}
+          selectedPackage={activeData?.breakdown?.filter(item => item?.price != 0)}
           handleOfferClose={handleOfferClose}
           setSelectedPackage={(i) => {
             handleSelectedItemChange(index, i);

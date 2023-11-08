@@ -480,10 +480,10 @@ const ViewInquiryForm = (
                 <Input
                   value={selectItems[selectedPackage]}
                   handleChange={(e) => {
-                    let index = null;
+                    // setSelectedPackage(e.target.value);
                     selectItems.forEach((item, i) => {
                       if (item?.price != 0)
-                      setSelectedPackage(index);
+                        setSelectedPackage(e.target.value);
                     });
                   }}
                   name="packageBoard"
