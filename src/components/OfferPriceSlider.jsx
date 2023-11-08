@@ -127,16 +127,16 @@ const OfferPriceSlider = (
 
         hotelDescriptionProps: [
           {
-            title: hotel?.roomsTitle ?? "Rooms Title",
-            description: hotel?.roomsDescription ?? "Rooms Description",
+            title: hotel?.roomsTitle,
+            description: hotel?.roomsDescription,
           },
           {
-            title: hotel?.spaTitle ?? "SPA Title",
-            description: hotel?.spaDescription ?? "SPA Description",
+            title: hotel?.spaTitle ,
+            description: hotel?.spaDescription ,
           },
           {
-            title: hotel?.restaurantTitle ?? "Restaurant Title",
-            description: hotel?.restaurantDescription ?? "Restaurant Description",
+            title: hotel?.restaurantTitle,
+            description: hotel?.restaurantDescription,
           }
         ],
 

@@ -98,7 +98,7 @@ export const FaqsItems = ({ data, id }) => {
 
                       {hotelDescriptionProps?.map((descAttribute, id)=>{
                         return (
-                          <div key={id}>
+                          descAttribute.title && descAttribute.description && <div key={id}>
                             <div className="detatagli-servizi">{descAttribute.title} </div>
                             <div
                               dangerouslySetInnerHTML={{
