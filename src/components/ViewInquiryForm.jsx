@@ -446,6 +446,7 @@ const ViewInquiryForm = (
                     selected={arrival}
                     label="Data Check Out"
                     placeholder="Seleziona la data di arrivo"
+                    // selectableDates={calculateSelectableCheckOutDates(new Date(arrival))}
                     handleChange={(value) => {
                       setArrival(value);
                       handleArrivalChange(value);
