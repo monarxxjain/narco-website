@@ -376,7 +376,6 @@ const OfferItem = (props, ref) => {
         }
       }
       hotel.bestPossiblePrice=bestPossiblePrice;
-      console.log(bestPossiblePrice)
 
     })
 

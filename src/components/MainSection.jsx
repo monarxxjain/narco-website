@@ -15,7 +15,6 @@ const MainSection = ({
   setDatePickerOpen,
   config,
 }) => {
-  // console.log(hotels)
 
   const [userData, setUserData] = useState({
     Nome: "",
@@ -292,7 +291,7 @@ const MainSection = ({
 
 
   const  [bestPossiblePrice, setBestPossiblePrice] = useState()
-  // console.log(hotels)
+  console.log(hotels)
 
   return (
     <>
