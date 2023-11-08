@@ -193,12 +193,12 @@ const OfferItem = (props, ref) => {
 
   function calculateOfferPrice(offer) {
     if (offer.minStay === offer.maxStay) {
-      return offer.breakdown[2]?.price || offer.breakdown[1]?.price || offer.breakdown[0]?.price;
+      return offer.breakdown[1]?.price || offer.breakdown[0]?.price || offer.breakdown[2]?.price;
     } else {
       const calculatedNights = Math.abs((new Date(checkInDate) - new Date(checkOutDate)) / (1000 * 60 * 60 * 24));
       const clampedNights = Math.max(offer.minStay, Math.min(calculatedNights, offer.maxStay));
 
-      return (offer.breakdown[2]?.price || offer.breakdown[1]?.price || offer.breakdown[0]?.price) * clampedNights;
+      return (offer.breakdown[1]?.price || offer.breakdown[0]?.price || offer.breakdown[2]?.price) * clampedNights;
     }
   }
   function reFilterOffers(offerNum) {
@@ -228,7 +228,7 @@ const OfferItem = (props, ref) => {
       }
     }
 
-    // console.log(offerNum," ::: Offers")
+    console.log(offerNum," ::: Offers")
     return offerNum?.filter(itemB => !tempArray.includes(itemB));
   }
   const requiredNights = Math.abs((new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24));
@@ -351,7 +351,7 @@ const OfferItem = (props, ref) => {
     newOfferArray?.map((item, id) => {
       // {console.log(item, " ::: Offer")}
       if (item?.minStay === item?.maxStay) {
-        const myVar = item?.breakdown[2]?.price || item?.breakdown[1]?.price || item?.breakdown[0]?.price
+        const myVar = item?.breakdown[1]?.price || item?.breakdown[0]?.price || item?.breakdown[2]?.price
         if (bestPossiblePrice > myVar) {
           setBestPossiblePrice(myVar)
         }
@@ -364,9 +364,9 @@ const OfferItem = (props, ref) => {
         else if(calculatedNights>item?.maxStay){
           calculatedNights=item.maxStay
         }
-        const myVar2 = (item?.breakdown[2]?.price ||
-          item?.breakdown[1]?.price ||
-          item?.breakdown[0]?.price) * calculatedNights
+        const myVar2 = (item?.breakdown[1]?.price ||
+          item?.breakdown[0]?.price ||
+          item?.breakdown[2]?.price) * calculatedNights
 
 
         if (bestPossiblePrice > myVar2) {

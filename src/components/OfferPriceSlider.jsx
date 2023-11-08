@@ -316,14 +316,14 @@ const OfferPriceSlider = (
                   <h3 className="price">
                     {(item?.minStay === item?.maxStay 
                       &&
-                      (item?.breakdown[2]?.price ||
-                      item?.breakdown[1]?.price ||
-                      item?.breakdown[0]?.price)) 
+                      (item?.breakdown[1]?.price ||
+                      item?.breakdown[0]?.price ||
+                      item?.breakdown[2]?.price)) 
                       ||
-                      ((item?.breakdown[2]?.price || item?.breakdown[1]?.price || item?.breakdown[0]?.price) * calculatedNights)}
-                    {(item?.breakdown[2]?.price && item?.breakdown[2].currency) ||
-                      (item?.breakdown[1]?.price && item?.breakdown[1].currency) ||
-                      (item?.breakdown[0]?.price && item?.breakdown[0].currency)}
+                      ((item?.breakdown[1]?.price || item?.breakdown[0]?.price || item?.breakdown[2]?.price) * calculatedNights)}
+                    {(item?.breakdown[1]?.price && item?.breakdown[1].currency) ||
+                      (item?.breakdown[0]?.price && item?.breakdown[0].currency) ||
+                      (item?.breakdown[2]?.price && item?.breakdown[2].currency)}
                   </h3>
 
                 </div>
@@ -342,9 +342,9 @@ const OfferPriceSlider = (
                     " Nights "}
                   -{" "}
                   {
-                    (item?.breakdown[2]?.price && "Bed & Breakfast") ||
                     (item?.breakdown[1]?.price && "Mezza pensione") ||
                     (item?.breakdown[0]?.price && "Pensione Completa") ||
+                    (item?.breakdown[2]?.price && "Bed & Breakfast") ||
                     ""}
                 </div>
               </div>

@@ -14,7 +14,7 @@ const MainSection = ({
   setDatePickerOpen,
   config,
 }) => {
-  console.log(hotels)
+  // console.log(hotels)
 
   const [userData, setUserData] = useState({
     Nome: "",
