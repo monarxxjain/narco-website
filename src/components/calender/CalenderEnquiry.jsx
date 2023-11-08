@@ -15,7 +15,7 @@ const CustomDatePicker = ({
     placeholder,
     handleChange,
     readOnly,
-    setDatePickerOpen,
+    setDatePickerOpen
 }) => {
     const datePickerRef = useRef(null);
 
