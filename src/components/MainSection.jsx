@@ -9,6 +9,7 @@ import OfferItem from "./OfferItem";
 import Shapes from "./Shapes";
 const MainSection = ({
   hotels,
+  setHotels,
   checkInDate,
   checkOutDate,
   setDatePickerOpen,
@@ -289,7 +290,7 @@ const MainSection = ({
     setFilters(newFilters);
   }, [config]);
 
-  // console.log(hotels)
+  console.log(hotels)
 
   return (
     <>

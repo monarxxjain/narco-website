@@ -47,6 +47,7 @@ function Home() {
 
       response.data && setInitialConfigData((prevData) => response.data);
       setInitialDataLoaded(true);
+      // console.log(response.data.comunes)
       response.data && setComunes(response.data.comunes);
       response.data && setStelles(response.data.stelles);
       response.data && setFascias(response.data?.fascio);
@@ -245,6 +246,28 @@ function Home() {
     }
   }, [hotels]);
 
+  let newcomunes = [{ name: "Tutta l'isola" }];
+  let communeSet = new Set(newcomunes.map(item => item.name));
+  
+  let newstars = [{name: "Tutti"}]
+  let starsSet = new Set(newstars.map(item => item.name));
+
+  hotels.forEach(hotel => {
+    if (!communeSet.has(hotel?.state)) {
+      communeSet.add(hotel?.state);
+      newcomunes.push({ name: hotel?.state });
+    }
+
+    let formattedRating = hotel?.rating + " Stelle";
+    if (!starsSet.has(formattedRating)) {
+      starsSet.add(formattedRating);
+      newstars.push({ name: formattedRating });
+    }
+
+  });
+
+  let finalComunes = newcomunes;
+  let finalStars = newstars;
 
   return (
     <>
@@ -256,8 +279,8 @@ function Home() {
         <>
           <Banner
             initialConfigData={initialConfigData}
-            comunes={comunes}
-            stelles={stelles}
+            comunes={finalComunes}
+              stelles={finalStars}
             fascias={fascias}
             distances={distances}
             config={config}
@@ -267,6 +290,7 @@ function Home() {
             <MainSection
               config={config}
               hotels={hotels}
+              setHotels={setHotels}
               checkInDate={config.checkInDate}
               checkOutDate={config.checkOutDate}
               setDatePickerOpen={setDatePickerOpen}

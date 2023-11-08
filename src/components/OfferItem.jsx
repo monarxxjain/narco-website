@@ -228,7 +228,7 @@ const OfferItem = (props, ref) => {
       }
     }
 
-    console.log(offerNum," ::: Offers")
+    // console.log(offerNum," ::: Offers")
     return offerNum?.filter(itemB => !tempArray.includes(itemB));
   }
   const requiredNights = Math.abs((new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24));

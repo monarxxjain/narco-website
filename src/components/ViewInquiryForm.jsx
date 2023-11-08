@@ -296,16 +296,16 @@ for (let i = new Date(offer.startDate) >= new Date() ? new Date(offer.startDate)
 //       currentDateIterator.setDate(currentDateIterator.getDate() + offer.minStay);
 //     }
   
-//     return selectableCheckInDates;
-//   }  
-//   const getHighlightDates = (dates) => {
-//     const highlight = {};
-//     dates.forEach(date => {
-//       highlight[date] = 'non-selectable'; // 'non-selectable' will add a class to disable these dates
-//     });
-//     return highlight;
-//   };
-//   const val = calculateSelectableCheckInDates();
+    return selectableCheckInDates;
+  }  
+  const getHighlightDates = (dates) => {
+    const highlight = {};
+    dates.forEach(date => {
+      highlight[date] = 'non-selectable'; // 'non-selectable' will add a class to disable these dates
+    });
+    return highlight;
+  };
+  const val = calculateSelectableCheckInDates();
 // console.log(val,"gsdfz")
   // function calculateSelectableCheckOutDates(selectedCheckInDate) {
   //   const selectableCheckOutDates = [];
