@@ -56,9 +56,9 @@ const MainSection = ({
     setUserData({ ...userData, rooms: updatedRooms });
   };
 
-  const handleChangeValue = (value) => {};
+  const handleChangeValue = (value) => { };
 
-  const handleChange = (name, value) => {};
+  const handleChange = (name, value) => { };
 
   const handleSubmit = (
     arrival,
@@ -290,7 +290,9 @@ const MainSection = ({
     setFilters(newFilters);
   }, [config]);
 
-  console.log(hotels)
+
+  const  [bestPossiblePrice, setBestPossiblePrice] = useState()
+  // console.log(hotels)
 
   return (
     <>
@@ -352,6 +354,8 @@ const MainSection = ({
                     hotel?.distance[1].distance <= filters.distance.max ? (
                       <OfferItem
                         config={config}
+                        bestPossiblePrice={bestPossiblePrice}
+                        setBestPossiblePrice={setBestPossiblePrice}
                         setUserData={setUserData}
                         userData={userData}
                         sending={sending}
@@ -411,12 +415,12 @@ const MainSection = ({
                   item?.breakdown[1]?.price ||
                   item?.breakdown[2]?.price;
                 if (bestPossiblePrice > myVar) {
-                  bestPossiblePrice=myVar;
+                  bestPossiblePrice = myVar;
                 }
               } else {
                 let calculatedNights = Math.abs(
                   (new Date(checkInDate) - new Date(checkOutDate)) /
-                    (1000 * 60 * 60 * 24)
+                  (1000 * 60 * 60 * 24)
                 );
                 if (calculatedNights < item?.minStay) {
                   calculatedNights = item.minStay;
@@ -429,7 +433,7 @@ const MainSection = ({
                     item?.breakdown[2]?.price) * calculatedNights;
 
                 if (bestPossiblePrice > myVar2) {
-                  bestPossiblePrice=myVar2;
+                  bestPossiblePrice = myVar2;
                 }
               }
               hotel.bestPossiblePrice = bestPossiblePrice;
@@ -438,21 +442,23 @@ const MainSection = ({
               <div style={{ marginTop: "2rem" }}>
                 {
                   hotel?.bestPossiblePrice <= filters.fascio.max &&
-                  hotel?.bestPossiblePrice >= filters.fascio.min &&
-                  (filters.comune == "Tutta l'isola"
-                    ? 1
-                    : hotel?.state == filters.comune) &&
-                  (filters.stelle == 0 ? 1 : filters.stelle == hotel?.rating) &&
-                  (hotel?.distance[1].distance ? (
-                    hotel?.distance[1].distance >= filters.distance.min &&
-                    hotel?.distance[1].distance <= filters.distance.max
-                  ) : 1 )? (
+                    hotel?.bestPossiblePrice >= filters.fascio.min &&
+                    (filters.comune == "Tutta l'isola"
+                      ? 1
+                      : hotel?.state == filters.comune) &&
+                    (filters.stelle == 0 ? 1 : filters.stelle == hotel?.rating) &&
+                    (hotel?.distance[1].distance ? (
+                      hotel?.distance[1].distance >= filters.distance.min &&
+                      hotel?.distance[1].distance <= filters.distance.max
+                    ) : 1) ? (
                     <OfferItem
                       setUserData={setUserData}
                       userData={userData}
                       sending={sending}
                       setvalue={setValue}
                       value={value}
+                      bestPossiblePrice={bestPossiblePrice}
+                      setBestPossiblePrice={setBestPossiblePrice}
                       handleSubmit={handleSubmit}
                       handleUpdateRooms={handleUpdateRooms}
                       buttonDisabled={buttonDisabled}

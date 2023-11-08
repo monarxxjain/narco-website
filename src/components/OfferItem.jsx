@@ -37,6 +37,8 @@ const OfferItem = (props, ref) => {
     handleUpdateRooms,
     setDatePickerOpen,
     config,
+    bestPossiblePrice,
+    setBestPossiblePrice
   } = props;
   const [loadingOffers, setLoadingOffers] = useState(false);
 
@@ -189,7 +191,7 @@ const OfferItem = (props, ref) => {
     }
   }
 
-  const [bestPossiblePrice, setBestPossiblePrice] = useState(10000)
+  // const [bestPossiblePrice, setBestPossiblePrice] = useState(10000)
 
   function calculateOfferPrice(offer) {
     if (offer.minStay === offer.maxStay) {
@@ -374,6 +376,7 @@ const OfferItem = (props, ref) => {
         }
       }
       hotel.bestPossiblePrice=bestPossiblePrice;
+      console.log(bestPossiblePrice)
 
     })
 

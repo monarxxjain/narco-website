@@ -251,6 +251,9 @@ function Home() {
   
   let newstars = [{name: "Tutti"}]
   let starsSet = new Set(newstars.map(item => item.name));
+  
+  let newprice = [{name: "Tutti", value: 0}]
+  let priceSet = new Set(newprice.map(item => item.name));
 
   hotels.forEach(hotel => {
     if (!communeSet.has(hotel?.state)) {
@@ -264,10 +267,24 @@ function Home() {
       newstars.push({ name: formattedRating });
     }
 
+
+    if (hotel?.bestPossiblePrice < 40 && !priceSet.has("fino a 40€")) {
+      priceSet.add("fino a 40€");
+      newprice.push({ name: "fino a 40€", value: newprice.length });
+    } else if (hotel?.bestPossiblePrice >= 40 && hotel?.bestPossiblePrice <= 80 && !priceSet.has("tra 40€ e 80€")) {
+      priceSet.add("tra 40€ e 80€");
+      newprice.push({ name: "tra 40€ e 80€", value: newprice.length });
+    } else if (hotel?.bestPossiblePrice > 80 && !priceSet.has("più di 80€")) {
+      priceSet.add("più di 80€");
+      newprice.push({ name: "più di 80€", value: newprice.length });
+    }
+ 
+
   });
 
   let finalComunes = newcomunes;
   let finalStars = newstars;
+  let finalPrice = newprice;
 
   return (
     <>
@@ -280,8 +297,8 @@ function Home() {
           <Banner
             initialConfigData={initialConfigData}
             comunes={finalComunes}
-              stelles={finalStars}
-            fascias={fascias}
+            stelles={finalStars}
+            fascias={finalPrice}
             distances={distances}
             config={config}
             handleConfigChange={handleConfigChange}

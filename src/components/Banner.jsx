@@ -13,8 +13,7 @@ const Banner = ({ config, handleConfigChange, comunes, stelles, distances, fasci
     useEffect(() => {
         scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
     }, []);
-    // console.log("#########")
-    // console.log(stelles)
+
     return (
         <>
             <section className="banner-section">
