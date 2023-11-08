@@ -15,7 +15,8 @@ const CustomDatePicker = ({
     placeholder,
     handleChange,
     readOnly,
-    setDatePickerOpen
+    setDatePickerOpen,
+    isDateDisabled
 }) => {
     const datePickerRef = useRef(null);
 
@@ -78,6 +79,7 @@ const CustomDatePicker = ({
                 minDate={minimumDate}
                 maxDate={maximumDate}
                 selected={selected}
+                excludeDates={isDateDisabled}
                 onChange={(date) => {
                     handleDateChange(date);
                     setDatePickerOpen(false);

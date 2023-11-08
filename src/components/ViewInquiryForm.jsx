@@ -272,28 +272,41 @@ const ViewInquiryForm = (
         })
         .catch((error) => console.error('Error fetching city suggestions:', error));
   };
-  function calculateSelectableCheckInDates() {
-    const selectableCheckInDates = [];
-    let currentDateIterator = new Date(offer.startDate);
+  const disabledDates = [];
+let x = 0;
+
+for (let i = new Date(offer.startDate) >= new Date() ? new Date(offer.startDate) : new Date(); i <= new Date(offer.endDate); i.setDate(i.getDate() + 1)) {
+  const currentDate = new Date(i)+1;
+   if ( x % offer.minStay !== 0) {
+    disabledDates.push(new Date(currentDate));
+  } else {
+    x = 0;
+  }
+  x++;
+}
+
+//   function calculateSelectableCheckInDates() {
+//     const selectableCheckInDates = [];
+//     let currentDateIterator = new Date(offer.startDate);
   
-    while (currentDateIterator < new Date(new Date(offer.endDate).getTime() - (offer.maxStay * 24 * 60 * 60 * 1000))) {
-      if (currentDateIterator > Date()) {
-        selectableCheckInDates.push(new Date(currentDateIterator));
-      }
-      currentDateIterator.setDate(currentDateIterator.getDate() + offer.minStay);
-    }
+//     while (currentDateIterator < new Date(new Date(offer.endDate).getTime() - (offer.maxStay * 24 * 60 * 60 * 1000))) {
+//       if (currentDateIterator > Date()) {
+//         selectableCheckInDates.push(new Date(currentDateIterator));
+//       }
+//       currentDateIterator.setDate(currentDateIterator.getDate() + offer.minStay);
+//     }
   
-    return selectableCheckInDates;
-  }  
-  const getHighlightDates = (dates) => {
-    const highlight = {};
-    dates.forEach(date => {
-      highlight[date] = 'non-selectable'; // 'non-selectable' will add a class to disable these dates
-    });
-    return highlight;
-  };
-  const val = calculateSelectableCheckInDates();
-console.log(val,"gsdfz")
+//     return selectableCheckInDates;
+//   }  
+//   const getHighlightDates = (dates) => {
+//     const highlight = {};
+//     dates.forEach(date => {
+//       highlight[date] = 'non-selectable'; // 'non-selectable' will add a class to disable these dates
+//     });
+//     return highlight;
+//   };
+//   const val = calculateSelectableCheckInDates();
+// console.log(val,"gsdfz")
   // function calculateSelectableCheckOutDates(selectedCheckInDate) {
   //   const selectableCheckOutDates = [];
   //   let currentCheckOutDate = new Date(selectedCheckInDate);
@@ -409,8 +422,8 @@ console.log(val,"gsdfz")
                     offer.minStay != offer.maxStay ?
                      <CustomDatePicker
                     setDatePickerOpen={setDatePickerOpen}
-                    minDate={new Date(offer.startDate) <= new Date() ? new Date(offer.startDate) : new Date() + 1}
-                    maxDate={new Date(offer.minStay != offer.maxStay ? new Date(new Date(offer.endDate).getTime() - offer.minStay * 24 * 60 * 60 * 1000) : new Date(offer.endDate))}
+                    minDate={new Date(offer.startDate) >= new Date() ? new Date(offer.startDate) : new Date() + 1}
+                   maxDate={new Date(new Date(offer.endDate).getTime() - offer.minStay * 24 * 60 * 60 * 1000)}
                     selected={departure}
                     label="Data Check In"
                     placeholder="Seleziona la data"
@@ -422,9 +435,10 @@ console.log(val,"gsdfz")
                     readOnly={readOnly}
                   />  : <CustomDatePicker
                   setDatePickerOpen={setDatePickerOpen}
-                  minDate={minDepartureDate}
-                  maxDate={maxDepartureDate}
+                  minDate={new Date(offer.startDate) >= new Date() ? new Date(offer.startDate) : new Date() + 1}
+                  maxDate={new Date(new Date(offer.endDate).getTime() - offer.minStay * 24 * 60 * 60 * 1000)}
                   selected={departure}
+                  isDateDisabled={disabledDates}
                   label="Data Check In"
                   placeholder="Seleziona la data"
                   
@@ -491,7 +505,7 @@ console.log(val,"gsdfz")
                     offer.minStay != offer.maxStay ?
                     
                   <CustomDatePicker
-                  minDate={offer.minStay != offer.maxStay ? new Date(new Date(departure).getTime() + offer.minStay* 24 * 60 * 60 * 1000) : new Date(offer.startDate)}
+                  minDate={offer.minStay != offer.maxStay ? new Date(new Date(departure).getTime() + offer.minStay* 24 * 60 * 60 * 1000) : new Date(departure)}
                   maxDate={ new Date(offer.endDate)}
                   setDatePickerOpen={setDatePickerOpen}
                   selected={arrival}
@@ -503,9 +517,10 @@ console.log(val,"gsdfz")
                   }}
                   readOnly={readOnly}
                 /> : <CustomDatePicker
-                minDate={minArrivalDate}
-                maxDate={maxArrivalDate}
+                minDate={offer.minStay != offer.maxStay ? (new Date(new Date(departure).getTime() + offer.minStay* 24 * 60 * 60 * 1000)) : new Date(new Date(departure).getTime() +24 * 60 * 60 * 1000) }
+                maxDate={ new Date(offer.endDate)}
                 setDatePickerOpen={setDatePickerOpen}
+                isDateDisabled={disabledDates}
                 selected={arrival}
                 label="Data Check Out"
                 placeholder="Seleziona la data di arrivo"
