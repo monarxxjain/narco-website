@@ -89,6 +89,19 @@ const ViewInquiryForm = (
     breakdownNames,
     setSelectedPackage,
     handleOfferClose,
+    departure,
+    setDeparture,
+    persistDate,
+    setPersistDate,
+    idx,
+    arrival,
+    setArrival,
+    persistArrival,
+    setPersistArrival,
+    readOnly,
+    setReadOnly,
+    persistReadOnly,
+    setPersistReadOnly
   },
   ref
 ) => {
@@ -102,8 +115,8 @@ const ViewInquiryForm = (
   const [minArrivalDate, setMinArrivalDate] = useState("");
   const [maxArrivalDate, setMaxArrivalDate] = useState("");
 
-  const [arrival, setArrival] = useState("");
-  const [departure, setDeparture] = useState("");
+  // const [arrival, setArrival] = useState("");
+  // const [departure, setDeparture] = useState("");
 
   const [prevDateValid, setPrevDateValid] = useState(false);
 
@@ -146,6 +159,10 @@ const ViewInquiryForm = (
     //     console.log(departure, arrival);
     //     setPrevDateValid(validity);
     // }
+
+    // setPersistReadOnly({...persistReadOnly,0:true})
+    // setReadOnly()
+
   }, [
     offer["Nome Offerta"],
     offer["Valida dal"],
@@ -155,7 +172,14 @@ const ViewInquiryForm = (
     Hotel,
   ]);
 
-  const [readOnly, setReadOnly] = useState(false);
+  // const [readOnly, setReadOnly] = useState(false);
+
+  // useEffect(()=>{
+  //   if(idx===0){
+  //     setDeparture(new Date())
+  //     console.log("hello")
+  //   }
+  // },[])
 
   useEffect(() => {
     calculateInitialMinAndMaxDates(offer, checkInDate, checkOutDate);
@@ -224,6 +248,35 @@ const ViewInquiryForm = (
 
   const arrivalRef = createRef(null);
 
+  useEffect(()=>{
+    if(1){
+      let persistReadOnlyNew = {...persistReadOnly}
+      persistReadOnlyNew[idx]=true;
+      setPersistReadOnly(persistReadOnlyNew)
+      setReadOnly(persistReadOnlyNew[idx])
+
+
+
+      let persistDateNew = {...persistDate}
+      persistDateNew[idx]=departure;
+      setPersistDate(persistDateNew)
+      setDeparture(persistDateNew[idx])
+
+
+      let persistArrivalNew = {...persistArrival}
+      persistArrivalNew[idx]=arrival;
+      setPersistArrival(persistArrivalNew)
+      setArrival(persistArrivalNew[idx])
+
+
+
+
+
+    }
+  },[idx])
+
+
+
   const handleAddRoom = () => {
     setUserData({
       ...userData,
@@ -231,8 +284,8 @@ const ViewInquiryForm = (
     });
   };
 
-  const removeRoom = (index) => {
-    const updatedRooms = userData.rooms.filter((room, i) => i !== index);
+  const removeRoom = (idx) => {
+    const updatedRooms = userData.rooms.filter((room, i) => i !== idx);
 
     setUserData(() => ({ ...userData, rooms: updatedRooms }));
   };
@@ -429,10 +482,17 @@ return (
                       placeholder="Seleziona la data"
 
                       handleChange={(value) => {
+                        let persistDateNew = {...persistDate}
+                        persistDateNew[idx]=value;
                         setDeparture(value);
                         handleDepartureChange(value);
+                        setPersistDate(persistDateNew)
                       }}
+                      setDeparture={setDeparture}
                       readOnly={readOnly}
+                      persistDate={persistDate[idx]}
+                      setArrival={setArrival}
+                      persistArrival={persistArrival[idx]}
                     /> : <CustomDatePicker
                       setDatePickerOpen={setDatePickerOpen}
                       minDate={new Date(offer.startDate) >= new Date() ? new Date(offer.startDate) : new Date() + 1}
@@ -443,10 +503,17 @@ return (
                       placeholder="Seleziona la data"
 
                       handleChange={(value) => {
+                        let persistDateNew = {...persistDate}
+                        persistDateNew[idx]=value;
                         setDeparture(value);
                         handleDepartureChange(value);
+                        setPersistDate(persistDateNew)
                       }}
+                      setDeparture={setDeparture}
                       readOnly={readOnly}
+                      persistDate={persistDate[idx]}
+                      setArrival={setArrival}
+                      persistArrival={persistArrival[idx]}
                     />
                 }
               </div>
@@ -514,8 +581,15 @@ return (
                       handleChange={(value) => {
                         setArrival(value);
                         handleArrivalChange(value);
+                        let persistArrivalNew = {...persistArrival}
+                        persistArrivalNew[idx]=value;
+                        setPersistArrival(persistArrivalNew)
                       }}
+                      setDeparture={setDeparture}
                       readOnly={readOnly}
+                      persistDate={persistDate[idx]}
+                      setArrival={setArrival}
+                      persistArrival={persistArrival[idx]}
                     /> : <CustomDatePicker
                       minDate={offer.minStay != offer.maxStay ? (new Date(new Date(departure).getTime() + offer.minStay * 24 * 60 * 60 * 1000)) : new Date(new Date(departure).getTime() + 24 * 60 * 60 * 1000)}
                       maxDate={new Date(offer.endDate)}
@@ -527,8 +601,15 @@ return (
                       handleChange={(value) => {
                         setArrival(value);
                         handleArrivalChange(value);
+                        let persistArrivalNew = {...persistArrival}
+                        persistArrivalNew[idx]=value;
+                        setPersistArrival(persistArrivalNew)
                       }}
+                      setDeparture={setDeparture}
                       readOnly={readOnly}
+                      persistDate={persistDate[idx]}
+                      setArrival={setArrival}
+                      persistArrival={persistArrival[idx]}
                     />
                 }
               </div>
@@ -750,8 +831,8 @@ return (
                       onChange={handleInputChange}
                     />
                     <ul className="city-suggestion-list" ref={cityInput}>
-                      {suggestions.map((suggestion, index) => (
-                        <li key={index} onClick={() => { cityInput.current.style.display = "none"; setCity(suggestion) }} className="city-suggestion">{suggestion}</li>
+                      {suggestions.map((suggestion, idx) => (
+                        <li key={idx} onClick={() => { cityInput.current.style.display = "none"; setCity(suggestion) }} className="city-suggestion">{suggestion}</li>
                       ))}
                     </ul>
 

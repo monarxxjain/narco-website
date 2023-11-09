@@ -48,6 +48,10 @@ const OfferItem = (props, ref) => {
   const [offerOpen, setOfferOpen] = useState(false);
   const [offerButtonIn, setOfferButtonIn] = useState(true);
 
+  const [departure,setDeparture] = useState("")
+  const [arrival,setArrival] = useState("")
+  const [readOnly, setReadOnly] = useState(false);
+
   const sliderRef = useRef(null);
   const images = hotel.immaginiUrl
     ? hotel.immaginiUrl.split("\\\\n")
@@ -572,6 +576,12 @@ const OfferItem = (props, ref) => {
               handleOfferClose={() => {
                 setOfferOpen(!offerOpen);
               }}
+              departure={departure}
+              setDeparture={setDeparture}
+              arrival={arrival}
+              setArrival={setArrival}
+              readOnly={readOnly}
+              setReadOnly={setReadOnly}
             />
           ) : (
             <>
