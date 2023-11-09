@@ -246,7 +246,7 @@ const ViewInquiryForm = (
   const [city, setCity] = useState('');
   const [suggestions, setSuggestions] = useState([]);
 
-  const handleInputChange = (event) => {
+  const handleInputChange =  (event) => {
     cityInput.current.style.display = "block"
     const inputValue = event.target.value;
     setCity(inputValue);
@@ -262,12 +262,30 @@ const ViewInquiryForm = (
 
     const url = `https://api.swiftcomplete.com/v1/places/?key=${apiKey}&countries=${europeanCountriesString}&text=${inputValue}&maxResults=5`;
 
-    fetch(url)
+     fetch(url)
       .then((response) => response.json())
-      .then((data) => {
+      .then(async(data) => {
         // Extract suggestions from the API response
-        const citySuggestions = data.map((result) => result.primary.text);
-        setSuggestions(citySuggestions)
+        const citySuggestions = data.map((result) => result.type.includes("place.settlement") ? result.primary.text : null);
+        const translatedCityPromises = citySuggestions.map(async (cityName) => {
+          const translationResponse = await fetch(
+            `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=it&dt=t&q=${encodeURIComponent(
+              cityName
+            )}`
+          );
+            if(cityName){
+              const translatedCityName = await translationResponse.json();
+              return translatedCityName[0][0][0]; // Extract the translated city name
+
+            }
+            else{
+              return null;
+            }
+        });
+
+        // Wait for all translations to complete before setting the state
+        const translatedCityNames = await Promise.all(translatedCityPromises);
+        setSuggestions(translatedCityNames);
         // Now you can use citySuggestions in your application.
       })
       .catch((error) => console.error('Error fetching city suggestions:', error));
@@ -751,7 +769,7 @@ return (
                     />
                     <ul className="city-suggestion-list" ref={cityInput}>
                       {suggestions.map((suggestion, index) => (
-                        <li key={index} onClick={() => { cityInput.current.style.display = "none"; setCity(suggestion) }} className="city-suggestion">{suggestion}</li>
+                        suggestion && <li key={index} onClick={() => { cityInput.current.style.display = "none"; setCity(suggestion) }} className="city-suggestion">{suggestion}</li>
                       ))}
                     </ul>
 
