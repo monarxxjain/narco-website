@@ -278,7 +278,7 @@ const ViewInquiryForm = (
       setPersistArrival(persistArrivalNew)
       setArrival(persistArrivalNew[idx])
     }
-    else if(new Date(offer.endDate) == new Date(new Date() + 1 + offer.minStay)){
+    else if(new Date(offer.endDate).getDate() == new Date(new Date() + 1 + offer.minStay).getDate()){
       let persistReadOnlyNew = {...persistReadOnly}
       persistReadOnlyNew[idx]=true;
       setPersistReadOnly(persistReadOnlyNew)
