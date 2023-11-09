@@ -366,7 +366,8 @@ const ViewInquiryForm = (
 
         // Wait for all translations to complete before setting the state
         const translatedCityNames = await Promise.all(translatedCityPromises);
-        setSuggestions(translatedCityNames);
+        const displayArr = translatedCityNames.filter((item,index) => translatedCityNames.indexOf(item) === index);
+        setSuggestions(displayArr);
         // Now you can use citySuggestions in your application.
       })
       .catch((error) => console.error('Error fetching city suggestions:', error));
