@@ -245,7 +245,27 @@ const OfferPriceSlider = (
     }
   }, [endReached]);
 
+  const [currentBreakdown, setCurrentBreakdown] = useState(activeData?.breakdown[1].breakdownId || activeData?.breakdown[0].breakdownId || activeData?.breakdown[2].breakdownId)
 
+  const breakDownTypeChecker = (currentOffer) => {
+    if(currentOffer?.breakdown[1].price!=0){
+      return currentOffer?.breakdown[1].breakdownId
+    }
+    else if(currentOffer?.breakdown[0].price!=0){
+      return currentOffer?.breakdown[0].breakdownId
+    }
+    else if(currentOffer?.breakdown[2].price!=0){
+      return currentOffer?.breakdown[2].breakdownId
+    }
+  }
+
+
+  const breakDownTypeResetter = (currentOffer) => {
+    const breakdown = breakDownTypeChecker(currentOffer)
+    console.log(breakdown)
+    setCurrentBreakdown(breakdown)
+
+  }
 
 
   return (
@@ -319,6 +339,7 @@ const OfferPriceSlider = (
                   }`}
                 onClick={() => {
                   setIndex(i);
+                  breakDownTypeResetter(innerOffers[i]);
                   setActiveData(innerOffers[i]);
                   setDeparture(persistDate[i])
                   setArrival(persistArrival[i])
@@ -336,13 +357,11 @@ const OfferPriceSlider = (
                   </div>
 
                   <h3 className="price">
-                    {(item?.minStay === item?.maxStay 
-                      &&
-                      (item?.breakdown[1]?.price ||
-                      item?.breakdown[0]?.price ||
-                      item?.breakdown[2]?.price)) 
-                      ||
-                      ((item?.breakdown[1]?.price || item?.breakdown[0]?.price || item?.breakdown[2]?.price) * calculatedNights)}
+                    {item?.minStay === item?.maxStay 
+                      ?
+                      item.breakdown[breakDownTypeChecker(item)-1].price
+                      :
+                      ((!(activeData?.minStay === activeData?.maxStay) ? (item.breakdown[currentBreakdown - 1]?.price) : item.breakdown[breakDownTypeChecker(item) - 1].price)* calculatedNights)}
                     {(item?.breakdown[1]?.price && item?.breakdown[1].currency) ||
                       (item?.breakdown[0]?.price && item?.breakdown[0].currency) ||
                       (item?.breakdown[2]?.price && item?.breakdown[2].currency)}
@@ -361,11 +380,11 @@ const OfferPriceSlider = (
                     " Notte ") ||
                     " Notti "}
                   -{" "}
-                  {
-                    (item?.breakdown[1]?.price && "Mezza pensione") ||
-                    (item?.breakdown[0]?.price && "Pensione Completa") ||
-                    (item?.breakdown[2]?.price && "Bed & Breakfast") ||
-                    ""}
+                  {item?.minStay === item?.maxStay
+                    ?
+                    item.breakdown[breakDownTypeChecker(item) - 1].name
+                    :
+                    (!(activeData?.minStay === activeData?.maxStay) ? (item.breakdown[currentBreakdown - 1]?.name) : item.breakdown[breakDownTypeChecker(item) -1].name)}
                 </div>
               </div>
             </SwiperSlide>
@@ -394,10 +413,10 @@ const OfferPriceSlider = (
               <div className="full-board-top">
                 <div>
                   <SelectDropDown
-                    selectedOption={[
-                      activeData?.breakdown.map((item) => item.name),
-                    ]}
+                    selectedOption={currentBreakdown}
                     handleChange={(i) => {
+                      console.log(i)
+                      setCurrentBreakdown(i)
                       handleSelectedItemChange(index, i);
                     }}
                     selectItems={activeData?.breakdown?.filter(item => item?.price != 0)}

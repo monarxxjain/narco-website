@@ -1,20 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AngleDown, AngleUp } from "./Icon";
 
 function SelectDropDown({ selectedOption, selectItems, handleChange }) {
-  const [activeSelectIndex, setActiveSelectIndex] = useState(
-    (selectItems[0]?.price != 0 && "0") ||
-    (selectItems[1]?.price != 0 && "1") ||
-    (selectItems[2]?.price && "2")
-  );
+  const [activeSelectIndex, setActiveSelectIndex] = useState(selectedOption);
   const [selectOpen, setSelectOpen] = useState(false);
 
   if (!selectItems) return <></>;
 
+
   return (
     <h6 className="pointer">
-      <p onClick={() => setSelectOpen(!selectOpen)}>{selectItems[activeSelectIndex]?.name}</p>
-      {selectedOption.length > 0 ? (
+      <p onClick={() => setSelectOpen(!selectOpen)}>{(selectItems.find((item) => { if (item.breakdownId === selectedOption) return item.name }))?.name}</p>
+      {selectedOption > 0 ? (
         <>
           {selectOpen ? (
             <span className="relative">
@@ -26,10 +23,10 @@ function SelectDropDown({ selectedOption, selectItems, handleChange }) {
                 {selectItems?.map((item, i) => (
                   item?.price != 0 && <li
                     className="breakdown-selector"
-                    key={i}
+                    key={selectItems[i].breakdownId}
                     onClick={() => {
                       setActiveSelectIndex(i);
-                      handleChange(i);
+                      handleChange(selectItems[i].breakdownId);
                       setSelectOpen(false);
                     }}
                   >
