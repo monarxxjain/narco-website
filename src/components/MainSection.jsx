@@ -246,22 +246,22 @@ const MainSection = ({
         ...newFilters,
         stelle: 0,
       };
-    } else if (config.stelle.name === "2 stelle") {
+    } else if (config.stelle.name === "2 Stelle") {
       newFilters = {
         ...newFilters,
         stelle: 2,
       };
-    } else if (config.stelle.name === "3 stelle") {
+    } else if (config.stelle.name === "3 Stelle") {
       newFilters = {
         ...newFilters,
         stelle: 3,
       };
-    } else if (config.stelle.name === "4 stelle") {
+    } else if (config.stelle.name === "4 Stelle") {
       newFilters = {
         ...newFilters,
         stelle: 4,
       };
-    } else if (config.stelle.name === "5 stelle") {
+    } else if (config.stelle.name === "5 Stelle") {
       newFilters = {
         ...newFilters,
         stelle: 5,
@@ -290,8 +290,28 @@ const MainSection = ({
   }, [config]);
 
 
-  const  [bestPossiblePrice, setBestPossiblePrice] = useState()
+  const [bestPossiblePrice, setBestPossiblePrice] = useState()
   console.log(hotels)
+
+  useEffect(() => {
+    let tempHotels = (hotels.filter((hotel) => {
+      let dalMareDistance = hotel?.distance.find(obj => obj.label.includes("Mare"))?.distance
+      if (hotel?.distance.find(obj => obj.label.includes("Mare"))?.scale == "Km") {
+        dalMareDistance = dalMareDistance * 1000
+      }
+      if ((hotel?.bestPossiblePrice <= filters.fascio.max && hotel?.bestPossiblePrice >= filters.fascio.min) &&
+        (filters.comune == "Tutta l'isola" ? 1 : hotel?.state == filters.comune) &&
+        (filters.stelle == 0 ? 1 : filters.stelle == hotel?.rating) &&
+        (dalMareDistance ? (dalMareDistance >= filters.distance.min && dalMareDistance <= filters.distance.max) : 1)) {
+          console.log(filters.stelle,"=====",hotel?.rating)
+        return hotel
+      }
+    }))
+
+    setHotels(tempHotels)
+    console.log("Filtered Hotels :: ", hotels)
+
+  }, [filters])
 
   return (
     <>
@@ -315,12 +335,12 @@ const MainSection = ({
                     item?.breakdown[1]?.price ||
                     item?.breakdown[2]?.price;
                   if (bestPossiblePrice > myVar) {
-                    bestPossiblePrice=myVar;
+                    bestPossiblePrice = myVar;
                   }
                 } else {
                   let calculatedNights = Math.abs(
                     (new Date(checkInDate) - new Date(checkOutDate)) /
-                      (1000 * 60 * 60 * 24)
+                    (1000 * 60 * 60 * 24)
                   );
                   if (calculatedNights < item?.minStay) {
                     calculatedNights = item.minStay;
@@ -333,55 +353,22 @@ const MainSection = ({
                       item?.breakdown[2]?.price) * calculatedNights;
 
                   if (bestPossiblePrice > myVar2) {
-                    bestPossiblePrice=myVar2;
+                    bestPossiblePrice = myVar2;
                   }
                 }
                 hotel.bestPossiblePrice = bestPossiblePrice;
               });
               let dalMareDistance = hotel?.distance.find(obj => obj.label.includes("Mare"))?.distance
-              if(hotel?.distance.find(obj => obj.label.includes("Mare"))?.scale=="Km"){
-                dalMareDistance=dalMareDistance*1000
+              if (hotel?.distance.find(obj => obj.label.includes("Mare"))?.scale == "Km") {
+                dalMareDistance = dalMareDistance * 1000
               }
-              // console.log(dalMareDistance)
-              console.log(((dalMareDistance >=filters.distance.min &&  dalMareDistance <= filters.distance.max)))
-              console.log(filters.distance.min)
-              console.log(filters.distance.max)
+
               return (
                 <>
-                  {
-                    hotel?.bestPossiblePrice <= filters.fascio.max &&
-                      hotel?.bestPossiblePrice >= filters.fascio.min &&
-                    (filters.comune == "Tutta l'isola"
-                      ? 1
-                      : hotel?.state == filters.comune) &&
-                    (filters.stelle == 0
-                      ? 1
-                      : filters.stelle == hotel?.rating) &&
-                      (dalMareDistance ? (dalMareDistance >=filters.distance.min &&  dalMareDistance <= filters.distance.max) : 1) ? (
-                      <OfferItem
-                        config={config}
-                        bestPossiblePrice={bestPossiblePrice}
-                        setBestPossiblePrice={setBestPossiblePrice}
-                        setUserData={setUserData}
-                        userData={userData}
-                        sending={sending}
-                        setvalue={setValue}
-                        value={value}
-                        handleSubmit={handleSubmit}
-                        buttonDisabled={buttonDisabled}
-                        handleUpdateRooms={handleUpdateRooms}
-                        offer
-                        key={i}
-                        index={i + 1}
-                        checkInDate={checkInDate}
-                        checkOutDate={checkOutDate}
-                        setDatePickerOpen={setDatePickerOpen}
-                        hotel={{ ...hotel, img: [img1, img1, img1] }}
-                      />
-                    ) : null
-                  }
-                  {/* <OfferItem
+                  <OfferItem
                     config={config}
+                    bestPossiblePrice={bestPossiblePrice}
+                    setBestPossiblePrice={setBestPossiblePrice}
                     setUserData={setUserData}
                     userData={userData}
                     sending={sending}
@@ -397,7 +384,7 @@ const MainSection = ({
                     checkOutDate={checkOutDate}
                     setDatePickerOpen={setDatePickerOpen}
                     hotel={{ ...hotel, img: [img1, img1, img1] }}
-                  /> */}
+                  />
                 </>
               );
             })}
@@ -446,42 +433,31 @@ const MainSection = ({
             });
 
             let dalMareDistance = hotel?.distance.find(obj => obj.label.includes("Mare"))?.distance
-              if(hotel?.distance.find(obj => obj.label.includes("Mare"))?.scale=="Km"){
-                dalMareDistance=dalMareDistance*1000
-              }
-              console.log(dalMareDistance)
+            if (hotel?.distance.find(obj => obj.label.includes("Mare"))?.scale == "Km") {
+              dalMareDistance = dalMareDistance * 1000
+            }
             return (
               <div style={{ marginTop: "2rem" }}>
-                {
-                  hotel?.bestPossiblePrice <= filters.fascio.max &&
-                    hotel?.bestPossiblePrice >= filters.fascio.min &&
-                    (filters.comune == "Tutta l'isola"
-                      ? 1
-                      : hotel?.state == filters.comune) &&
-                    (filters.stelle == 0 ? 1 : filters.stelle == hotel?.rating) &&
-                    (dalMareDistance ? (dalMareDistance >=filters.distance.min &&  dalMareDistance <= filters.distance.max) : 1)
-                     ? (
-                    <OfferItem
-                      setUserData={setUserData}
-                      userData={userData}
-                      sending={sending}
-                      setvalue={setValue}
-                      value={value}
-                      bestPossiblePrice={bestPossiblePrice}
-                      setBestPossiblePrice={setBestPossiblePrice}
-                      handleSubmit={handleSubmit}
-                      handleUpdateRooms={handleUpdateRooms}
-                      buttonDisabled={buttonDisabled}
-                      offer={false}
-                      key={i}
-                      index={i + "--" + 1}
-                      checkInDate={checkInDate}
-                      checkOutDate={checkOutDate}
-                      setDatePickerOpen={setDatePickerOpen}
-                      hotel={{ ...hotel, img: [img1, img1, img1] }}
-                    />
-                  ) : null
-                }
+
+                <OfferItem
+                  setUserData={setUserData}
+                  userData={userData}
+                  sending={sending}
+                  setvalue={setValue}
+                  value={value}
+                  bestPossiblePrice={bestPossiblePrice}
+                  setBestPossiblePrice={setBestPossiblePrice}
+                  handleSubmit={handleSubmit}
+                  handleUpdateRooms={handleUpdateRooms}
+                  buttonDisabled={buttonDisabled}
+                  offer={false}
+                  key={i}
+                  index={i + "--" + 1}
+                  checkInDate={checkInDate}
+                  checkOutDate={checkOutDate}
+                  setDatePickerOpen={setDatePickerOpen}
+                  hotel={{ ...hotel, img: [img1, img1, img1] }}
+                />
               </div>
             );
           })}
