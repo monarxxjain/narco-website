@@ -16,6 +16,7 @@ import {
   PrevIcon,
   Ship,
   Train,
+
 } from "./Icon";
 import SelectDropDown from "./SelectDropDown";
 import ViewInquiryForm from "./ViewInquiryForm";
@@ -86,12 +87,22 @@ const OfferPriceSlider = (
     handleUpdateRooms,
     setDatePickerOpen,
     handleOfferClose,
+    departure,
+    setDeparture,
+    arrival,
+    setArrival,
+    readOnly,
+    setReadOnly
   },
   ref
 ) => {
   const [index, setIndex] = useState(0);
   const [innerCollapse, setInnerCollapse] = useState(false);
   const sliderRef = useRef(null);
+
+  const [persistDate,setPersistDate] = useState({})
+  const [persistArrival,setPersistArrival] = useState({})
+  const [persistReadOnly,setPersistReadOnly] = useState({})
 
   let calculatedNights = Math.abs((new Date(checkInDate) - new Date(checkOutDate)) / (1000 * 60 * 60 * 24))
   const calculateNightsNew= ( minStay, maxStay) =>{
@@ -300,6 +311,9 @@ const OfferPriceSlider = (
                 onClick={() => {
                   setIndex(i);
                   setActiveData(innerOffers[i]);
+                  setDeparture(persistDate[i])
+                  setArrival(persistArrival[i])
+                  console.log(persistDate)
                 }}
                 style={{ margin: "1px" }}
               >
@@ -474,6 +488,19 @@ const OfferPriceSlider = (
           setSelectedPackage={(i) => {
             handleSelectedItemChange(index, i);
           }}
+          departure={departure}
+          setDeparture={setDeparture}
+          persistDate={persistDate}
+          setPersistDate={setPersistDate}
+          idx={index}
+          arrival={arrival}
+          setArrival={setArrival}
+          persistArrival={persistArrival}
+          setPersistArrival={setPersistArrival}
+          readOnly={readOnly}
+          setReadOnly={setReadOnly}
+          persistReadOnly={persistReadOnly}
+          setPersistReadOnly={setPersistReadOnly}
         />
       </div>
     </>
