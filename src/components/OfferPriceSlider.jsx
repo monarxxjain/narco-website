@@ -92,7 +92,9 @@ const OfferPriceSlider = (
     arrival,
     setArrival,
     readOnly,
-    setReadOnly
+    setReadOnly,
+    readOnlyArrival,
+    setReadOnlyArrival
   },
   ref
 ) => {
@@ -103,6 +105,7 @@ const OfferPriceSlider = (
   const [persistDate,setPersistDate] = useState({})
   const [persistArrival,setPersistArrival] = useState({})
   const [persistReadOnly,setPersistReadOnly] = useState({})
+  const [persistReadOnlyArrival,setPersistReadOnlyArrival] = useState({})
 
   let calculatedNights = Math.abs((new Date(checkInDate) - new Date(checkOutDate)) / (1000 * 60 * 60 * 24))
   const calculateNightsNew= ( minStay, maxStay) =>{
@@ -500,6 +503,10 @@ const OfferPriceSlider = (
           setReadOnly={setReadOnly}
           persistReadOnly={persistReadOnly}
           setPersistReadOnly={setPersistReadOnly}
+          readOnlyArrival={readOnlyArrival}
+          setReadOnlyArrival={setReadOnlyArrival}
+          persistReadOnlyArrival={persistReadOnlyArrival}
+          setPersistReadOnlyArrival={setPersistReadOnlyArrival}
         />
       </div>
     </>

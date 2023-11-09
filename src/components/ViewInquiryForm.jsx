@@ -101,7 +101,11 @@ const ViewInquiryForm = (
     readOnly,
     setReadOnly,
     persistReadOnly,
-    setPersistReadOnly
+    setPersistReadOnly,
+    readOnlyArrival,
+    setReadOnlyArrival,
+    persistReadOnlyArrival,
+    setPersistReadOnlyArrival
   },
   ref
 ) => {
@@ -294,6 +298,12 @@ const ViewInquiryForm = (
       setPersistArrival(persistArrivalNew)
       setArrival(persistArrivalNew[idx])
     }
+
+    let persistReadOnlyNewArrival = {...persistReadOnlyArrival}
+      persistReadOnlyNewArrival[idx]=true;
+      setPersistReadOnlyArrival(persistReadOnlyNewArrival)
+      setReadOnlyArrival(persistReadOnlyNewArrival[idx])
+
   },[idx])
   const handleAddRoom = () => {
     setUserData({
@@ -521,6 +531,12 @@ return (
                         setDeparture(value);
                         handleDepartureChange(value);
                         setPersistDate(persistDateNew)
+
+                        let persistReadOnlyNewArrival = {...persistReadOnlyArrival}
+                        persistReadOnlyNewArrival[idx]=false;
+                        setPersistReadOnlyArrival(persistReadOnlyNewArrival)
+                        setReadOnlyArrival(persistReadOnlyNewArrival[idx])
+                        
                       }}
                       setDeparture={setDeparture}
                       readOnly={readOnly}
@@ -542,6 +558,11 @@ return (
                         setDeparture(value);
                         handleDepartureChange(value);
                         setPersistDate(persistDateNew)
+
+                        let persistReadOnlyNewArrival = {...persistReadOnlyArrival}
+                        persistReadOnlyNewArrival[idx]=false;
+                        setPersistReadOnlyArrival(persistReadOnlyNewArrival)
+                        setReadOnlyArrival(persistReadOnlyNewArrival[idx])
                       }}
                       setDeparture={setDeparture}
                       readOnly={readOnly}
@@ -620,7 +641,7 @@ return (
                         setPersistArrival(persistArrivalNew)
                       }}
                       setDeparture={setDeparture}
-                      readOnly={readOnly}
+                      readOnly={readOnlyArrival}
                       persistDate={persistDate[idx]}
                       setArrival={setArrival}
                       persistArrival={persistArrival[idx]}
@@ -640,7 +661,7 @@ return (
                         setPersistArrival(persistArrivalNew)
                       }}
                       setDeparture={setDeparture}
-                      readOnly={readOnly}
+                      readOnly={readOnlyArrival}
                       persistDate={persistDate[idx]}
                       setArrival={setArrival}
                       persistArrival={persistArrival[idx]}

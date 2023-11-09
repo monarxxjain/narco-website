@@ -51,6 +51,7 @@ const OfferItem = (props, ref) => {
   const [departure,setDeparture] = useState("")
   const [arrival,setArrival] = useState("")
   const [readOnly, setReadOnly] = useState(false);
+  const [readOnlyArrival, setReadOnlyArrival] = useState(false);
 
   const sliderRef = useRef(null);
   const images = hotel.immaginiUrl
@@ -584,6 +585,9 @@ const OfferItem = (props, ref) => {
               setArrival={setArrival}
               readOnly={readOnly}
               setReadOnly={setReadOnly}
+              readOnlyArrival={readOnlyArrival}
+              setReadOnlyArrival={setReadOnlyArrival}
+
             />
           ) : (
             <>
