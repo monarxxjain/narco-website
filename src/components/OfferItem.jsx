@@ -267,7 +267,7 @@ const OfferItem = (props, ref) => {
           }
           else{
             for(let j = offer.minStay+1;j<offer.maxStay;j++){
-              if(j==numofnights){
+              if(j==requiredNights){
                 numofnights=j;
               }
             }
