@@ -109,13 +109,19 @@ const OfferPriceSlider = (
 
   let calculatedNights = Math.abs((new Date(checkInDate) - new Date(checkOutDate)) / (1000 * 60 * 60 * 24))
   const calculateNightsNew= ( minStay, maxStay) =>{
-    if (calculatedNights < minStay) {
-      calculatedNights = minStay
+    if(minStay===maxStay){
+      return maxStay
     }
-    else if (calculatedNights > maxStay) {
-      calculatedNights = maxStay
+    else{
+      if (calculatedNights < minStay) {
+        calculatedNights = minStay
+      }
+      else if (calculatedNights > maxStay) {
+        calculatedNights = maxStay
+      }
+      return calculatedNights
+
     }
-    return calculatedNights
   }
 
   const [innerOffers, setInnerOffers] = useState(offers);
@@ -344,13 +350,11 @@ const OfferPriceSlider = (
 
                 </div>
                 <div className="text--small">
-                  {calculateNights(
-                    item?.endDate,
+                  {calculateNightsNew(
                     item?.minStay,
                     item?.maxStay
                   )}
-                  {(calculateNights(
-                    item?.endDate,
+                  {(calculateNightsNew(
                     item?.minStay,
                     item?.maxStay
                   ) === 1 &&
@@ -402,13 +406,11 @@ const OfferPriceSlider = (
                   <span>Bevande {activeData?.beverageAvailability}</span>
                 </div>
                 <h3>
-                  {calculateNights(
-                    activeData?.endDate,
+                  {calculateNightsNew(
                     activeData?.minStay,
                     activeData?.maxStay
                   )}
-                  {(calculateNights(
-                    activeData?.endDate,
+                  {(calculateNightsNew(
                     activeData?.minStay,
                     activeData?.maxStay
                   ) === 1 &&
