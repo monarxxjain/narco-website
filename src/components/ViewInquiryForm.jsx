@@ -262,6 +262,22 @@ const ViewInquiryForm = (
       setPersistArrival(persistArrivalNew)
       setArrival(persistArrivalNew[idx])
     }
+    else if(new Date(offer.startDate).getDate()==new Date(checkInDate).getDate() && new Date(offer.endDate).getDate()==new Date(checkOutDate).getDate()){
+      let persistReadOnlyNew = {...persistReadOnly}
+      persistReadOnlyNew[idx]=false;
+      setPersistReadOnly(persistReadOnlyNew)
+      setReadOnly(persistReadOnlyNew[idx])
+
+      let persistDateNew = {...persistDate}
+      persistDateNew[idx]=new Date(offer.startDate);
+      setPersistDate(persistDateNew)
+      setDeparture(persistDateNew[idx])
+
+      let persistArrivalNew = {...persistArrival}
+      persistArrivalNew[idx]=new Date(offer.endDate);
+      setPersistArrival(persistArrivalNew)
+      setArrival(persistArrivalNew[idx])
+    }
     else if(new Date(offer.endDate) == new Date(new Date() + 1 + offer.minStay)){
       let persistReadOnlyNew = {...persistReadOnly}
       persistReadOnlyNew[idx]=true;
@@ -279,9 +295,6 @@ const ViewInquiryForm = (
       setArrival(persistArrivalNew[idx])
     }
   },[idx])
-
-
-
   const handleAddRoom = () => {
     setUserData({
       ...userData,

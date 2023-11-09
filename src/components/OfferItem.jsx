@@ -382,7 +382,7 @@ const OfferItem = (props, ref) => {
     })
 
 
-  console.log(newOfferArray , " :: newOfferArray")
+  // console.log(newOfferArray , " :: newOfferArray")
 
 
   return (
