@@ -214,7 +214,6 @@ const MainSection = ({
   useEffect(() => {
     // Make changes to a newFilters object and update filters once at the end
     let newFilters = { ...filters }; // Make a copy of the current filters
-    // console.log(config, "FASD");
     newFilters = {
       ...newFilters,
       comune: config.comune.name,
@@ -291,7 +290,7 @@ const MainSection = ({
 
 
   const [bestPossiblePrice, setBestPossiblePrice] = useState()
-  console.log(hotels)
+  // console.log(hotels)
 
   useEffect(() => {
     let tempHotels = (hotels.filter((hotel) => {
@@ -303,8 +302,7 @@ const MainSection = ({
         (filters.comune == "Tutta l'isola" ? 1 : hotel?.state == filters.comune) &&
         (filters.stelle == 0 ? 1 : filters.stelle == hotel?.rating) &&
         (dalMareDistance ? (dalMareDistance >= filters.distance.min && dalMareDistance <= filters.distance.max) : 1)) {
-          console.log(filters.stelle,"=====",hotel?.rating)
-        return hotel
+          return hotel
       }
     }))
 
@@ -328,7 +326,6 @@ const MainSection = ({
             {hotels.slice(0, 2).map((hotel, i) => {
               let bestPossiblePrice = 10000;
               hotel.offers?.map((item, id) => {
-                // {console.log(item, " ::: Offer")}
                 if (item?.minStay === item?.maxStay) {
                   const myVar =
                     item?.breakdown[0]?.price ||
@@ -401,7 +398,6 @@ const MainSection = ({
           {hotels.slice(2).map((hotel, i) => {
             let bestPossiblePrice = 10000;
             hotel.offers?.map((item, id) => {
-              // {console.log(item, " ::: Offer")}
               if (item?.minStay === item?.maxStay) {
                 const myVar =
                   item?.breakdown[0]?.price ||

@@ -155,8 +155,6 @@ const ViewInquiryForm = (
     setDateValid(checkDateValidity(offer, checkInDate, checkOutDate));
     // if (arrival && departure) {
     //     const validity = checkDateValidity(offer, departure, arrival);
-    //     console.log('validity', validity);
-    //     console.log(departure, arrival);
     //     setPrevDateValid(validity);
     // }
 
@@ -177,7 +175,6 @@ const ViewInquiryForm = (
   // useEffect(()=>{
   //   if(idx===0){
   //     setDeparture(new Date())
-  //     console.log("hello")
   //   }
   // },[])
 
@@ -249,7 +246,6 @@ const ViewInquiryForm = (
   const arrivalRef = createRef(null);
 
   useEffect(()=>{
-    console.log(new Date(new Date(offer.startDate).getTime() + offer.minStay * 24 * 60 * 60 * 1000).getDate() == new Date(offer.endDate).getDate(),"ryudf")
     if(offer.minStay == offer.maxStay && new Date(new Date(offer.startDate).getTime() + offer.minStay * 24 * 60 * 60 * 1000).getDate() == new Date(offer.endDate).getDate()){
       let persistReadOnlyNew = {...persistReadOnly}
       persistReadOnlyNew[idx]=true;
@@ -386,7 +382,6 @@ const getHighlightDates = (dates) => {
   return highlight;
 };
 const val = calculateSelectableCheckInDates();
-// console.log(val,"gsdfz")
 // function calculateSelectableCheckOutDates(selectedCheckInDate) {
 //   const selectableCheckOutDates = [];
 //   let currentCheckOutDate = new Date(selectedCheckInDate);
@@ -398,7 +393,6 @@ const val = calculateSelectableCheckInDates();
 
 //   return selectableCheckOutDates;
 // }
-// console.log(offer.minStay != offer.maxStay ? new Date(new Date(offer.endDate).getTime() - offer.minStay* 24 * 60 * 60 * 1000) :new Date(offer.endDate),"VDFSZ")
 return (
   <>
     {userData ? (

@@ -47,7 +47,6 @@ function Home() {
 
       response.data && setInitialConfigData((prevData) => response.data);
       setInitialDataLoaded(true);
-      // console.log(response.data.comunes)
       response.data && setComunes(response.data.comunes);
       response.data && setStelles(response.data.stelles);
       response.data && setFascias(response.data?.fascio);
@@ -314,8 +313,6 @@ function Home() {
   let finalPrice = newprice;
   let finalDistance = newdistance;
 
-  console.log(finalDistance)
-  console.log(distances)
 
   return (
     <>

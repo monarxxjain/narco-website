@@ -234,7 +234,6 @@ const OfferItem = (props, ref) => {
       }
     }
 
-    // console.log(offerNum," ::: Offers")
     return offerNum?.filter(itemB => !tempArray.includes(itemB));
   }
   const requiredNights = Math.abs((new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24));
@@ -355,7 +354,6 @@ const OfferItem = (props, ref) => {
   }
   newOfferArray=reFilterOffers(newOfferArray)
     newOfferArray?.map((item, id) => {
-      // {console.log(item, " ::: Offer")}
       if (item?.minStay === item?.maxStay) {
         const myVar = item?.breakdown[1]?.price || item?.breakdown[0]?.price || item?.breakdown[2]?.price
         if (bestPossiblePrice > myVar) {
@@ -384,7 +382,7 @@ const OfferItem = (props, ref) => {
     })
 
 
-  // console.log(newOfferArray)
+  console.log(newOfferArray , " :: newOfferArray")
 
 
   return (

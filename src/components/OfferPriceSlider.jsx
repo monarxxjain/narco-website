@@ -313,7 +313,6 @@ const OfferPriceSlider = (
                   setActiveData(innerOffers[i]);
                   setDeparture(persistDate[i])
                   setArrival(persistArrival[i])
-                  console.log(persistDate)
                 }}
                 style={{ margin: "1px" }}
               >
