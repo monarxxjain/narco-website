@@ -259,14 +259,18 @@ const OfferItem = (props, ref) => {
         if (offer.minStay == offer.maxStay) {
           numofnights = offer.maxStay;
         } else {
-          if(requiredNights<offer.minStay){
-            numofnights=offer.minStay
+          if(requiredNights<=offer.minStay){
+            numofnights=offer.minStay;
           }
-          else if(requiredNights>offer.maxStay){
-            numofnights=offer.maxStay
+          else if(requiredNights>=offer.maxStay){
+            numofnights=offer.maxStay;
           }
           else{
-            numofnights=requiredNights
+            for(let j = offer.minStay+1;j<offer.maxStay;j++){
+              if(j==numofnights){
+                numofnights=j;
+              }
+            }
           }
         }
 

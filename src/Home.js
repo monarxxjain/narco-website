@@ -123,6 +123,7 @@ function Home() {
       }
       const query_string = String(`${values.url}/app/hotels?startDate=${config.checkInDate}&endDate=${config.checkOutDate}`)
       const result = await axios.get(query_string);
+      console.log(result.data)
       let tempHotels=result.data;
       function filterOffers(offers, tempStartDate, tempEndDate) {
         const maxDaysDifference = 3;
@@ -146,11 +147,24 @@ function Home() {
             if (offer.minStay == offer.maxStay) {
               numofnights = offer.maxStay;
             } else {
-              numofnights = Math.abs((offerEndDate - offerStartDate) / (1000 * 60 * 60 * 24));
+              if(requiredNights<=offer.minStay){
+                numofnights=offer.minStay;
+              }
+              else if(requiredNights>=offer.maxStay){
+                numofnights=offer.maxStay;
+              }
+              else{
+                for(let j = offer.minStay+1;j<offer.maxStay;j++){
+                  if(j==numofnights){
+                    numofnights=j;
+                  }
+                }
+              }
             }
             const startDateValid = (daysDiffStart <= maxDaysDifference && daysDiffStart >= (maxDaysDifference * -1));
             const endDateValid = (daysDiffEnd <= maxDaysDifference && daysDiffEnd >= (maxDaysDifference * -1));
             const nightsDifferenceValid = Math.abs(requiredNights - numofnights) <= 2;
+            console.log((0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj -offerEndDate)) , !(0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate)))
             if((0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj - offerEndDate)) && (0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate))){
                 return (
                   requiredNights + 2 >= numofnights &&
@@ -194,7 +208,7 @@ function Home() {
           tempArray.push(tempHotels[i]);
         }
       }
-      
+      console.log(tempArray,"dSA")
       setHotels(tempArray);
       setLastChange(null);
     } catch (err) {
