@@ -123,9 +123,8 @@ function Home() {
       }
       const query_string = String(`${values.url}/app/hotels?startDate=${config.checkInDate}&endDate=${config.checkOutDate}`)
       const result = await axios.get(query_string);
-      console.log(result.data)
       let tempHotels=result.data;
-      function filterOffers(offers, tempStartDate, tempEndDate) {
+      function filterOffers(offers, tempStartDate, tempEndDate,tempHotels) {
         const maxDaysDifference = 3;
     
         const requiredNights = Math.abs((new Date(tempEndDate) - new Date(tempStartDate)) / (1000 * 60 * 60 * 24));
@@ -139,7 +138,6 @@ function Home() {
             offerEndDate.setHours(0, 0, 0, 0);
             const tempStartDateObj = new Date(tempStartDate);
             const tempEndDateObj = new Date(tempEndDate);
-    
             const daysDiffStart = Math.abs((offerStartDate - tempStartDateObj) / (1000 * 60 * 60 * 24));
             const daysDiffEnd = Math.abs((offerEndDate - tempEndDateObj) / (1000 * 60 * 60 * 24));
             const specialCase = Math.abs((offerEndDate - current) / (1000 * 60 * 60 * 24));
@@ -155,7 +153,7 @@ function Home() {
               }
               else{
                 for(let j = offer.minStay+1;j<offer.maxStay;j++){
-                  if(j==numofnights){
+                  if(j==requiredNights){
                     numofnights=j;
                   }
                 }
@@ -164,7 +162,6 @@ function Home() {
             const startDateValid = (daysDiffStart <= maxDaysDifference && daysDiffStart >= (maxDaysDifference * -1));
             const endDateValid = (daysDiffEnd <= maxDaysDifference && daysDiffEnd >= (maxDaysDifference * -1));
             const nightsDifferenceValid = Math.abs(requiredNights - numofnights) <= 2;
-            console.log((0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj -offerEndDate)) , !(0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate)))
             if((0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj - offerEndDate)) && (0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate))){
                 return (
                   requiredNights + 2 >= numofnights &&
@@ -203,12 +200,11 @@ function Home() {
       const tempArray = [];
       for(let i=0;i<tempHotels.length;i++){
         tempHotels[i].bestPossiblePrice = 0;
-        const offerNum= filterOffers(tempHotels[i].offers,config.checkInDate,config.checkOutDate);
+        const offerNum= filterOffers(tempHotels[i].offers,config.checkInDate,config.checkOutDate,tempHotels[i]);
         if(offerNum.length>0){
           tempArray.push(tempHotels[i]);
         }
       }
-      console.log(tempArray,"dSA")
       setHotels(tempArray);
       setLastChange(null);
     } catch (err) {
