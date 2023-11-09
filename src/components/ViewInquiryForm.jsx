@@ -249,29 +249,38 @@ const ViewInquiryForm = (
   const arrivalRef = createRef(null);
 
   useEffect(()=>{
-    if(1){
+    console.log(new Date(new Date(offer.startDate).getTime() + offer.minStay * 24 * 60 * 60 * 1000).getDate() == new Date(offer.endDate).getDate(),"ryudf")
+    if(offer.minStay == offer.maxStay && new Date(new Date(offer.startDate).getTime() + offer.minStay * 24 * 60 * 60 * 1000).getDate() == new Date(offer.endDate).getDate()){
       let persistReadOnlyNew = {...persistReadOnly}
       persistReadOnlyNew[idx]=true;
       setPersistReadOnly(persistReadOnlyNew)
       setReadOnly(persistReadOnlyNew[idx])
 
-
-
       let persistDateNew = {...persistDate}
-      persistDateNew[idx]=departure;
+      persistDateNew[idx]=new Date(offer.startDate);
       setPersistDate(persistDateNew)
       setDeparture(persistDateNew[idx])
 
-
       let persistArrivalNew = {...persistArrival}
-      persistArrivalNew[idx]=arrival;
+      persistArrivalNew[idx]=new Date(offer.endDate);
       setPersistArrival(persistArrivalNew)
       setArrival(persistArrivalNew[idx])
+    }
+    else if(new Date(offer.endDate) == new Date(new Date() + 1 + offer.minStay)){
+      let persistReadOnlyNew = {...persistReadOnly}
+      persistReadOnlyNew[idx]=true;
+      setPersistReadOnly(persistReadOnlyNew)
+      setReadOnly(persistReadOnlyNew[idx])
 
+      let persistDateNew = {...persistDate}
+      persistDateNew[idx]=new Date(new Date(offer.endDate) - offer.minStay);
+      setPersistDate(persistDateNew)
+      setDeparture(persistDateNew[idx])
 
-
-
-
+      let persistArrivalNew = {...persistArrival}
+      persistArrivalNew[idx]=new Date(offer.endDate);
+      setPersistArrival(persistArrivalNew)
+      setArrival(persistArrivalNew[idx])
     }
   },[idx])
 
