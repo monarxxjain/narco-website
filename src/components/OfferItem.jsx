@@ -285,7 +285,7 @@ const OfferItem = (props, ref) => {
 
         if((0>=( offerStartDate - tempStartDateObj)  && 0>=(tempStartDateObj - offerEndDate)) && (0>=(offerStartDate - tempEndDateObj) && 0>=(tempEndDateObj - offerEndDate))){
           return (
-            // requiredNights + 2 >= numofnights &&
+            requiredNights + 2 >= numofnights &&
             // requiredNights -2 <= numofnights &&
             specialCase >= numofnights + 1 &&
             (offer.numofnights = numofnights)
