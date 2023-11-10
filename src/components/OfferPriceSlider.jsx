@@ -262,7 +262,7 @@ const OfferPriceSlider = (
 
   const breakDownTypeResetter = (currentOffer) => {
     const breakdown = breakDownTypeChecker(currentOffer)
-    console.log(breakdown)
+    // console.log(breakdown)
     setCurrentBreakdown(breakdown)
 
   }
@@ -415,7 +415,7 @@ const OfferPriceSlider = (
                   <SelectDropDown
                     selectedOption={currentBreakdown}
                     handleChange={(i) => {
-                      console.log(i)
+                      // console.log(i)
                       setCurrentBreakdown(i)
                       handleSelectedItemChange(index, i);
                     }}

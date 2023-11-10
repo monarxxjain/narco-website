@@ -182,6 +182,18 @@ const ViewInquiryForm = (
   //   }
   // },[])
 
+  const disabledDates = [];
+  let x = 0;
+
+  for (let i = new Date(offer.startDate) >= new Date() ? new Date(offer.startDate) : new Date(); i <= new Date(offer.endDate); i.setDate(i.getDate() + 1)) {
+    const currentDate = new Date(i) + 1;
+    if (x % offer.minStay !== 0) {
+      disabledDates.push(new Date(currentDate));
+    } else {
+      x = 0;
+    }
+    x++;
+  }
   useEffect(() => {
     calculateInitialMinAndMaxDates(offer, checkInDate, checkOutDate);
 
@@ -250,7 +262,29 @@ const ViewInquiryForm = (
   const arrivalRef = createRef(null);
 
   useEffect(()=>{
-    if(offer.minStay == offer.maxStay && new Date(new Date(offer.startDate).getTime() + offer.minStay * 24 * 60 * 60 * 1000).getDate() == new Date(offer.endDate).getDate()){
+    const prevInDate = localStorage.getItem("prevInDate");
+    const prevOutDate = localStorage.getItem("prevOutDate");
+    console.log(prevInDate,prevOutDate)
+    var prevInBool = true;
+    var prevOutBool = true;
+    for(let j=0;j<=disabledDates.length;j++){
+      if(new Date(disabledDates[j]).toDateString()==new Date(prevInDate).toDateString()){
+        prevInBool = false;
+      }
+      if(new Date(disabledDates[j]).toDateString()==new Date(prevOutDate).toDateString()){
+        prevOutBool = false;
+      }
+    }
+    const calStart = new Date(offer.startDate) >= new Date() ? new Date(offer.startDate) : new Date(new Date() + 1);
+    const calEnd = new Date(offer.endDate);
+    if(new Date(prevInDate)>new Date(calEnd) || new Date(prevInDate)<new Date(calStart)){
+      prevInBool = false;
+    }
+    if(new Date(prevOutDate)>new Date(calEnd) || new Date(prevOutDate)<new Date(calStart)){
+      prevOutBool = false;
+    }
+    console.log(prevInBool,prevOutBool)
+    if(offer.minStay == offer.maxStay && new Date(new Date(offer.startDate).getTime() + offer.minStay * 24 * 60 * 60 * 1000).toDateString() == new Date(offer.endDate).toDateString()){
       let persistReadOnlyNew = {...persistReadOnly}
       persistReadOnlyNew[idx]=true;
       setPersistReadOnly(persistReadOnlyNew)
@@ -266,7 +300,7 @@ const ViewInquiryForm = (
       setPersistArrival(persistArrivalNew)
       setArrival(persistArrivalNew[idx])
     }
-    else if(new Date(offer.startDate).getDate()==new Date(checkInDate).getDate() && new Date(offer.endDate).getDate()==new Date(checkOutDate).getDate()){
+    else if(new Date(offer.startDate).toDateString()==new Date(checkInDate).toDateString() && new Date(offer.endDate).toDateString()==new Date(checkOutDate).toDateString()){
       let persistReadOnlyNew = {...persistReadOnly}
       persistReadOnlyNew[idx]=false;
       setPersistReadOnly(persistReadOnlyNew)
@@ -282,7 +316,7 @@ const ViewInquiryForm = (
       setPersistArrival(persistArrivalNew)
       setArrival(persistArrivalNew[idx])
     }
-    else if(new Date(offer.endDate).getDate() == new Date(new Date() + 1 + offer.minStay).getDate()){
+    else if(new Date(offer.endDate).toDateString() == new Date(new Date() + 1 + offer.minStay).toDateString()){
       let persistReadOnlyNew = {...persistReadOnly}
       persistReadOnlyNew[idx]=true;
       setPersistReadOnly(persistReadOnlyNew)
@@ -295,6 +329,22 @@ const ViewInquiryForm = (
 
       let persistArrivalNew = {...persistArrival}
       persistArrivalNew[idx]=new Date(offer.endDate);
+      setPersistArrival(persistArrivalNew)
+      setArrival(persistArrivalNew[idx])
+    }
+    else if (prevInBool && prevOutBool){
+      let persistReadOnlyNew = {...persistReadOnly}
+      persistReadOnlyNew[idx]=false;
+      setPersistReadOnly(persistReadOnlyNew)
+      setReadOnly(persistReadOnlyNew[idx])
+
+      let persistDateNew = {...persistDate}
+      persistDateNew[idx]=new Date(prevInDate);
+      setPersistDate(persistDateNew)
+      setDeparture(persistDateNew[idx])
+
+      let persistArrivalNew = {...persistArrival}
+      persistArrivalNew[idx]=new Date(prevOutDate);
       setPersistArrival(persistArrivalNew)
       setArrival(persistArrivalNew[idx])
     }
@@ -372,18 +422,6 @@ const ViewInquiryForm = (
       })
       .catch((error) => console.error('Error fetching city suggestions:', error));
   };
-  const disabledDates = [];
-  let x = 0;
-
-  for (let i = new Date(offer.startDate) >= new Date() ? new Date(offer.startDate) : new Date(); i <= new Date(offer.endDate); i.setDate(i.getDate() + 1)) {
-    const currentDate = new Date(i) + 1;
-    if (x % offer.minStay !== 0) {
-      disabledDates.push(new Date(currentDate));
-    } else {
-      x = 0;
-    }
-    x++;
-  }
 
     function calculateSelectableCheckInDates() {
       const selectableCheckInDates = [];
@@ -533,6 +571,8 @@ return (
                         handleDepartureChange(value);
                         setPersistDate(persistDateNew)
 
+                        localStorage.setItem("prevInDate",value);
+
                         let persistReadOnlyNewArrival = {...persistReadOnlyArrival}
                         persistReadOnlyNewArrival[idx]=false;
                         setPersistReadOnlyArrival(persistReadOnlyNewArrival)
@@ -559,6 +599,9 @@ return (
                         setDeparture(value);
                         handleDepartureChange(value);
                         setPersistDate(persistDateNew)
+
+
+                        localStorage.setItem("prevInDate",value);
 
                         let persistReadOnlyNewArrival = {...persistReadOnlyArrival}
                         persistReadOnlyNewArrival[idx]=false;
@@ -640,6 +683,7 @@ return (
                         let persistArrivalNew = {...persistArrival}
                         persistArrivalNew[idx]=value;
                         setPersistArrival(persistArrivalNew)
+                        localStorage.setItem("prevOutDate",value)
                       }}
                       setDeparture={setDeparture}
                       readOnly={readOnlyArrival}
@@ -660,6 +704,7 @@ return (
                         let persistArrivalNew = {...persistArrival}
                         persistArrivalNew[idx]=value;
                         setPersistArrival(persistArrivalNew)
+                        localStorage.setItem("prevOutDate",value)
                       }}
                       setDeparture={setDeparture}
                       readOnly={readOnlyArrival}
