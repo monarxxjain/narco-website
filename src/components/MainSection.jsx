@@ -307,7 +307,7 @@ const MainSection = ({
     }))
 
     setHotels(tempHotels)
-    // console.log("Filtered Hotels :: ", hotels)
+    console.log("Filtered Hotels :: ", hotels)
 
   }, [filters])
 

@@ -388,7 +388,7 @@ const OfferItem = (props, ref) => {
     hotel.finalOffers=newOfferArray
     // console.log(hotel)
 
-  // console.log(newOfferArray , " :: newOfferArray")
+  console.log(newOfferArray , " :: newOfferArray")
 
 
   return (
