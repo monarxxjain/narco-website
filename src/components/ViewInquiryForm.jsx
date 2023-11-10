@@ -7,6 +7,7 @@ import loading from "../assets/img/dualLoading.gif";
 import CustomDatePicker from "./calender/CalenderEnquiry";
 import { europeanCountries, getAllCities } from "./Cities";
 import Input1 from "./Input1";
+import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 
 const formatDate = (ogDate) => {
   let date = new Date(ogDate);
@@ -397,51 +398,57 @@ const ViewInquiryForm = (
 
   const [city, setCity] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+  const {isLoaded} = useJsApiLoader({
+    googleMapsApiKey: 'AIzaSyBen1zTUuynCgRfIStX1NqhEp_eHat4n0k',
+    libraries: ['places']
+  })
 
-  const handleInputChange =  (event) => {
-    cityInput.current.style.display = "block"
+  const handleInputChange = async (event) => {
     const inputValue = event.target.value;
     setCity(inputValue);
-    const apiKey = '59773023-6517-48e4-9394-141f9d829d5b'; // Replace with your SwiftComplete API key
+    const apiKey = 'AIzaSyBen1zTUuynCgRfIStX1NqhEp_eHat4n0k'; // Replace with your SwiftComplete API key
 
-    const europeanCountries = [
-      'al', 'ad', 'at', 'by', 'be', 'ba', 'bg', 'hr', 'cy', 'cz', 'dk', 'ee', 'fi', 'fr', 'de', 'gr', 'hu',
-      'is', 'ie', 'it', 'kosovo', 'lv', 'li', 'lt', 'lu', 'mk', 'mt', 'md', 'mc', 'me', 'nl', 'no', 'pl', 'pt',
-      'ro', 'ru', 'sm', 'rs', 'sk', 'si', 'es', 'se', 'ch', 'ua', 'gb', 'va'
-    ];
+    
+    // const europeanCountries = [
+    //   'al', 'ad', 'at', 'by', 'be', 'ba', 'bg', 'hr', 'cy', 'cz', 'dk', 'ee', 'fi', 'fr', 'de', 'gr', 'hu',
+    //   'is', 'ie', 'it', 'kosovo', 'lv', 'li', 'lt', 'lu', 'mk', 'mt', 'md', 'mc', 'me', 'nl', 'no', 'pl', 'pt',
+    //   'ro', 'ru', 'sm', 'rs', 'sk', 'si', 'es', 'se', 'ch', 'ua', 'gb', 'va'
+    // ];
 
-    const europeanCountriesString = europeanCountries.join(',');
+    // const europeanCountriesString = europeanCountries.join(',');
 
-    const url = `https://api.swiftcomplete.com/v1/places/?key=${apiKey}&countries=${europeanCountriesString}&text=${inputValue}&maxResults=5`;
+    // const url = `https://api.swiftcomplete.com/v1/places/?key=${apiKey}&countries=${europeanCountriesString}&text=${inputValue}&maxResults=5`;
 
-     fetch(url)
-      .then((response) => response.json())
-      .then(async(data) => {
-        // Extract suggestions from the API response
-        const citySuggestions = data.map((result) => result.type.includes("place.settlement") ? result.primary.text : null);
-        const translatedCityPromises = citySuggestions.map(async (cityName) => {
-          const translationResponse = await fetch(
-            `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=it&dt=t&q=${encodeURIComponent(
-              cityName
-            )}`
-          );
-            if(cityName){
-              const translatedCityName = await translationResponse.json();
-              return translatedCityName[0][0][0]; // Extract the translated city name
+    //  fetch(url)
+    //   .then((response) => response.json())
+    //   .then(async(data) => {
+    //     // Extract suggestions from the API response
+    //     const citySuggestions = data.map((result) => result.type.includes("place.settlement") ? result.primary.text : null);
+    //     const translatedCityPromises = citySuggestions.map(async (cityName) => {
+    //       const translationResponse = await fetch(
+    //         `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=it&dt=t&q=${encodeURIComponent(
+    //           cityName
+    //         )}`
+    //       );
+    //         if(cityName){
+    //           const translatedCityName = await translationResponse.json();
+    //           return translatedCityName[0][0][0]; // Extract the translated city name
 
-            }
-            else{
-              return null;
-            }
-        });
+    //         }
+    //         else{
+    //           return null;
+    //         }
+    //     });
 
-        // Wait for all translations to complete before setting the state
-        const translatedCityNames = await Promise.all(translatedCityPromises);
-        const displayArr = translatedCityNames.filter((item,index) => translatedCityNames.indexOf(item) === index);
-        setSuggestions(displayArr);
-        // Now you can use citySuggestions in your application.
-      })
-      .catch((error) => console.error('Error fetching city suggestions:', error));
+    //     // Wait for all translations to complete before setting the state
+    //     const translatedCityNames = await Promise.all(translatedCityPromises);
+    //     const displayArr = translatedCityNames.filter((item,index) => translatedCityNames.indexOf(item) === index);
+    //     setSuggestions(displayArr);
+    //     // Now you can use citySuggestions in your application.
+    //   })
+    //   .catch((error) => console.error('Error fetching city suggestions:', error));
+
+    
   };
 
     function calculateSelectableCheckInDates() {
@@ -944,19 +951,25 @@ return (
                       />
                     </div> */}
                   <div className="col-sm-6">
-                    <Input
 
-                      type="text"
-                      label="Città de Partenza"
-                      placeholder="Inserisci la città di partenza"
-                      value={city}
-                      onChange={handleInputChange}
-                    />
-                    <ul className="city-suggestion-list" ref={cityInput}>
+                    <Autocomplete
+                      onLoad={autocomplete => (autocomplete = autocomplete)}
+                      options={{
+                        types: ['(cities)'],
+                        language: 'it' // Set language to Italian
+                      }}
+                    >
+                      <Input
+                        type="text"
+                        label="Città de Partenza"
+                        placeholder="Inserisci la città di partenza"
+                      />
+                    </Autocomplete>
+                    {/* <ul className="city-suggestion-list" ref={cityInput}>
                       {suggestions.map((suggestion, indx) => (
                         suggestion && <li key={indx} onClick={() => { cityInput.current.style.display = "none"; setCity(suggestion) }} className="city-suggestion">{suggestion}</li>
                       ))}
-                    </ul>
+                    </ul> */}
 
                   </div>
                 </div>
