@@ -338,7 +338,7 @@ function Home() {
             initialConfigData={initialConfigData}
             comunes={finalComunes}
             stelles={finalStars}
-            fascias={finalPrice}
+            fascias={fascias}
             distances={finalDistance}
             config={config}
             handleConfigChange={handleConfigChange}

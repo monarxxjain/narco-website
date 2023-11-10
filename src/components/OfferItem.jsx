@@ -37,9 +37,11 @@ const OfferItem = (props, ref) => {
     handleUpdateRooms,
     setDatePickerOpen,
     config,
-    bestPossiblePrice,
-    setBestPossiblePrice
+    // bestPossiblePrice,
+    // setBestPossiblePrice
   } = props;
+  // const [bestPossiblePrice, setBestPossiblePrice] = useState()
+
   const [loadingOffers, setLoadingOffers] = useState(false);
 
   const [offersLoaded, setOffersLoaded] = useState(false);
@@ -360,11 +362,12 @@ const OfferItem = (props, ref) => {
     newOfferArray.push(offerNum[i]);
   }
   newOfferArray=reFilterOffers(newOfferArray)
+  let bestPossiblePrice = 10000;
     newOfferArray?.map((item, id) => {
       if (item?.minStay === item?.maxStay) {
         const myVar = item?.breakdown[1]?.price || item?.breakdown[0]?.price || item?.breakdown[2]?.price
         if (bestPossiblePrice > myVar) {
-          setBestPossiblePrice(myVar)
+          bestPossiblePrice = myVar
         }
       }
       else {
@@ -379,18 +382,16 @@ const OfferItem = (props, ref) => {
           item?.breakdown[0]?.price ||
           item?.breakdown[2]?.price) * calculatedNights
 
-
-        if (bestPossiblePrice > myVar2) {
-          setBestPossiblePrice(myVar2)
+          if (bestPossiblePrice > myVar2) {
+          bestPossiblePrice=myVar2
         }
       }
       hotel.bestPossiblePrice=bestPossiblePrice;
 
     })
     hotel.finalOffers=newOfferArray
-    // console.log(hotel)
 
-  console.log(newOfferArray , " :: newOfferArray")
+  // console.log(newOfferArray , " :: newOfferArray")
 
 
   return (
@@ -562,7 +563,6 @@ const OfferItem = (props, ref) => {
             
             <OfferPriceSlider
               bestPossiblePrice={bestPossiblePrice}
-              setBestPossiblePrice={setBestPossiblePrice}
               setUserData={setUserData}
               userData={userData}
               sending={sending}

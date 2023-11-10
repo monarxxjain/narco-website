@@ -69,7 +69,6 @@ function calculateNights(endDate, minStay, maxStay) {
 const OfferPriceSlider = (
   {
     bestPossiblePrice,
-    setBestPossiblePrice,
     offers,
     serial,
     setOfferButtonIn,
