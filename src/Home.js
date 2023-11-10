@@ -226,6 +226,8 @@ function Home() {
     if (!initialDataLoaded) {
       loadInitialConfig();
     }
+    localStorage.removeItem("prevInDate");
+    localStorage.removeItem("prevOutDate");
   }, []);
 
   useEffect(() => {

@@ -574,7 +574,7 @@ return (
                                     />
                                 </div> */}
 
-              <div className="right-sm-0 w-100">
+              <div className="right-sm-0 w-100" style={{opacity: `${readOnly?"0.8":"1"}`}}>
                 {
                   offer.minStay != offer.maxStay ?
                     <CustomDatePicker
@@ -687,7 +687,7 @@ return (
                                     />
                                 </div> */}
 
-              <div className="right-sm-0 w-100 ">
+              <div className="right-sm-0 w-100"  style={{opacity: `${readOnlyArrival?"0.8":"1"}`}}>
                 {
                   offer.minStay != offer.maxStay ?
 
