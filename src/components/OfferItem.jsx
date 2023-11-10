@@ -69,6 +69,8 @@ const OfferItem = (props, ref) => {
   }, []);
 
   useEffect(() => {
+    localStorage.setItem("prevInDate",new Date(checkInDate));
+    localStorage.setItem("prevOutDate",new Date(checkOutDate));
     if (!offersLoaded) {
       // Assuming hotel.offers is an array of offer objects with properties like startDate, endDate, and minNightsRequired.
 

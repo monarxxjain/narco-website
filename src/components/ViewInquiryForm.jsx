@@ -265,7 +265,6 @@ const ViewInquiryForm = (
   useEffect(()=>{
     const prevInDate = localStorage.getItem("prevInDate");
     const prevOutDate = localStorage.getItem("prevOutDate");
-    console.log(prevInDate,prevOutDate)
     var prevInBool = true;
     var prevOutBool = true;
     for(let j=0;j<=disabledDates.length;j++){
@@ -278,6 +277,11 @@ const ViewInquiryForm = (
     }
     const calStart = new Date(offer.startDate) >= new Date() ? new Date(offer.startDate) : new Date(new Date() + 1);
     const calEnd = new Date(offer.endDate);
+    calStart.setHours(0, 0, 0, 0);
+    calEnd.setHours(0, 0, 0, 0);
+
+    console.log(prevInDate)
+    console.log(calStart)
     if(new Date(prevInDate)>new Date(calEnd) || new Date(prevInDate)<new Date(calStart)){
       prevInBool = false;
     }
@@ -697,7 +701,6 @@ return (
               <div className="right-sm-0 w-100"  style={{opacity: `${readOnlyArrival?"0.8":"1"}`}}>
                 {
                   offer.minStay != offer.maxStay ?
-
                     <CustomDatePicker
                       minDate={offer.minStay != offer.maxStay ? new Date(new Date(departure).getTime() + offer.minStay * 24 * 60 * 60 * 1000) : new Date(departure)}
                       maxDate={new Date(offer.endDate)}
