@@ -368,6 +368,12 @@ const ViewInquiryForm = (
         setPersistReadOnlyArrival(persistReadOnlyNewArrival)
         setReadOnlyArrival(persistReadOnlyNewArrival[idx])
     }
+    else{
+      let persistReadOnlyNewArrival = {...persistReadOnlyArrival}
+        persistReadOnlyNewArrival[idx]=true;
+        setPersistReadOnlyArrival(persistReadOnlyNewArrival)
+        setReadOnlyArrival(persistReadOnlyNewArrival[idx])
+    }
 
   },[idx])
   const handleAddRoom = () => {
