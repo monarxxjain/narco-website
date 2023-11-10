@@ -299,6 +299,11 @@ const ViewInquiryForm = (
       persistArrivalNew[idx]=new Date(offer.endDate);
       setPersistArrival(persistArrivalNew)
       setArrival(persistArrivalNew[idx])
+
+      let persistReadOnlyNewArrival = {...persistReadOnlyArrival}
+        persistReadOnlyNewArrival[idx]=true;
+        setPersistReadOnlyArrival(persistReadOnlyNewArrival)
+        setReadOnlyArrival(persistReadOnlyNewArrival[idx])
     }
     else if(new Date(offer.startDate).toDateString()==new Date(checkInDate).toDateString() && new Date(offer.endDate).toDateString()==new Date(checkOutDate).toDateString()){
       let persistReadOnlyNew = {...persistReadOnly}
@@ -315,6 +320,11 @@ const ViewInquiryForm = (
       persistArrivalNew[idx]=new Date(offer.endDate);
       setPersistArrival(persistArrivalNew)
       setArrival(persistArrivalNew[idx])
+
+      let persistReadOnlyNewArrival = {...persistReadOnlyArrival}
+        persistReadOnlyNewArrival[idx]=true;
+        setPersistReadOnlyArrival(persistReadOnlyNewArrival)
+        setReadOnlyArrival(persistReadOnlyNewArrival[idx])
     }
     else if(new Date(offer.endDate).toDateString() == new Date(new Date() + 1 + offer.minStay).toDateString()){
       let persistReadOnlyNew = {...persistReadOnly}
@@ -331,6 +341,11 @@ const ViewInquiryForm = (
       persistArrivalNew[idx]=new Date(offer.endDate);
       setPersistArrival(persistArrivalNew)
       setArrival(persistArrivalNew[idx])
+
+      let persistReadOnlyNewArrival = {...persistReadOnlyArrival}
+        persistReadOnlyNewArrival[idx]=true;
+        setPersistReadOnlyArrival(persistReadOnlyNewArrival)
+        setReadOnlyArrival(persistReadOnlyNewArrival[idx])
     }
     else if (prevInBool && prevOutBool){
       let persistReadOnlyNew = {...persistReadOnly}
@@ -347,12 +362,12 @@ const ViewInquiryForm = (
       persistArrivalNew[idx]=new Date(prevOutDate);
       setPersistArrival(persistArrivalNew)
       setArrival(persistArrivalNew[idx])
-    }
 
-    let persistReadOnlyNewArrival = {...persistReadOnlyArrival}
-      persistReadOnlyNewArrival[idx]=true;
-      setPersistReadOnlyArrival(persistReadOnlyNewArrival)
-      setReadOnlyArrival(persistReadOnlyNewArrival[idx])
+      let persistReadOnlyNewArrival = {...persistReadOnlyArrival}
+        persistReadOnlyNewArrival[idx]=false;
+        setPersistReadOnlyArrival(persistReadOnlyNewArrival)
+        setReadOnlyArrival(persistReadOnlyNewArrival[idx])
+    }
 
   },[idx])
   const handleAddRoom = () => {
