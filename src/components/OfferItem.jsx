@@ -474,7 +474,7 @@ const OfferItem = (props, ref) => {
                 ref={sliderRef}
               >
                 {hotel?.images
-                  .slice(0, hotel?.images.length - 1)
+                  // .slice(0, hotel?.images.length - 1)
                   .map((item, i) => (
                     <SwiperSlide key={i}>
                       <div className="img-item">
