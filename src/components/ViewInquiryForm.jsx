@@ -188,10 +188,12 @@ const ViewInquiryForm = (
 
   for (let i = new Date(offer.startDate) >= new Date() ? new Date(offer.startDate) : new Date(); i <= new Date(offer.endDate); i.setDate(i.getDate() + 1)) {
     const currentDate = new Date(i) + 1;
-    if (x % offer.minStay !== 0) {
-      disabledDates.push(new Date(currentDate));
-    } else {
-      x = 0;
+    if(offer.minStay==offer.maxStay){
+      if (x % offer.minStay !== 0) {
+        disabledDates.push(new Date(currentDate));
+      } else {
+        x = 0;
+      }
     }
     x++;
   }
@@ -280,15 +282,12 @@ const ViewInquiryForm = (
     calStart.setHours(0, 0, 0, 0);
     calEnd.setHours(0, 0, 0, 0);
 
-    console.log(prevInDate)
-    console.log(calStart)
     if(new Date(prevInDate)>new Date(calEnd) || new Date(prevInDate)<new Date(calStart)){
       prevInBool = false;
     }
     if(new Date(prevOutDate)>new Date(calEnd) || new Date(prevOutDate)<new Date(calStart)){
       prevOutBool = false;
     }
-    console.log(prevInBool,prevOutBool)
     if(offer.minStay == offer.maxStay && new Date(new Date(offer.startDate).getTime() + offer.minStay * 24 * 60 * 60 * 1000).toDateString() == new Date(offer.endDate).toDateString()){
       let persistReadOnlyNew = {...persistReadOnly}
       persistReadOnlyNew[idx]=true;
