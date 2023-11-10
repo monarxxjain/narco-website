@@ -454,12 +454,12 @@ const OfferItem = (props, ref) => {
                 WebkitMask: `url(${mask}) no-repeat center center / contain`,
               }}
             >
-              <div className="prev-arrow" onClick={handlePrev}>
+              {hotel?.images.length>1 && <div className="prev-arrow" onClick={handlePrev}>
                 <PrevArrow />
-              </div>
-              <div className="next-arrow" onClick={handleNext}>
+              </div>}
+              {hotel?.images.length>1 && <div className="next-arrow" onClick={handleNext}>
                 <NextArrow />
-              </div>
+              </div>}
               {index <= 2|| hotel.ticker ? (
                 <span className="ticker d-md-none ">
                   <span>{hotel.ticker ? hotel.ticker : (index === 1 && "Più venduto") || (index === 2 && "Prezzo più basso")}</span>
