@@ -2348,3 +2348,16 @@ select {
 .breakdown-selector:hover{
   background-color: #0000001e;
 }
+
+.pac-container {
+  // background-color: red;
+  font-family: 'jakarta';
+  border: 0.5px solid #187cbe9e;
+  border-top: none;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.pac-logo::after {
+  display: none;
+}
