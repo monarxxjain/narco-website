@@ -15,7 +15,6 @@ const MainSection = ({
   setDatePickerOpen,
   config,
 }) => {
-
   const [userData, setUserData] = useState({
     Nome: "",
     Cognome: "",
@@ -55,11 +54,11 @@ const MainSection = ({
     setUserData({ ...userData, rooms: updatedRooms });
   };
 
-  const handleChangeValue = (value) => { };
+  const handleChangeValue = (value) => {};
 
-  const handleChange = (name, value) => { };
+  const handleChange = (name, value) => {};
 
-  const handleSubmit = (
+  const handleSubmit = async (
     arrival,
     departure,
     NomeModulo,
@@ -84,6 +83,28 @@ const MainSection = ({
       pricePerPerson: totalPriceForUser,
       packageBoard,
     };
+
+    const res1 = await axios.get(
+      `https://marco-dashboard-backend-azure.vercel.app/booking/userByEmail?email=${userData.Email}`
+    );
+    var userId = 0;
+    if (res1.data == null) {
+      const newUser = await axios.post(
+        `https://marco-dashboard-backend-azure.vercel.app/booking/user`,
+        {
+          fName: userData.Nome,
+          lName: userData.Cognome,
+          email: userData.Email,
+          phone: userData.Phone,
+          lastQuoteSent: new Date(),
+          quoteSent: 404,
+        }
+      );
+      userId = newUser.data._id;
+    } else {
+      userId = res1.data._id;
+    }
+
     if (!userData.Nome) {
       toast.error("Devi inserire name");
       return;
@@ -160,10 +181,66 @@ const MainSection = ({
       default:
         dataToBePosted.Citta = "";
     }
-
+    // {
+    //   userId: userId,
+    //   msg: userData.note,
+    //   tag: [],
+    //   date: new Date(),
+    //   dateLine: `${userData.arrival?.toDateString()} - ${userData.departure?.toDateString()}`,
+    //   periodo: `${new Date(checkOutDate)-new Date(checkInDate)} notti €${localStorage.getItem("priceToBeSent")} per persona`,
+    //   module: "customer support",
+    //   guestDetails: [
+    //     {
+    //       adult: userData.rooms.noofAdults,
+    //       child: userData.rooms.noofChildren,
+    //       childAge: userData.rooms.ages,
+    //     },
+    //   ],
+    //   trasporto: userData.trasporto,
+    //   citta: userData.Citta,
+    //   periodOfStay: "1 week",
+    //   dates: [
+    //     {
+    //       start: userData.arrival,
+    //       end: userData,departure,
+    //       price: localStorage.getItem("priceToBeSent"),
+    //       hotelName: "Riverfront Retreat",
+    //       offerName: "Winter Wonderland Package",
+    //     },
+    //   ],
+    //   boardType: "Mezza Pensione",
+    // }
     setSending(true);
     axios
-      .post(`${BASE_API_URL}/api/enquiry`, { ...dataToBePosted })
+      .post(`https://marco-dashboard-backend-azure.vercel.app/booking`,{
+        "userId":  userId,
+        "msg": userData.note,
+        "tag": [],
+        "date": new Date().toDateString(),
+        "dateLine": `10 nov - 15 nov`,
+        "periodo": "10 notti €800 per persona",
+        "module": userData.Modulo,
+        "guestDetails": [
+          {
+            "adult": 2,
+            "child": 1,
+            "childAge": [8]
+          }
+        ],
+        "trasporto": userData.trasporto,
+        "citta": "city",
+        "periodOfStay": "1 week",
+        "dates": [
+          {
+            "start":"10 nove",
+            "end": "15 nov",
+            "price": 800,
+            "hotelName": "Riverfront Retreat",
+            "offerName": "Winter Wonderland Package"
+          }
+        ],
+        "boardType": "Mezza Pensione"
+      })
       .then((res) => {
         toast.success("Success");
         setSending(false);
@@ -175,28 +252,6 @@ const MainSection = ({
         setTimeout(() => {
           setButtonDisabled(false);
         }, 10000);
-        // setUserData({
-        //     Nome: '',
-        //     Cognome: '',
-        //     Email: '',
-        //     Phone: '',
-        //     postedDate: new Date().toDateString(),
-        //     arrival: formatDate(checkOutDate),
-        //     departure: formatDate(checkInDate),
-        //     packageBoard: 'Half Board',
-        //     rooms: [{ noofAdults: 2, noofChildren: 0, ages: [] }],
-        //     Citta: '',
-        //     note: '',
-        //     NomeModulo,
-        //     Hotel,
-        //     numeroBagagliAlis: '1 bagaglio',
-        //     ferry: '',
-        //     trasporto: 'Bus da 85€',
-        //     numeroBagagliViaggio: 'Milano',
-
-        //     pricePerPerson: totalPriceForUser,
-        //     selectedCitta: '',
-        // });
       })
       .catch((err) => {
         setSending(false);
@@ -288,28 +343,38 @@ const MainSection = ({
     setFilters(newFilters);
   }, [config]);
 
-
   // const [bestPossiblePrice, setBestPossiblePrice] = useState()
   // console.log(hotels)
 
   useEffect(() => {
-    let tempHotels = (hotels.filter((hotel) => {
-      let dalMareDistance = hotel?.distance.find(obj => obj.label.includes("Mare"))?.distance
-      if (hotel?.distance.find(obj => obj.label.includes("Mare"))?.scale == "Km") {
-        dalMareDistance = dalMareDistance * 1000
+    let tempHotels = hotels.filter((hotel) => {
+      let dalMareDistance = hotel?.distance.find((obj) =>
+        obj.label.includes("Mare")
+      )?.distance;
+      if (
+        hotel?.distance.find((obj) => obj.label.includes("Mare"))?.scale == "Km"
+      ) {
+        dalMareDistance = dalMareDistance * 1000;
       }
-      if ((hotel?.bestPossiblePrice <= filters.fascio.max && hotel?.bestPossiblePrice >= filters.fascio.min) &&
-        (filters.comune == "Tutta l'isola" ? 1 : hotel?.state == filters.comune) &&
+      if (
+        hotel?.bestPossiblePrice <= filters.fascio.max &&
+        hotel?.bestPossiblePrice >= filters.fascio.min &&
+        (filters.comune == "Tutta l'isola"
+          ? 1
+          : hotel?.state == filters.comune) &&
         (filters.stelle == 0 ? 1 : filters.stelle == hotel?.rating) &&
-        (dalMareDistance ? (dalMareDistance >= filters.distance.min && dalMareDistance <= filters.distance.max) : 1)) {
-          return hotel
+        (dalMareDistance
+          ? dalMareDistance >= filters.distance.min &&
+            dalMareDistance <= filters.distance.max
+          : 1)
+      ) {
+        return hotel;
       }
-    }))
+    });
 
-    setHotels(tempHotels)
-    console.log("Filtered Hotels :: ", hotels)
-
-  }, [filters])
+    setHotels(tempHotels);
+    // console.log("Filtered Hotels :: ", hotels);
+  }, [filters]);
 
   return (
     <>
@@ -355,9 +420,14 @@ const MainSection = ({
               //   }
               //   hotel.bestPossiblePrice = bestPossiblePrice;
               // });
-              let dalMareDistance = hotel?.distance.find(obj => obj.label.includes("Mare"))?.distance
-              if (hotel?.distance.find(obj => obj.label.includes("Mare"))?.scale == "Km") {
-                dalMareDistance = dalMareDistance * 1000
+              let dalMareDistance = hotel?.distance.find((obj) =>
+                obj.label.includes("Mare")
+              )?.distance;
+              if (
+                hotel?.distance.find((obj) => obj.label.includes("Mare"))
+                  ?.scale == "Km"
+              ) {
+                dalMareDistance = dalMareDistance * 1000;
               }
 
               return (
@@ -428,13 +498,17 @@ const MainSection = ({
             //   hotel.bestPossiblePrice = bestPossiblePrice;
             // });
 
-            let dalMareDistance = hotel?.distance.find(obj => obj.label.includes("Mare"))?.distance
-            if (hotel?.distance.find(obj => obj.label.includes("Mare"))?.scale == "Km") {
-              dalMareDistance = dalMareDistance * 1000
+            let dalMareDistance = hotel?.distance.find((obj) =>
+              obj.label.includes("Mare")
+            )?.distance;
+            if (
+              hotel?.distance.find((obj) => obj.label.includes("Mare"))
+                ?.scale == "Km"
+            ) {
+              dalMareDistance = dalMareDistance * 1000;
             }
             return (
               <div style={{ marginTop: "2rem" }}>
-
                 <OfferItem
                   setUserData={setUserData}
                   userData={userData}

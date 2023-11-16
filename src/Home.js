@@ -228,6 +228,7 @@ function Home() {
     }
     localStorage.removeItem("prevInDate");
     localStorage.removeItem("prevOutDate");
+    localStorage.removeItem("priceToBeSent");
   }, []);
 
   useEffect(() => {
