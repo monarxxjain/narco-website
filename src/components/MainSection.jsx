@@ -56,7 +56,8 @@ const MainSection = ({
 
   const handleChangeValue = (value) => {};
 
-  const handleChange = (name, value) => {};
+  
+  const [bookings,setBooking] = useState(null);
 
   const handleSubmit = async (
     arrival,
@@ -249,8 +250,10 @@ const MainSection = ({
       }
     }
     setSending(true);
+    
     axios
       .post(`https://marco-dashboard-backend-azure.vercel.app/booking`,{
+        "id" : bookings +1,
         "userId":  userId,
         "msg": userData.note,
         "tag": [],
@@ -407,6 +410,17 @@ const MainSection = ({
     setHotels(tempHotels);
     // console.log("Filtered Hotels :: ", hotels);
   }, [filters]);
+
+  useEffect(()=>{
+
+    axios.get(`https://marco-dashboard-backend-azure.vercel.app/booking`) 
+    .then(response => {
+      setBooking(response.data.length);
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+  },[])
 
   return (
     <>
