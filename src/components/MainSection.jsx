@@ -212,41 +212,30 @@ const MainSection = ({
     //   boardType: "Mezza Pensione",
     // }
     const getMonth =(month) =>{
-      if(month == 0){
-        return "jan";
-      }
-      else if(month == 1){
+      if (month === 0) {
+        return "gen";
+      } else if (month === 1) {
         return "feb";
-      }
-      else if(month == 2){
+      } else if (month === 2) {
         return "mar";
-      }
-      else if(month == 3){
+      } else if (month === 3) {
         return "apr";
-      }
-      else if(month == 4){
-        return "may";
-      }
-      else if(month == 5){
-        return "jun";
-      }
-      else if(month == 6){
-        return "jul";
-      }
-      else if(month == 7){
-        return "aug";
-      }
-      else if(month == 8){
-        return "sep";
-      }
-      else if(month == 9){
-        return "oct";
-      }
-      else if(month == 10){
+      } else if (month === 4) {
+        return "mag"; 
+      } else if (month === 5) {
+        return "giu"; 
+      } else if (month === 6) {
+        return "lug"; 
+      } else if (month === 7) {
+        return "ago"; 
+      } else if (month === 8) {
+        return "set"; 
+      } else if (month === 9) {
+        return "ott"; 
+      } else if (month === 10) {
         return "nov";
-      }
-      else if(month == 11){
-        return "dec";
+      } else if (month === 11) {
+        return "dic"; 
       }
     }
     setSending(true);
