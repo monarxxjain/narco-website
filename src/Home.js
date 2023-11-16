@@ -228,7 +228,8 @@ function Home() {
     }
     localStorage.removeItem("prevInDate");
     localStorage.removeItem("prevOutDate");
-    localStorage.removeItem("priceToBeSent");
+    localStorage.removeItem("offer");
+    localStorage.removeItem("hotel");
   }, []);
 
   useEffect(() => {

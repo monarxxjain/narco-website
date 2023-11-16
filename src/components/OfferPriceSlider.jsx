@@ -364,14 +364,6 @@ const OfferPriceSlider = (
                     {(item?.breakdown[1]?.price && item?.breakdown[1].currency) ||
                       (item?.breakdown[0]?.price && item?.breakdown[0].currency) ||
                       (item?.breakdown[2]?.price && item?.breakdown[2].currency)}
-
-
-
-                      {item?.minStay === item?.maxStay 
-                      ?
-                      localStorage.setItem("priceToBeSent",item.breakdown[breakDownTypeChecker(item)-1].price)
-                      :
-                      localStorage.setItem("priceToBeSent",(((!(activeData?.minStay === activeData?.maxStay) && activeData?.id===item?.id) ? (item.breakdown[currentBreakdown - 1]?.price!==0 ? (item.breakdown[currentBreakdown - 1]?.price) : item.breakdown[breakDownTypeChecker(item) - 1].price) : item.breakdown[breakDownTypeChecker(item) - 1].price)* calculatedNights))}
                   </h3>
 
                 </div>
@@ -506,7 +498,7 @@ const OfferPriceSlider = (
           checkInDate={checkInDate}
           checkOutDate={checkOutDate}
           offer={activeData}
-          Hotel={hotel["Nome Hotel"]}
+          Hotel={hotel}
           NomeModulo={hotel["NomeModulo"]}
           totalPriceForUser={activeData?.breakdown || []}
           buttonDisabled={buttonDisabled}

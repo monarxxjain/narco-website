@@ -25,7 +25,7 @@ const MainSection = ({
 
     arrival: null,
     packageBoard: null,
-    rooms: [{ noofAdults: 2, noofChildren: 0, ages: [] }],
+    rooms: [{ adult: 2, child: 0, childAge: [] }],
     Citta: "",
     note: "",
     Modulo: "infoischia",
@@ -210,6 +210,44 @@ const MainSection = ({
     //   ],
     //   boardType: "Mezza Pensione",
     // }
+    const getMonth =(month) =>{
+      if(month == 0){
+        return "jan";
+      }
+      else if(month == 1){
+        return "feb";
+      }
+      else if(month == 2){
+        return "mar";
+      }
+      else if(month == 3){
+        return "apr";
+      }
+      else if(month == 4){
+        return "may";
+      }
+      else if(month == 5){
+        return "jun";
+      }
+      else if(month == 6){
+        return "jul";
+      }
+      else if(month == 7){
+        return "aug";
+      }
+      else if(month == 8){
+        return "sep";
+      }
+      else if(month == 9){
+        return "oct";
+      }
+      else if(month == 10){
+        return "nov";
+      }
+      else if(month == 11){
+        return "dec";
+      }
+    }
     setSending(true);
     axios
       .post(`https://marco-dashboard-backend-azure.vercel.app/booking`,{
@@ -217,26 +255,20 @@ const MainSection = ({
         "msg": userData.note,
         "tag": [],
         "date": new Date().toDateString(),
-        "dateLine": `10 nov - 15 nov`,
+        "dateLine": `${new Date(localStorage.getItem("prevInDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevInDate")).getMonth())} - ${new Date(localStorage.getItem("prevOutDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevOutDate")).getMonth())}`,
         "periodo": "10 notti €800 per persona",
         "module": userData.Modulo,
-        "guestDetails": [
-          {
-            "adult": 2,
-            "child": 1,
-            "childAge": [8]
-          }
-        ],
+        "guestDetails": userData.rooms,
         "trasporto": userData.trasporto,
-        "citta": "city",
+        "citta": `${userData.Citta? userData.Citta : "Nessuna"}`,
         "periodOfStay": "1 week",
         "dates": [
           {
-            "start":"10 nove",
-            "end": "15 nov",
+            "start":`${new Date(localStorage.getItem("prevInDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevInDate")).getMonth())}`,
+            "end": `${new Date(localStorage.getItem("prevOutDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevOutDate")).getMonth())}`,
             "price": 800,
-            "hotelName": "Riverfront Retreat",
-            "offerName": "Winter Wonderland Package"
+            "hotelName": `${localStorage.getItem("hotel")}`,
+            "offerName": `${localStorage.getItem("offer")}`
           }
         ],
         "boardType": "Mezza Pensione"

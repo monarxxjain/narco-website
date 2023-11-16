@@ -156,6 +156,11 @@ const ViewInquiryForm = (
     setMinArrivalDate(minimumArrival);
   }
 
+  useEffect(()=>{
+    localStorage.setItem("offer",offer.id)
+    localStorage.setItem("offer",Hotel.id)
+  },[offer,Hotel])
+
   useEffect(() => {
     setDateValid(checkDateValidity(offer, checkInDate, checkOutDate));
     // if (arrival && departure) {
@@ -383,7 +388,7 @@ const ViewInquiryForm = (
   const handleAddRoom = () => {
     setUserData({
       ...userData,
-      rooms: [...userData.rooms, { noofAdults: 2, noofChildren: 0, ages: [] }],
+      rooms: [...userData.rooms, { adult: 2, child: 0, childAge: [] }],
     });
   };
 
