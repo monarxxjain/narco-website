@@ -158,7 +158,7 @@ const ViewInquiryForm = (
 
   useEffect(()=>{
     localStorage.setItem("offer",offer.id)
-    localStorage.setItem("offer",Hotel.id)
+    localStorage.setItem("hotel",Hotel.id)
   },[offer,Hotel])
 
   useEffect(() => {
