@@ -258,7 +258,7 @@ const MainSection = ({
           {
             "start":`${new Date(localStorage.getItem("prevInDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevInDate")).getMonth())}`,
             "end": `${new Date(localStorage.getItem("prevOutDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevOutDate")).getMonth())}`,
-            "price": 800,
+            "price": localStorage.getItem("price"),
             "hotelName": `${localStorage.getItem("hotel")}`,
             "offerName": `${localStorage.getItem("offer")}`
           }

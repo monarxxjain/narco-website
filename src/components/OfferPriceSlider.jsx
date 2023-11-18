@@ -265,6 +265,14 @@ const OfferPriceSlider = (
     setCurrentBreakdown(breakdown)
 
   }
+  useEffect(()=>{
+   localStorage.setItem("price", activeData?.minStay === activeData?.maxStay 
+    ?
+    activeData.breakdown[breakDownTypeChecker(activeData)-1].price
+    :
+    (((!(activeData?.minStay === activeData?.maxStay) && activeData?.id===activeData?.id) ? (activeData.breakdown[currentBreakdown - 1]?.price!==0 ? (activeData.breakdown[currentBreakdown - 1]?.price) : activeData.breakdown[breakDownTypeChecker(activeData) - 1].price) : activeData.breakdown[breakDownTypeChecker(activeData) - 1].price)* calculatedNights))
+
+  },[activeData])
 
 
   return (
@@ -364,6 +372,7 @@ const OfferPriceSlider = (
                     {(item?.breakdown[1]?.price && item?.breakdown[1].currency) ||
                       (item?.breakdown[0]?.price && item?.breakdown[0].currency) ||
                       (item?.breakdown[2]?.price && item?.breakdown[2].currency)}
+                      {/* lolololo */}
                   </h3>
 
                 </div>
