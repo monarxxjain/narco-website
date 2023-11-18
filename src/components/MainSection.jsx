@@ -263,7 +263,7 @@ const MainSection = ({
             "offerName": `${localStorage.getItem("offer")}`
           }
         ],
-        "boardType": "Mezza Pensione"
+        "boardType": localStorage.getItem("selectedPackage")
       })
       .then((res) => {
         toast.success("Success");
@@ -276,6 +276,7 @@ const MainSection = ({
         setTimeout(() => {
           setButtonDisabled(false);
         }, 10000);
+        localStorage.removeItem("selectedPackage");
       })
       .catch((err) => {
         setSending(false);

@@ -180,13 +180,6 @@ const ViewInquiryForm = (
     Hotel,
   ]);
 
-  // const [readOnly, setReadOnly] = useState(false);
-
-  // useEffect(()=>{
-  //   if(idx===0){
-  //     setDeparture(new Date())
-  //   }
-  // },[])
 
   const disabledDates = [];
   let x = 0;
@@ -214,7 +207,6 @@ const ViewInquiryForm = (
     const equal = nights === minNights;
 
     setReadOnly(equal);
-    // const maxNights = parseInt(offer['massimo notti']);
 
     setArrival(
       equal
@@ -245,7 +237,6 @@ const ViewInquiryForm = (
     const minArrivalDateCalc = departureDateFromForm.setDate(
       departureDateFromForm.getDate() + minNights
     );
-    // arrivalRef?.current?.min(minArrivalDate)handleArrivalChange
 
     setMinArrivalDate(minArrivalDateCalc);
   };
@@ -383,7 +374,7 @@ const ViewInquiryForm = (
         setPersistReadOnlyArrival(persistReadOnlyNewArrival)
         setReadOnlyArrival(persistReadOnlyNewArrival[idx])
     }
-
+    localStorage.setItem("selectedPackage","Pensione completa")
   },[idx])
   const handleAddRoom = () => {
     setUserData({
@@ -775,10 +766,10 @@ return (
               <Input
                 value={selectItems[selectedPackage]}
                 handleChange={(e) => {
-                  // setSelectedPackage(e.target.value);
                   selectItems.forEach((item, i) => {
                     if (item?.price != 0)
                       setSelectedPackage(e.target.value);
+                      localStorage.setItem("selectedPackage",e.target.value)
                   });
                 }}
                 name="packageBoard"
