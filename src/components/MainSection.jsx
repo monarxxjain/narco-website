@@ -248,7 +248,7 @@ const MainSection = ({
         "tag": [],
         "date": new Date().toDateString(),
         "dateLine": `${new Date(localStorage.getItem("prevInDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevInDate")).getMonth())} - ${new Date(localStorage.getItem("prevOutDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevOutDate")).getMonth())}`,
-        "periodo": `${(new Date(localStorage.getItem("prevOutDate")) - new Date(localStorage.getItem("prevInDate")))/86400000} notti €800 per persona`,
+        "periodo": `${(new Date(localStorage.getItem("prevOutDate")) - new Date(localStorage.getItem("prevInDate")))/86400000} notti ${localStorage.getItem("price")} per persona`,
         "module": userData.Modulo,
         "guestDetails": userData.rooms,
         "trasporto": userData.trasporto,
