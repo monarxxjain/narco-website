@@ -254,6 +254,8 @@ const MainSection = ({
         "trasporto": userData.trasporto?userData.trasporto : "Nessuna",
         "citta": `${userData.Citta? userData.Citta : "Nessuna"}`,
         "periodOfStay": "1 week",
+        "bags" : userData.bags?userData.bags : "Nessuna",
+        "carSize":userData.carSize?userData.carSize:"Nessuna",
         "dates": [
           {
             "start":`${new Date(localStorage.getItem("prevInDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevInDate")).getMonth())}`,
