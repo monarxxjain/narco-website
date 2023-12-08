@@ -22,11 +22,12 @@ const MainSection = ({
     Phone: "+39",
     postedDate: new Date().toDateString(),
     departure: null,
-
+    bags :null,
+    carSize :null,
     arrival: null,
     packageBoard: null,
     rooms: [{ adult: 2, child: 0, childAge: [] }],
-    Citta: "",
+    Citta: null,
     note: "",
     Modulo: "infoischia",
     Hotel: null,
@@ -34,9 +35,8 @@ const MainSection = ({
     numeroBagagliAlis: "1",
     ferry:
       "traghetto con auto fino 4 mt. da Pozzuoli A/R € 75 - passeggeri € 22",
-    trasporto: "Bus",
+    trasporto: "",
     numeroBagagliViaggio: "",
-
     pricePerPerson: "",
     selectedCitta: "",
   });
@@ -251,7 +251,7 @@ const MainSection = ({
         "periodo": `${(new Date(localStorage.getItem("prevOutDate")) - new Date(localStorage.getItem("prevInDate")))/86400000} notti ${localStorage.getItem("price")} per persona`,
         "module": userData.Modulo,
         "guestDetails": userData.rooms,
-        "trasporto": userData.trasporto,
+        "trasporto": userData.trasporto?userData.trasporto : "Nessuna",
         "citta": `${userData.Citta? userData.Citta : "Nessuna"}`,
         "periodOfStay": "1 week",
         "dates": [
