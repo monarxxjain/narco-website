@@ -950,19 +950,21 @@ return (
                     </div> */}
                   <div className="col-sm-6">
 
-                    <Autocomplete
-                      onLoad={autocomplete => (autocomplete = autocomplete)}
-                      options={{
-                        types: ['(cities)'],
-                        language: 'it' // Set language to Italian
-                      }}
-                    >
-                      <Input
-                        type="text"
-                        label="Città de Partenza"
-                        placeholder="Inserisci la città di partenza"
-                      />
-                    </Autocomplete>
+                  <Autocomplete
+                    onLoad={autocomplete => (autocomplete = autocomplete)}
+                    options={{
+                      types: ['(cities)'],
+                      language: 'it' // Set language to Italian
+                    }}
+                  >
+                    <Input
+                      type="text"
+                      label="Città de Partenza"
+                      placeholder="Inserisci la città di partenza"
+                      style={{ fontFamily: 'chillax', fontSize: '16px' }}
+                    />
+                  </Autocomplete>
+
                     {/* <ul className="city-suggestion-list" ref={cityInput}>
                       {suggestions.map((suggestion, indx) => (
                         suggestion && <li key={indx} onClick={() => { cityInput.current.style.display = "none"; setCity(suggestion) }} className="city-suggestion">{suggestion}</li>

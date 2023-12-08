@@ -68,6 +68,7 @@ const Footer = ({
     <footer
       style={{
         position: isKeyboardOpen || datePickerOpen ? "relative" : "sticky",
+        marginTop : "50px"
       }}
     >
       {/* <EventListener

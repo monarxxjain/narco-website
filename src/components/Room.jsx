@@ -53,7 +53,7 @@ function Room({ roomData, id, removeRoom, handleUpdateRoom }) {
                 )}
             </h5>
             <div className="row g-3">
-                <div className="col-sm-6 col-md-3 col-lg-2">
+                <div className="col-sm-6 col-md-3 col-lg-2" style={{marginLeft : -10}}>
                     <Input
                         name="adult"
                         select
