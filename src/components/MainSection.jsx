@@ -200,6 +200,18 @@ const MainSection = ({
     //   ],
     //   boardType: "Mezza Pensione",
     // }
+    function formatDate(date) {
+      const day = date.getDate();
+      const month = date.getMonth() + 1; // Months are zero-based
+      const year = date.getFullYear();
+    
+      // Pad day and month with leading zeros if needed
+      const formattedDay = day < 10 ? `0${day}` : day;
+      const formattedMonth = month < 10 ? `0${month}` : month;
+    
+      return `${formattedDay}-${formattedMonth}-${year}`;
+    }
+
     const getMonth =(month) =>{
       if (month === 0) {
         return "gen";
@@ -247,6 +259,8 @@ const MainSection = ({
         "carSize":`${userData.carSize?userData.carSize:"Nessuna"}`,
         "dates": [
           {
+            "checkIn" : formatDate(new Date(localStorage.getItem("prevInDate"))),
+            "checkOut" : formatDate(new Date(localStorage.getItem("prevOutDate"))),
             "start":`${new Date(localStorage.getItem("prevInDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevInDate")).getMonth())}`,
             "end": `${new Date(localStorage.getItem("prevOutDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevOutDate")).getMonth())}`,
             "price": localStorage.getItem("price"),
@@ -260,6 +274,7 @@ const MainSection = ({
         toast.success("Success");
         setSending(false);
         setButtonDisabled(true);
+        setBooking(bookings+1);
         setTimeout(() => {
           handleOfferClose();
         }, 8000);
