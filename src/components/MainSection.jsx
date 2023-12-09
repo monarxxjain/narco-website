@@ -7,6 +7,7 @@ import axios from "axios";
 import { BASE_API_URL } from "../keys";
 import OfferItem from "./OfferItem";
 import Shapes from "./Shapes";
+import { compileString } from "sass";
 const MainSection = ({
   hotels,
   setHotels,
@@ -91,7 +92,7 @@ const MainSection = ({
     var userId = 0;
     if (res1.data == null) {
       const newUser = await axios.post(
-        `https://marco-dashboard-backend-azure.vercel.app/booking/user`,
+        `http://localhost:5001/booking/user`,
         {
           fName: userData.Nome,
           lName: userData.Cognome,
@@ -165,20 +166,8 @@ const MainSection = ({
         break;
 
       case "viaggio":
-        if (!userData.trasporto) {
-          toast.error("Devi inserire  Tipo di trasporto preferito");
-          return;
-        }
-        if (!userData.numeroBagagliViaggio) {
-          toast.error("Devi inserire Città di Partenza");
-
-          return;
-        }
-
         dataToBePosted.Citta = `${userData.numeroBagagliViaggio} con ${userData.trasporto}`;
-
         break;
-
       default:
         dataToBePosted.Citta = "";
     }
@@ -239,9 +228,9 @@ const MainSection = ({
       }
     }
     setSending(true);
-    
+    console.log(userData)
     axios
-      .post(`https://marco-dashboard-backend-azure.vercel.app/booking`,{
+      .post(`http://localhost:5001/booking`,{
         "id" : bookings +1,
         "userId":  userId,
         "msg": userData.note,
@@ -254,8 +243,8 @@ const MainSection = ({
         "trasporto": userData.trasporto?userData.trasporto : "Nessuna",
         "citta": `${userData.Citta? userData.Citta : "Nessuna"}`,
         "periodOfStay": "1 week",
-        "bags" : userData.bags?userData.bags : "Nessuna",
-        "carSize":userData.carSize?userData.carSize:"Nessuna",
+        "bags" : `${userData.bags?userData.bags : "Nessuna"}`,
+        "carSize":`${userData.carSize?userData.carSize:"Nessuna"}`,
         "dates": [
           {
             "start":`${new Date(localStorage.getItem("prevInDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevInDate")).getMonth())}`,
@@ -271,7 +260,6 @@ const MainSection = ({
         toast.success("Success");
         setSending(false);
         setButtonDisabled(true);
-
         setTimeout(() => {
           handleOfferClose();
         }, 8000);
@@ -279,6 +267,31 @@ const MainSection = ({
           setButtonDisabled(false);
         }, 10000);
         localStorage.removeItem("selectedPackage");
+        setUserData({
+          Nome: "",
+          Cognome: "",
+          Email: "",
+          Phone: "+39",
+          postedDate: new Date().toDateString(),
+          departure: null,
+          bags :null,
+          carSize :null,
+          arrival: null,
+          packageBoard: null,
+          rooms: [{ adult: 2, child: 0, childAge: [] }],
+          Citta: null,
+          note: "",
+          Modulo: "infoischia",
+          Hotel: null,
+      
+          numeroBagagliAlis: "1",
+          ferry:
+            "traghetto con auto fino 4 mt. da Pozzuoli A/R € 75 - passeggeri € 22",
+          trasporto: "",
+          numeroBagagliViaggio: "",
+          pricePerPerson: "",
+          selectedCitta: "",
+        })
       })
       .catch((err) => {
         setSending(false);
