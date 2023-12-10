@@ -236,7 +236,7 @@ const ViewInquiryForm = (
     userData.carSize=null;
     userData.trasporto = null;
     if(value == "ferry"){
-      userData.carSize ="traghetto con auto fino 4 mt. da Pozzuoli A/R € 75 - passeggeri € 22";
+      userData.carSize ="3.98";
     }
     else if(value == "viaggio"){
       userData.trasporto = "Bus";
@@ -1079,20 +1079,7 @@ return (
 );
 };
 const options2 = [
-  {
-    options:
-      "traghetto con auto fino 4 mt. da Pozzuoli A/R € 75 - passeggeri € 22",
-    text: "traghetto con auto fino 4 mt. da Pozzuoli A/R € 75 - passeggeri € 22",
-  },
-  {
-    options : "traghetto con auto tra i 4 mt. fino ai 4.5 mt. da Pozzuoli A/R € 90 - passeggeri € 22",
-    text : "traghetto con auto tra i 4 mt. fino ai 4.5 mt. da Pozzuoli A/R € 90 - passeggeri € 22",
-  },
-  {
-    options:
-      "traghetto con auto su. ai 4 mt. da Pozzuoli A/R € 100 - passeggeri € 22",
-    text: "traghetto con auto su. ai 4 mt. da Pozzuoli A/R € 100 - passeggeri € 22",
-  },
+  { options: "3.98", text: "traghetto con auto fino 4 mt. da Pozzuoli A/R € 75 - passeggeri € 22", }, { options : "4.48", text : "traghetto con auto tra i 4 mt. fino ai 4.5 mt. da Pozzuoli A/R € 90 - passeggeri € 22", }, { options: "5", text: "traghetto con auto su. ai 4 mt. da Pozzuoli A/R € 100 - passeggeri € 22", },
 ];
 const options3 = [
   {
