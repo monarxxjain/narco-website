@@ -270,7 +270,7 @@ const MainSection = ({
     console.log(userData)
     axios
       .post(`https://marco-dashboard-backend-akshat-bhansalis-projects.vercel.app/booking`,{
-        "id" : bookings +1,
+        "id" : bookings +1 ,
         "userId":  userId,
         "msg": userData.note,
         "tag": [],
@@ -279,7 +279,7 @@ const MainSection = ({
         "periodo": `${(new Date(localStorage.getItem("prevOutDate")) - new Date(localStorage.getItem("prevInDate")))/86400000} notti ${localStorage.getItem("price")} per persona`,
         "module": userData.Modulo,
         "guestDetails": userData.rooms,
-        "trasporto": userData.trasporto?userData.trasporto : "Nessuna",
+        "trasporto": userData.trasporto?userData.trasporto : "Nessuna Trasporto",
         "citta": `${userData.Citta? userData.Citta : "Nessuna"}`,
         "periodOfStay": "1 week",
         "bags" : `${userData.bags?userData.bags : "Nessuna"}`,
