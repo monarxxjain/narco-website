@@ -7,6 +7,7 @@ import axios from "axios";
 import { BASE_API_URL } from "../keys";
 import OfferItem from "./OfferItem";
 import Shapes from "./Shapes";
+import { compileString } from "sass";
 const MainSection = ({
   hotels,
   setHotels,
@@ -22,11 +23,12 @@ const MainSection = ({
     Phone: "+39",
     postedDate: new Date().toDateString(),
     departure: null,
-
+    bags :null,
+    carSize :null,
     arrival: null,
     packageBoard: null,
     rooms: [{ adult: 2, child: 0, childAge: [] }],
-    Citta: "",
+    Citta: null,
     note: "",
     Modulo: "infoischia",
     Hotel: null,
@@ -34,9 +36,8 @@ const MainSection = ({
     numeroBagagliAlis: "1",
     ferry:
       "traghetto con auto fino 4 mt. da Pozzuoli A/R € 75 - passeggeri € 22",
-    trasporto: "Bus",
+    trasporto: "",
     numeroBagagliViaggio: "",
-
     pricePerPerson: "",
     selectedCitta: "",
   });
@@ -192,20 +193,8 @@ const MainSection = ({
         break;
 
       case "viaggio":
-        if (!userData.trasporto) {
-          toast.error("Devi inserire  Tipo di trasporto preferito");
-          return;
-        }
-        if (!userData.numeroBagagliViaggio) {
-          toast.error("Devi inserire Città di Partenza");
-
-          return;
-        }
-
         dataToBePosted.Citta = `${userData.numeroBagagliViaggio} con ${userData.trasporto}`;
-
         break;
-
       default:
         dataToBePosted.Citta = "";
     }
@@ -238,6 +227,18 @@ const MainSection = ({
     //   ],
     //   boardType: "Mezza Pensione",
     // }
+    function formatDate(date) {
+      const day = date.getDate();
+      const month = date.getMonth() + 1; // Months are zero-based
+      const year = date.getFullYear();
+    
+      // Pad day and month with leading zeros if needed
+      const formattedDay = day < 10 ? `0${day}` : day;
+      const formattedMonth = month < 10 ? `0${month}` : month;
+    
+      return `${year}-${formattedMonth}-${formattedDay}`;
+    }
+
     const getMonth =(month) =>{
       if (month === 0) {
         return "gen";
@@ -266,9 +267,9 @@ const MainSection = ({
       }
     }
     setSending(true);
-    
+    console.log(userData)
     axios
-      .post(`https://marco-dashboard-backend-azure.vercel.app/booking`,{
+      .post(`https://marco-dashboard-backend-akshat-bhansalis-projects.vercel.app/booking`,{
         "id" : bookings +1,
         "userId":  userId,
         "msg": userData.note,
@@ -278,11 +279,15 @@ const MainSection = ({
         "periodo": `${(new Date(localStorage.getItem("prevOutDate")) - new Date(localStorage.getItem("prevInDate")))/86400000} notti ${localStorage.getItem("price")} per persona`,
         "module": userData.Modulo,
         "guestDetails": userData.rooms,
-        "trasporto": userData.trasporto,
+        "trasporto": userData.trasporto?userData.trasporto : "Nessuna",
         "citta": `${userData.Citta? userData.Citta : "Nessuna"}`,
         "periodOfStay": "1 week",
+        "bags" : `${userData.bags?userData.bags : "Nessuna"}`,
+        "carSize":`${userData.carSize?userData.carSize:"Nessuna"}`,
         "dates": [
           {
+            "checkIn" : formatDate(new Date(localStorage.getItem("prevInDate"))),
+            "checkOut" : formatDate(new Date(localStorage.getItem("prevOutDate"))),
             "start":`${new Date(localStorage.getItem("prevInDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevInDate")).getMonth())}`,
             "end": `${new Date(localStorage.getItem("prevOutDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevOutDate")).getMonth())}`,
             "price": localStorage.getItem("price"),
@@ -296,7 +301,7 @@ const MainSection = ({
         toast.success("Success");
         setSending(false);
         setButtonDisabled(true);
-
+        setBooking(bookings+1);
         setTimeout(() => {
           handleOfferClose();
         }, 8000);
@@ -304,6 +309,31 @@ const MainSection = ({
           setButtonDisabled(false);
         }, 10000);
         localStorage.removeItem("selectedPackage");
+        setUserData({
+          Nome: "",
+          Cognome: "",
+          Email: "",
+          Phone: "+39",
+          postedDate: new Date().toDateString(),
+          departure: null,
+          bags :null,
+          carSize :null,
+          arrival: null,
+          packageBoard: null,
+          rooms: [{ adult: 2, child: 0, childAge: [] }],
+          Citta: null,
+          note: "",
+          Modulo: "infoischia",
+          Hotel: null,
+      
+          numeroBagagliAlis: "1",
+          ferry:
+            "traghetto con auto fino 4 mt. da Pozzuoli A/R € 75 - passeggeri € 22",
+          trasporto: "",
+          numeroBagagliViaggio: "",
+          pricePerPerson: "",
+          selectedCitta: "",
+        })
       })
       .catch((err) => {
         setSending(false);

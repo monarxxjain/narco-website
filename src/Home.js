@@ -355,7 +355,7 @@ function Home() {
               setDatePickerOpen={setDatePickerOpen}
             />
           ) : (
-            <h1 style={{ minHeight: "10rem", padding: "2rem" }}>
+            <h1 style={{ minHeight: "10rem", padding: "2rem",marginBottom : "10rem"}}>
               Nessun hotel trovato
             </h1>
           )}

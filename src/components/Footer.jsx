@@ -80,42 +80,6 @@ const Footer = ({
           style={{ zIndex: -1 }}
           className="footer-wrapper d-none d-sm-flex align-items-center justify-center"
         >
-          {/* <DropdownGroup
-                        handleChange={(value) => handleFooterConfig('comune', value)}
-                        value={footerConfig.comune}
-                        label="Comune"
-                        icon={<Location />}
-                        data={comunes}
-                        position="top"
-                    />
-                    <DropdownGroup
-                        handleChange={(value) => handleFooterConfig('distance', value)}
-                        label="Distanza dal mare"
-                        name="distance"
-                        icon={<Stelle />}
-                        value={footerConfig.distance}
-                        data={distances}
-                        position="top"
-                    />
-                    <DropdownGroup
-                        handleChange={(value) => handleFooterConfig('fascio', value)}
-                        label="Fascia di Prezzo "
-                        name="fascio"
-                        smText="(giorno)"
-                        icon={<Dollar />}
-                        value={footerConfig.fascio}
-                        data={fascio}
-                        position="top"
-                    />
-                    <DropdownGroup
-                        handleChange={(value) => handleFooterConfig('stelle', value)}
-                        label="Stelle"
-                        name="stelle"
-                        icon={<FiveStar />}
-                        value={footerConfig.stelle}
-                        data={stelles}
-                        position="top"
-                    /> */}
           <div className="custom-dropdown">
             <label htmlFor="checkin">Check In</label>
             <input
@@ -152,10 +116,6 @@ const Footer = ({
               <Calendar />
             </span>
           </div>
-
-          {/* <button onClick={handleSubmit} type="submit" className="cmn-btn d-none d-sm-flex">
-                        <SearchIcon /> Find a Best Hotel
-                    </button> */}
         </div>
         <div className="footer-wrapper d-sm-none custom-dropdown-wrp">
           <div className="custom-dropdown">
