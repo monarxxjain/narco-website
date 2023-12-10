@@ -234,6 +234,13 @@ const ViewInquiryForm = (
     userData.Citta = null;
     userData.bags=null;
     userData.carSize=null;
+    userData.trasporto = null;
+    if(value == "ferry"){
+      userData.carSize ="traghetto con auto fino 4 mt. da Pozzuoli A/R € 75 - passeggeri € 22";
+    }
+    else if(value == "viaggio"){
+      userData.trasporto = "Bus";
+    }
   },[value])
 
   const handleDepartureChange = (value) => {
@@ -883,6 +890,7 @@ return (
                     label="Dimensione Auto"
                     select
                     options={options2}
+                    // 
                   />
                 </>
               )}
