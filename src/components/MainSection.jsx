@@ -85,25 +85,52 @@ const MainSection = ({
       packageBoard,
     };
 
-    const res1 = await axios.get(
-      `https://marco-dashboard-backend-azure.vercel.app/booking/userByEmail?email=${userData.Email}`
-    );
-    var userId = 0;
-    if (res1.data == null) {
-      const newUser = await axios.post(
-        `https://marco-dashboard-backend-azure.vercel.app/booking/user`,
-        {
-          fName: userData.Nome,
-          lName: userData.Cognome,
-          email: userData.Email,
-          phone: userData.Phone,
-          lastQuoteSent: new Date(),
-          quoteSent: 404,
-        }
+    try {
+      const res1 = await axios.get(
+        `https://marco-dashboard-backend-azure.vercel.app/booking/userByEmail?email=${userData.Email}`
       );
-      userId = newUser.data._id;
-    } else {
-      userId = res1.data._id;
+      console.log("1");
+      var userId = 0;
+      if (res1.data == null) {
+        try {
+          const newUser = await axios.post(
+            `https://marco-dashboard-backend-akshat-bhansalis-projects.vercel.app/booking/user`,
+            {
+              fName: userData.Nome,
+              lName: userData.Cognome,
+              email: userData.Email,
+              phone: userData.Phone,
+              lastQuoteSent: new Date(),
+              quoteSent: 404,
+            }
+          );
+          console.log("2");
+          userId = newUser.data._id;
+        } catch (newUserError) {
+          const newUser = await axios.post(
+            `https://marco-dashboard-backend-akshat-bhansalis-projects.vercel.app/booking/user`,
+            {
+              fName: userData.Nome,
+              lName: userData.Cognome,
+              email: userData.Email,
+              phone: userData.Phone,
+              lastQuoteSent: new Date(),
+              quoteSent: 404,
+            }
+          );
+          console.log("2");
+          userId = newUser.data._id;
+
+          console.error("Error creating new user:", newUserError);
+        }
+      } else {
+        userId = res1.data._id;
+      }
+    } catch (error) {
+      console.log("fetch");
+      console.error("Error fetching user data:", error);
+      // Handle the error as needed, e.g., show an error message to the user
+      // or perform any necessary cleanup.
     }
 
     if (!userData.Nome) {
