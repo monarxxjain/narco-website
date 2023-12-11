@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import img1 from "../assets/img/offers/1.png";
 
 import { toast, Toaster } from "react-hot-toast";
+import values from "../values";
 
 import axios from "axios";
 import { BASE_API_URL } from "../keys";
@@ -88,13 +89,13 @@ const MainSection = ({
 
     try {
       const res1 = await axios.get(
-        `https://marco-dashboard-backend-akshat-bhansalis-projects.vercel.app/booking/userByEmail/${userData.Phone}`
+        `${values.url}/booking/userByEmail/${userData.Phone}`
       );
       var userId = 0;
       if (res1.data == null) {
         try {
           const newUser = await axios.post(
-            `https://marco-dashboard-backend-akshat-bhansalis-projects.vercel.app/booking/user`,
+            `${values.url}/booking/user`,
             {
               fName: userData.Nome,
               lName: userData.Cognome,
@@ -107,7 +108,7 @@ const MainSection = ({
           userId = newUser.data._id;
         } catch (newUserError) {
           const newUser = await axios.post(
-            `https://marco-dashboard-backend-akshat-bhansalis-projects.vercel.app/booking/user`,
+            `${values.url}/booking/user`,
             {
               fName: userData.Nome,
               lName: userData.Cognome,
@@ -118,7 +119,6 @@ const MainSection = ({
             }
           );
           userId = newUser.data._id;
-
           console.error("Error creating new user:", newUserError);
         }
       } else {
@@ -264,7 +264,7 @@ const MainSection = ({
     }
     setSending(true);
     axios
-      .post(`http://localhost:5001/booking`,{
+      .post(`${values.url}/booking`,{
         "id" : bookings +1 ,
         "userId":  userId,
         "msg": userData.note,
@@ -455,7 +455,7 @@ const MainSection = ({
 
   useEffect(()=>{
 
-    axios.get(`https://marco-dashboard-backend-azure.vercel.app/booking`) 
+    axios.get(`${values.url}/booking`) 
     .then(response => {
       setBooking(response.data.length);
     })
