@@ -67,7 +67,12 @@ const checkDateValidity = (offer, checkInDate, checkOutDate) => {
 
   return false;
 };
-
+// place changed function called when place is changed
+const placeChanged = (place) => {
+  console.log("Place : ",place);
+  console.log("Lat : ",place.geometry.location.lat());
+  console.log("Lon : ",place.geometry.location.lng());
+}
 const ViewInquiryForm = (
   {
     offer,
@@ -110,6 +115,9 @@ const ViewInquiryForm = (
   },
   ref
 ) => {
+
+  const [autocomplete,setAutocomplete] = useState(null);
+
   const [dateValid, setDateValid] = useState(
     checkDateValidity(offer, checkInDate, checkOutDate)
   );
@@ -949,9 +957,9 @@ return (
                       />
                     </div> */}
                   <div className="col-sm-6">
-
                     <Autocomplete
-                      onLoad={autocomplete => (autocomplete = autocomplete)}
+                      onLoad={autocomplete =>setAutocomplete(autocomplete)}
+                      onPlaceChanged={()=>{placeChanged(autocomplete.getPlace())}}
                       options={{
                         types: ['(cities)'],
                         language: 'it' // Set language to Italian
