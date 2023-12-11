@@ -88,9 +88,8 @@ const MainSection = ({
 
     try {
       const res1 = await axios.get(
-        `https://marco-dashboard-backend-azure.vercel.app/booking/userByEmail?email=${userData.Email}`
+        `https://marco-dashboard-backend-akshat-bhansalis-projects.vercel.app/booking/userByEmail/${userData.Phone}`
       );
-      console.log("1");
       var userId = 0;
       if (res1.data == null) {
         try {
@@ -105,7 +104,6 @@ const MainSection = ({
               quoteSent: 404,
             }
           );
-          console.log("2");
           userId = newUser.data._id;
         } catch (newUserError) {
           const newUser = await axios.post(
@@ -119,7 +117,6 @@ const MainSection = ({
               quoteSent: 404,
             }
           );
-          console.log("2");
           userId = newUser.data._id;
 
           console.error("Error creating new user:", newUserError);
@@ -128,7 +125,6 @@ const MainSection = ({
         userId = res1.data._id;
       }
     } catch (error) {
-      console.log("fetch");
       console.error("Error fetching user data:", error);
       // Handle the error as needed, e.g., show an error message to the user
       // or perform any necessary cleanup.
@@ -267,9 +263,8 @@ const MainSection = ({
       }
     }
     setSending(true);
-    console.log(userData)
     axios
-      .post(`https://marco-dashboard-backend-akshat-bhansalis-projects.vercel.app/booking`,{
+      .post(`http://localhost:5001/booking`,{
         "id" : bookings +1 ,
         "userId":  userId,
         "msg": userData.note,
@@ -336,8 +331,8 @@ const MainSection = ({
         })
       })
       .catch((err) => {
-        setSending(false);
         console.log(err);
+        setSending(false);
         toast.error(err.response?.data.message || "Internal server error");
       });
   };
