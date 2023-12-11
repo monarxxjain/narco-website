@@ -69,8 +69,9 @@ function Home() {
       stelle: initialConfigData.stelles[0],
     };
     if (!checkin || !checkout) {
-      config.checkInDate = initialConfigData.dateAfterTwoDays;
-      config.checkOutDate = initialConfigData.dateAfterAWeek;
+      config.checkInDate =new Date( new Date().getTime() + 10 * 24 * 60 * 60 * 1000).toISOString();
+      console.log(initialConfigData,"a")
+      config.checkOutDate = new Date( new Date().getTime() + 15 * 24 * 60 * 60 * 1000).toISOString();
 
     }
 
@@ -84,8 +85,8 @@ function Home() {
         config.checkOutDate = formattedCheckOutDate;
       }
     } catch (err) {
-      config.checkInDate = initialConfigData.dateAfterTwoDays;
-      config.checkOutDate = initialConfigData.dateAfterAWeek;
+      config.checkInDate = new Date( new Date().getTime() + 10 * 24 * 60 * 60 * 1000).toISOString();
+      config.checkOutDate = new Date( new Date().getTime() + 15 * 24 * 60 * 60 * 1000).toISOString();
     }
 
     setConfig(config);
