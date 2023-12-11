@@ -372,7 +372,6 @@ const OfferPriceSlider = (
                     {(item?.breakdown[1]?.price && item?.breakdown[1].currency) ||
                       (item?.breakdown[0]?.price && item?.breakdown[0].currency) ||
                       (item?.breakdown[2]?.price && item?.breakdown[2].currency)}
-                      {/* lolololo */}
                   </h3>
 
                 </div>
