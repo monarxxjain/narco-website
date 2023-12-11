@@ -277,10 +277,19 @@ const ViewInquiryForm = (
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
-  const handleChangeInCity = () => {
+  const handleChangeInCity = (place) => {
+      // console.log("Lat : ", place.geometry.location.lat());
+      // console.log("Lon : ", place.geometry.location.lng());
+       console.log(
+         `${
+           cityInput.current.value
+         } (${place.geometry.location.lat()},${place.geometry.location.lng()})`
+       );
     setUserData({
       ...userData,
-      [cityInput.current.name]: cityInput.current.value,
+      [cityInput.current.name]: `${
+        cityInput.current.value
+      } (${place.geometry.location.lat()},${place.geometry.location.lng()})`,
     });
   };
   const departureRef = createRef(null);
@@ -1018,8 +1027,8 @@ return (
                     <Autocomplete
                       onLoad={autocomplete =>setAutocomplete(autocomplete)}
                       onPlaceChanged={()=>{
-                        placeChanged(autocomplete.getPlace())
-                        handleChangeInCity();
+                        // placeChanged(autocomplete.getPlace())
+                        handleChangeInCity(autocomplete.getPlace());
                         }
                       }
                       options={{
