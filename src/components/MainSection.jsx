@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import img1 from "../assets/img/offers/1.png";
 
 import { toast, Toaster } from "react-hot-toast";
+import values from "../values";
 
 import axios from "axios";
 import { BASE_API_URL } from "../keys";
@@ -88,14 +89,13 @@ const MainSection = ({
 
     try {
       const res1 = await axios.get(
-        `https://marco-dashboard-backend-azure.vercel.app/booking/userByEmail?email=${userData.Email}`
+        `${values.url}/booking/userByEmail/${userData.Phone}`
       );
-      console.log("1");
       var userId = 0;
       if (res1.data == null) {
         try {
           const newUser = await axios.post(
-            `https://marco-dashboard-backend-akshat-bhansalis-projects.vercel.app/booking/user`,
+            `${values.url}/booking/user`,
             {
               fName: userData.Nome,
               lName: userData.Cognome,
@@ -105,11 +105,10 @@ const MainSection = ({
               quoteSent: 404,
             }
           );
-          console.log("2");
           userId = newUser.data._id;
         } catch (newUserError) {
           const newUser = await axios.post(
-            `https://marco-dashboard-backend-akshat-bhansalis-projects.vercel.app/booking/user`,
+            `${values.url}/booking/user`,
             {
               fName: userData.Nome,
               lName: userData.Cognome,
@@ -119,16 +118,13 @@ const MainSection = ({
               quoteSent: 404,
             }
           );
-          console.log("2");
           userId = newUser.data._id;
-
           console.error("Error creating new user:", newUserError);
         }
       } else {
         userId = res1.data._id;
       }
     } catch (error) {
-      console.log("fetch");
       console.error("Error fetching user data:", error);
       // Handle the error as needed, e.g., show an error message to the user
       // or perform any necessary cleanup.
@@ -267,9 +263,8 @@ const MainSection = ({
       }
     }
     setSending(true);
-    console.log(userData)
     axios
-      .post(`https://marco-dashboard-backend-akshat-bhansalis-projects.vercel.app/booking`,{
+      .post(`${values.url}/booking`,{
         "id" : bookings +1 ,
         "userId":  userId,
         "msg": userData.note,
@@ -336,8 +331,8 @@ const MainSection = ({
         })
       })
       .catch((err) => {
-        setSending(false);
         console.log(err);
+        setSending(false);
         toast.error(err.response?.data.message || "Internal server error");
       });
   };
@@ -460,7 +455,7 @@ const MainSection = ({
 
   useEffect(()=>{
 
-    axios.get(`https://marco-dashboard-backend-azure.vercel.app/booking`) 
+    axios.get(`${values.url}/booking`) 
     .then(response => {
       setBooking(response.data.length);
     })
