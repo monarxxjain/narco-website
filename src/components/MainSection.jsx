@@ -298,12 +298,14 @@ const MainSection = ({
             "price": localStorage.getItem("price"),
             "hotelName": `${localStorage.getItem("hotel")}`,
             "offerName": localStorage.getItem("offer"),
-            "actualName" : localStorage.getItem("actualName")
+            "actualName" : localStorage.getItem("actualName"),
+            "actualOffer" : window.actualOffer,
           }
         ],
         "boardType": localStorage.getItem("selectedPackage")
       })
       .then((res) => {
+        console.log(res.data?.dates[0],"h")
         toast.success("Success");
         setSending(false);
         setButtonDisabled(true);
