@@ -263,10 +263,9 @@ const OfferPriceSlider = (
     const breakdown = breakDownTypeChecker(currentOffer)
     // console.log(breakdown)
     setCurrentBreakdown(breakdown)
-
   }
   useEffect(()=>{
-   localStorage.setItem("price", activeData?.minStay === activeData?.maxStay 
+   localStorage.setItem("price", activeData?.minStay === activeData?.maxStay
     ?
     activeData.breakdown[breakDownTypeChecker(activeData)-1].price
     :

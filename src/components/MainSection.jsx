@@ -122,6 +122,16 @@ const MainSection = ({
           console.error("Error creating new user:", newUserError);
         }
       } else {
+        console.log(res1.data["_id"],"As")
+        try {
+          const response = await axios.put(`${values.url}/booking/user/${userData.Phone}`, {
+            email:  userData.Email,
+          });
+      
+          console.log('User updated successfully:', response.data);
+        } catch (error) {
+          console.error('Error updating user:', error.response.data);
+        }
         userId = res1.data._id;
       }
     } catch (error) {
