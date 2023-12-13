@@ -103,6 +103,7 @@ const MainSection = ({
               phone: userData.Phone,
               lastQuoteSent: new Date(),
               quoteSent: 1,
+              tag :[]
             }
           );
           userId = newUser.data._id;
@@ -116,6 +117,7 @@ const MainSection = ({
               phone: userData.Phone,
               lastQuoteSent: new Date(),
               quoteSent: 1,
+              tag :[]
             }
           );
           userId = newUser.data._id;
