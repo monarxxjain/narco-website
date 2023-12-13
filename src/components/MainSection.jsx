@@ -102,7 +102,7 @@ const MainSection = ({
               email: userData.Email,
               phone: userData.Phone,
               lastQuoteSent: new Date(),
-              quoteSent: 404,
+              quoteSent: 1,
             }
           );
           userId = newUser.data._id;
@@ -115,19 +115,19 @@ const MainSection = ({
               email: userData.Email,
               phone: userData.Phone,
               lastQuoteSent: new Date(),
-              quoteSent: 404,
+              quoteSent: 1,
             }
           );
           userId = newUser.data._id;
           console.error("Error creating new user:", newUserError);
         }
       } else {
-        console.log(res1.data["_id"],"As")
         try {
-          const response = await axios.put(`${values.url}/booking/user/${userData.Phone}`, {
+          const response = await axios.put(`${values.url}/booking/updating/${userData.Phone}`, {
             email:  userData.Email,
+            fName:userData.Nome,
+            lName:userData.Cognome,
           });
-      
           console.log('User updated successfully:', response.data);
         } catch (error) {
           console.error('Error updating user:', error.response.data);
