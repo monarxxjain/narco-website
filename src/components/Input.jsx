@@ -57,7 +57,8 @@ const Input = React.forwardRef((props, ref) => {
             >
               {options && options?.map((item, i) => (
                 <option key={i} value={item?.text || item?.name } style={{color: "black"}}>
-                  {`${item?.text}`||`${item?.name}` }
+                  {item.text!=undefined && `${item?.text}`}
+                  {item.name!=undefined && `${item?.name}`}
                 </option>
               ))}
             </select>

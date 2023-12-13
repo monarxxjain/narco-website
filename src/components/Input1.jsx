@@ -48,8 +48,8 @@ const Input1 = React.forwardRef((props, ref) => {
                             {...rest}
                             readOnly
                         />
-                    ) : (
-                        <select
+                    ) : (<select
+                        
                             value={value}
                             name={name}
                             onChange={(e) => handleChange(e)}
