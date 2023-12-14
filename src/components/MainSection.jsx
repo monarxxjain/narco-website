@@ -160,7 +160,6 @@ const MainSection = ({
       default:
         dataToBePosted.Citta = "";
     }
-    // setButtonDisabled(true);
     try {
       const res1 = await axios.get(
         `${values.url}/booking/userByEmail/${userData.Phone}`
@@ -195,7 +194,6 @@ const MainSection = ({
             }
           );
           userId = newUser.data._id;
-          console.error("Error creating new user:", newUserError);
         }
       } else {
         try {
