@@ -71,12 +71,6 @@ const MainSection = ({
     handleScroll,
     handleOfferClose
   ) => {
-    if (buttonDisabled) {
-      toast.error("Wait for a while");
-      return;
-    }
-
-    // setButtonDisabled(true);
     const dataToBePosted = {
       ...userData,
       arrival,
@@ -86,61 +80,10 @@ const MainSection = ({
       pricePerPerson: totalPriceForUser,
       packageBoard,
     };
-
-    try {
-      const res1 = await axios.get(
-        `${values.url}/booking/userByEmail/${userData.Phone}`
-      );
-      var userId = 0;
-      if (res1.data == null) {
-        try {
-          const newUser = await axios.post(
-            `${values.url}/booking/user`,
-            {
-              fName: userData.Nome,
-              lName: userData.Cognome,
-              email: userData.Email,
-              phone: userData.Phone,
-              lastQuoteSent: new Date(),
-              quoteSent: 1,
-              tag :[]
-            }
-          );
-          userId = newUser.data._id;
-        } catch (newUserError) {
-          const newUser = await axios.post(
-            `${values.url}/booking/user`,
-            {
-              fName: userData.Nome,
-              lName: userData.Cognome,
-              email: userData.Email,
-              phone: userData.Phone,
-              lastQuoteSent: new Date(),
-              quoteSent: 1,
-              tag :[]
-            }
-          );
-          userId = newUser.data._id;
-          console.error("Error creating new user:", newUserError);
-        }
-      } else {
-        try {
-          const response = await axios.put(`${values.url}/booking/updating/${userData.Phone}`, {
-            email:  userData.Email,
-            fName:userData.Nome,
-            lName:userData.Cognome,
-          });
-          console.log('User updated successfully:', response.data);
-        } catch (error) {
-          console.error('Error updating user:', error.response.data);
-        }
-        userId = res1.data._id;
-      }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-      // Handle the error as needed, e.g., show an error message to the user
-      // or perform any necessary cleanup.
-    }
+    if (buttonDisabled) {
+      toast.error("Wait for a while");
+      return;
+    } 
 
     if (!userData.Nome) {
       toast.error("Devi inserire name");
@@ -205,6 +148,64 @@ const MainSection = ({
         break;
       default:
         dataToBePosted.Citta = "";
+    }
+    setSending(false);
+    setButtonDisabled(true);
+    // setButtonDisabled(true);
+
+    try {
+      const res1 = await axios.get(
+        `${values.url}/booking/userByEmail/${userData.Phone}`
+      );
+      var userId = 0;
+      if (res1.data == null) {
+        try {
+          const newUser = await axios.post(
+            `${values.url}/booking/user`,
+            {
+              fName: userData.Nome,
+              lName: userData.Cognome,
+              email: userData.Email,
+              phone: userData.Phone,
+              lastQuoteSent: new Date(),
+              quoteSent: 1,
+              tag :[]
+            }
+          );
+          userId = newUser.data._id;
+        } catch (newUserError) {
+          const newUser = await axios.post(
+            `${values.url}/booking/user`,
+            {
+              fName: userData.Nome,
+              lName: userData.Cognome,
+              email: userData.Email,
+              phone: userData.Phone,
+              lastQuoteSent: new Date(),
+              quoteSent: 1,
+              tag :[]
+            }
+          );
+          userId = newUser.data._id;
+          console.error("Error creating new user:", newUserError);
+        }
+      } else {
+        try {
+          const response = await axios.put(`${values.url}/booking/updating/${userData.Phone}`, {
+            email:  userData.Email,
+            fName:userData.Nome,
+            lName:userData.Cognome,
+          });
+          console.log('User updated successfully:', response.data);
+        } catch (error) {
+          console.error('Error updating user:', error.response.data);
+        }
+        userId = res1.data._id;
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      // Handle the error as needed, e.g., show an error message to the user
+      // or perform any necessary cleanup.
     }
     // {
     //   userId: userId,
@@ -281,9 +282,9 @@ const MainSection = ({
         "userId":  userId,
         "msg": userData.note,
         "tag": [],
-        "date": new Date().toDateString(),
+        "date": new Date(),
         "dateLine": `${new Date(localStorage.getItem("prevInDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevInDate")).getMonth())} - ${new Date(localStorage.getItem("prevOutDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevOutDate")).getMonth())}`,
-        "periodo": `${(new Date(localStorage.getItem("prevOutDate")) - new Date(localStorage.getItem("prevInDate")))/86400000} notti ${localStorage.getItem("price")} per persona`,
+        "periodo": `${(new Date(localStorage.getItem("prevOutDate")) - new Date(localStorage.getItem("prevInDate")))/86400000} notti, ${localStorage.getItem("price")}€ per persona`,
         "module": userData.Modulo,
         "guestDetails": userData.rooms,
         "trasporto": userData.trasporto?userData.trasporto : "Nessuna Trasporto",
