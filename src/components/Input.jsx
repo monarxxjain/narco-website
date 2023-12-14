@@ -56,7 +56,7 @@ const Input = React.forwardRef((props, ref) => {
               className="form-control __form-control form-select "
             >
               {options && options?.map((item, i) => (
-                <option key={i} value={item?.text || item?.name } style={{color: "black"}}>
+                <option key={i} value={item?.text || item?.name } style={{color: "black"}} >
                   {item.text!=undefined && `${item?.text}`}
                   {item.name!=undefined && `${item?.name}`}
                 </option>
