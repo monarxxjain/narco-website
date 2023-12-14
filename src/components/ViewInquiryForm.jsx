@@ -75,6 +75,7 @@ const placeChanged = (place) => {
 }
 const ViewInquiryForm = (
   {
+    setSending,
     offer,
     Hotel,
     NomeModulo,
@@ -528,6 +529,7 @@ return (
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            setSending(true)
             if (!clicked) {
               setClicked(true);
               setTimeout(() => {

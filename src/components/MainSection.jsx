@@ -82,31 +82,37 @@ const MainSection = ({
     };
     if (buttonDisabled) {
       toast.error("Wait for a while");
+      setSending(false)
       return;
     } 
-
     if (!userData.Nome) {
       toast.error("Devi inserire name");
+      setSending(false)
       return;
     }
     if (!userData.Cognome) {
       toast.error("Devi inserire  cognome");
+      setSending(false)
       return;
     }
     if (!userData.Email) {
       toast.error("Devi inserire  email");
+      setSending(false)
       return;
     }
     if (!userData.Phone) {
       toast.error("Devi inserire Numero di Telefono");
+      setSending(false)
       return;
     }
     if (!arrival || !arrival.length || arrival?.split("-")[0] === "NaN") {
       toast.error("Devi inserire Data Check In");
+      setSending(false)
       return;
     }
     if (!departure || !departure.length || departure?.split("-")[0] === "NaN") {
       toast.error("Devi inserire  Data Check Out");
+      setSending(false)
       return;
     }
 
@@ -115,15 +121,18 @@ const MainSection = ({
 
     if (!emailRegex.test(userData.Email)) {
       toast.error("si prega di inserire valido email.");
+      setSending(false)
       return;
     }
     if (!phoneRegex.test(userData.Phone)) {
       toast.error("si prega di inserire valido Numero di Telefono.");
+      setSending(false)
       return;
     }
 
     if (!value) {
       toast.error("Seleziona una opzione sopra");
+      setSending(false)
       handleScroll();
       return;
     }
@@ -131,6 +140,7 @@ const MainSection = ({
       case "aliscafo":
         if (!userData.numeroBagagliAlis) {
           toast.error("Devi inserire  Numero di Bagagli");
+          setSending(false)
           return;
         } else
           dataToBePosted.Citta = `Aliscafo + Transfer | ${userData.numeroBagagliAlis}`;
@@ -138,6 +148,7 @@ const MainSection = ({
       case "ferry":
         if (!userData.ferry) {
           toast.error("Devi inserire  Dimensione Auto");
+          setSending(false)
           return;
         } else
           dataToBePosted.Citta = `Traghetto + Transfer | ${userData.ferry}`;
@@ -149,10 +160,7 @@ const MainSection = ({
       default:
         dataToBePosted.Citta = "";
     }
-    setSending(false);
-    setButtonDisabled(true);
     // setButtonDisabled(true);
-
     try {
       const res1 = await axios.get(
         `${values.url}/booking/userByEmail/${userData.Phone}`
@@ -275,7 +283,6 @@ const MainSection = ({
         return "dic"; 
       }
     }
-    setSending(true);
     axios
       .post(`${values.url}/booking`,{
         "id" : bookings +1 ,
@@ -555,6 +562,7 @@ const MainSection = ({
                     checkOutDate={checkOutDate}
                     setDatePickerOpen={setDatePickerOpen}
                     hotel={{ ...hotel, img: [img1, img1, img1] }}
+                    setSending={setSending}
                   />
                 </>
               );
@@ -631,6 +639,7 @@ const MainSection = ({
                   checkOutDate={checkOutDate}
                   setDatePickerOpen={setDatePickerOpen}
                   hotel={{ ...hotel, img: [img1, img1, img1] }}
+                  setSending={setSending}
                 />
               </div>
             );

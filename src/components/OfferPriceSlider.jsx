@@ -68,6 +68,7 @@ function calculateNights(endDate, minStay, maxStay) {
 
 const OfferPriceSlider = (
   {
+    setSending,
     bestPossiblePrice,
     offers,
     serial,
@@ -534,6 +535,7 @@ const OfferPriceSlider = (
           setReadOnlyArrival={setReadOnlyArrival}
           persistReadOnlyArrival={persistReadOnlyArrival}
           setPersistReadOnlyArrival={setPersistReadOnlyArrival}
+          setSending={setSending}
         />
       </div>
     </>
