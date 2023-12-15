@@ -7,7 +7,7 @@ import loading from "../assets/img/dualLoading.gif";
 import CustomDatePicker from "./calender/CalenderEnquiry";
 import { europeanCountries, getAllCities } from "./Cities";
 import Input1 from "./Input1";
-import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
+  import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
 
 const formatDate = (ogDate) => {
   let date = new Date(ogDate);
@@ -955,7 +955,7 @@ return (
                     label="Dimensione Auto"
                     select
                     options={options2}
-                    // 
+                    //
                   />
                 </>
               )}
@@ -1026,17 +1026,16 @@ return (
                     </div> */}
                   <div className="col-sm-6">
                     <Autocomplete
-                      onLoad={autocomplete =>setAutocomplete(autocomplete)}
-                      onPlaceChanged={()=>{
-                        // placeChanged(autocomplete.getPlace())
+                      onLoad={(autocomplete) => setAutocomplete(autocomplete)}
+                      onPlaceChanged={() => {
                         handleChangeInCity(autocomplete.getPlace());
-                        }
-                      }
+                      }}
                       options={{
                         types: ["(cities)"],
                         language: "it",
                       }}
-
+                     
+                      className="autoi"
                     >
                       <Input
                         type="text"
