@@ -75,6 +75,7 @@ const placeChanged = (place) => {
 }
 const ViewInquiryForm = (
   {
+    setSending,
     offer,
     Hotel,
     NomeModulo,
@@ -165,9 +166,11 @@ const ViewInquiryForm = (
   }
 
   useEffect(()=>{
-    
+    console.log(offer)
+    window.actualOffer = offer
     localStorage.setItem("offer",offer?.id)
     localStorage.setItem("hotel",Hotel.id)
+    localStorage.setItem("actualName",Hotel.name)
   },[offer,Hotel])
 
   useEffect(() => {
@@ -526,6 +529,7 @@ return (
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            setSending(true)
             if (!clicked) {
               setClicked(true);
               setTimeout(() => {

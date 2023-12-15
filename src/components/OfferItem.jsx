@@ -37,6 +37,7 @@ const OfferItem = (props, ref) => {
     handleUpdateRooms,
     setDatePickerOpen,
     config,
+    setSending
     // bestPossiblePrice,
     // setBestPossiblePrice
   } = props;
@@ -562,6 +563,7 @@ const OfferItem = (props, ref) => {
           ) : newOfferArray && newOfferArray.length ? (
             
             <OfferPriceSlider
+            setSending={setSending}
               bestPossiblePrice={bestPossiblePrice}
               setUserData={setUserData}
               userData={userData}

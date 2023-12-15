@@ -231,6 +231,7 @@ function Home() {
     localStorage.removeItem("prevOutDate");
     localStorage.removeItem("offer");
     localStorage.removeItem("hotel");
+    localStorage.removeItem("actualName");
   }, []);
 
   useEffect(() => {

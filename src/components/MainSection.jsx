@@ -71,12 +71,6 @@ const MainSection = ({
     handleScroll,
     handleOfferClose
   ) => {
-    if (buttonDisabled) {
-      toast.error("Wait for a while");
-      return;
-    }
-
-    // setButtonDisabled(true);
     const dataToBePosted = {
       ...userData,
       arrival,
@@ -86,7 +80,86 @@ const MainSection = ({
       pricePerPerson: totalPriceForUser,
       packageBoard,
     };
+    if (buttonDisabled) {
+      toast.error("Wait for a while");
+      setSending(false)
+      return;
+    } 
+    if (!userData.Nome) {
+      toast.error("Devi inserire name");
+      setSending(false)
+      return;
+    }
+    if (!userData.Cognome) {
+      toast.error("Devi inserire  cognome");
+      setSending(false)
+      return;
+    }
+    if (!userData.Email) {
+      toast.error("Devi inserire  email");
+      setSending(false)
+      return;
+    }
+    if (!userData.Phone) {
+      toast.error("Devi inserire Numero di Telefono");
+      setSending(false)
+      return;
+    }
+    if (!arrival || !arrival.length || arrival?.split("-")[0] === "NaN") {
+      toast.error("Devi inserire Data Check In");
+      setSending(false)
+      return;
+    }
+    if (!departure || !departure.length || departure?.split("-")[0] === "NaN") {
+      toast.error("Devi inserire  Data Check Out");
+      setSending(false)
+      return;
+    }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^(\+\d{1,3}\s?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+
+    if (!emailRegex.test(userData.Email)) {
+      toast.error("si prega di inserire valido email.");
+      setSending(false)
+      return;
+    }
+    if (!phoneRegex.test(userData.Phone)) {
+      toast.error("si prega di inserire valido Numero di Telefono.");
+      setSending(false)
+      return;
+    }
+
+    if (!value) {
+      toast.error("Seleziona una opzione sopra");
+      setSending(false)
+      handleScroll();
+      return;
+    }
+    switch (value) {
+      case "aliscafo":
+        if (!userData.numeroBagagliAlis) {
+          toast.error("Devi inserire  Numero di Bagagli");
+          setSending(false)
+          return;
+        } else
+          dataToBePosted.Citta = `Aliscafo + Transfer | ${userData.numeroBagagliAlis}`;
+        break;
+      case "ferry":
+        if (!userData.ferry) {
+          toast.error("Devi inserire  Dimensione Auto");
+          setSending(false)
+          return;
+        } else
+          dataToBePosted.Citta = `Traghetto + Transfer | ${userData.ferry}`;
+        break;
+
+      case "viaggio":
+        dataToBePosted.Citta = `${userData.numeroBagagliViaggio} con ${userData.trasporto}`;
+        break;
+      default:
+        dataToBePosted.Citta = "";
+    }
     try {
       const res1 = await axios.get(
         `${values.url}/booking/userByEmail/${userData.Phone}`
@@ -102,7 +175,8 @@ const MainSection = ({
               email: userData.Email,
               phone: userData.Phone,
               lastQuoteSent: new Date(),
-              quoteSent: 404,
+              quoteSent: 1,
+              tag :[]
             }
           );
           userId = newUser.data._id;
@@ -115,84 +189,29 @@ const MainSection = ({
               email: userData.Email,
               phone: userData.Phone,
               lastQuoteSent: new Date(),
-              quoteSent: 404,
+              quoteSent: 1,
+              tag :[]
             }
           );
           userId = newUser.data._id;
-          console.error("Error creating new user:", newUserError);
         }
       } else {
+        try {
+          const response = await axios.put(`${values.url}/booking/updating/${userData.Phone}`, {
+            email:  userData.Email,
+            fName:userData.Nome,
+            lName:userData.Cognome,
+          });
+          console.log('User updated successfully:', response.data);
+        } catch (error) {
+          console.error('Error updating user:', error.response.data);
+        }
         userId = res1.data._id;
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
       // Handle the error as needed, e.g., show an error message to the user
       // or perform any necessary cleanup.
-    }
-
-    if (!userData.Nome) {
-      toast.error("Devi inserire name");
-      return;
-    }
-    if (!userData.Cognome) {
-      toast.error("Devi inserire  cognome");
-      return;
-    }
-    if (!userData.Email) {
-      toast.error("Devi inserire  email");
-      return;
-    }
-    if (!userData.Phone) {
-      toast.error("Devi inserire Numero di Telefono");
-      return;
-    }
-    if (!arrival || !arrival.length || arrival?.split("-")[0] === "NaN") {
-      toast.error("Devi inserire Data Check In");
-      return;
-    }
-    if (!departure || !departure.length || departure?.split("-")[0] === "NaN") {
-      toast.error("Devi inserire  Data Check Out");
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^(\+\d{1,3}\s?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
-
-    if (!emailRegex.test(userData.Email)) {
-      toast.error("si prega di inserire valido email.");
-      return;
-    }
-    if (!phoneRegex.test(userData.Phone)) {
-      toast.error("si prega di inserire valido Numero di Telefono.");
-      return;
-    }
-
-    if (!value) {
-      toast.error("Seleziona una opzione sopra");
-      handleScroll();
-      return;
-    }
-    switch (value) {
-      case "aliscafo":
-        if (!userData.numeroBagagliAlis) {
-          toast.error("Devi inserire  Numero di Bagagli");
-          return;
-        } else
-          dataToBePosted.Citta = `Aliscafo + Transfer | ${userData.numeroBagagliAlis}`;
-        break;
-      case "ferry":
-        if (!userData.ferry) {
-          toast.error("Devi inserire  Dimensione Auto");
-          return;
-        } else
-          dataToBePosted.Citta = `Traghetto + Transfer | ${userData.ferry}`;
-        break;
-
-      case "viaggio":
-        dataToBePosted.Citta = `${userData.numeroBagagliViaggio} con ${userData.trasporto}`;
-        break;
-      default:
-        dataToBePosted.Citta = "";
     }
     // {
     //   userId: userId,
@@ -262,16 +281,15 @@ const MainSection = ({
         return "dic"; 
       }
     }
-    setSending(true);
     axios
       .post(`${values.url}/booking`,{
         "id" : bookings +1 ,
         "userId":  userId,
         "msg": userData.note,
         "tag": [],
-        "date": new Date().toDateString(),
+        "date":  new Date().toLocaleString('en-US', { timeZone: 'Europe/Berlin', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }),
         "dateLine": `${new Date(localStorage.getItem("prevInDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevInDate")).getMonth())} - ${new Date(localStorage.getItem("prevOutDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevOutDate")).getMonth())}`,
-        "periodo": `${(new Date(localStorage.getItem("prevOutDate")) - new Date(localStorage.getItem("prevInDate")))/86400000} notti ${localStorage.getItem("price")} per persona`,
+        "periodo": `${(new Date(localStorage.getItem("prevOutDate")) - new Date(localStorage.getItem("prevInDate")))/86400000} notti, ${localStorage.getItem("price")}€ per persona`,
         "module": userData.Modulo,
         "guestDetails": userData.rooms,
         "trasporto": userData.trasporto?userData.trasporto : "Nessuna Trasporto",
@@ -287,12 +305,15 @@ const MainSection = ({
             "end": `${new Date(localStorage.getItem("prevOutDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevOutDate")).getMonth())}`,
             "price": localStorage.getItem("price"),
             "hotelName": `${localStorage.getItem("hotel")}`,
-            "offerName": localStorage.getItem("offer")
+            "offerName": localStorage.getItem("offer"),
+            "actualName" : localStorage.getItem("actualName"),
+            "actualOffer" : window.actualOffer,
           }
         ],
         "boardType": localStorage.getItem("selectedPackage")
       })
       .then((res) => {
+        console.log(res.data?.dates[0],"h")
         toast.success("Success");
         setSending(false);
         setButtonDisabled(true);
@@ -539,6 +560,7 @@ const MainSection = ({
                     checkOutDate={checkOutDate}
                     setDatePickerOpen={setDatePickerOpen}
                     hotel={{ ...hotel, img: [img1, img1, img1] }}
+                    setSending={setSending}
                   />
                 </>
               );
@@ -615,6 +637,7 @@ const MainSection = ({
                   checkOutDate={checkOutDate}
                   setDatePickerOpen={setDatePickerOpen}
                   hotel={{ ...hotel, img: [img1, img1, img1] }}
+                  setSending={setSending}
                 />
               </div>
             );

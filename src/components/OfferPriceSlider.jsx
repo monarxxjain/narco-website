@@ -63,6 +63,7 @@ function calculateNights(endDate, minStay, maxStay) {
 
 const OfferPriceSlider = (
   {
+    setSending,
     bestPossiblePrice,
     offers,
     serial,
@@ -256,22 +257,17 @@ const OfferPriceSlider = (
   const breakDownTypeResetter = (currentOffer) => {
     const breakdown = breakDownTypeChecker(currentOffer);
     // console.log(breakdown)
-    setCurrentBreakdown(breakdown);
-  };
-  useEffect(() => {
-    localStorage.setItem(
-      "price",
-      activeData?.minStay === activeData?.maxStay
-        ? activeData.breakdown[breakDownTypeChecker(activeData) - 1].price
-        : (!(activeData?.minStay === activeData?.maxStay) &&
-          activeData?.id === activeData?.id
-            ? activeData.breakdown[currentBreakdown - 1]?.price !== 0
-              ? activeData.breakdown[currentBreakdown - 1]?.price
-              : activeData.breakdown[breakDownTypeChecker(activeData) - 1].price
-            : activeData.breakdown[breakDownTypeChecker(activeData) - 1]
-                .price) * calculatedNights
-    );
-  }, [activeData]);
+    setCurrentBreakdown(breakdown)
+  }
+  useEffect(()=>{
+   localStorage.setItem("price", activeData?.minStay === activeData?.maxStay
+    ?
+    activeData.breakdown[breakDownTypeChecker(activeData)-1].price
+    :
+    (((!(activeData?.minStay === activeData?.maxStay) && activeData?.id===activeData?.id) ? (activeData.breakdown[currentBreakdown - 1]?.price!==0 ? (activeData.breakdown[currentBreakdown - 1]?.price) : activeData.breakdown[breakDownTypeChecker(activeData) - 1].price) : activeData.breakdown[breakDownTypeChecker(activeData) - 1].price)* calculatedNights))
+
+  },[activeData])
+
 
   return (
     <>
@@ -541,6 +537,7 @@ const OfferPriceSlider = (
           setReadOnlyArrival={setReadOnlyArrival}
           persistReadOnlyArrival={persistReadOnlyArrival}
           setPersistReadOnlyArrival={setPersistReadOnlyArrival}
+          setSending={setSending}
         />
       </div>
     </>
