@@ -287,7 +287,7 @@ const MainSection = ({
         "userId":  userId,
         "msg": userData.note,
         "tag": [],
-        "date": new Date(),
+        "date":  new Date().toLocaleString('en-US', { timeZone: 'Europe/Berlin', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }),
         "dateLine": `${new Date(localStorage.getItem("prevInDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevInDate")).getMonth())} - ${new Date(localStorage.getItem("prevOutDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevOutDate")).getMonth())}`,
         "periodo": `${(new Date(localStorage.getItem("prevOutDate")) - new Date(localStorage.getItem("prevInDate")))/86400000} notti, ${localStorage.getItem("price")}€ per persona`,
         "module": userData.Modulo,
