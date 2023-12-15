@@ -1038,8 +1038,7 @@ return (
                         types: ["(cities)"],
                         language: "it",
                       }}
-                     
-                      className="autoi"
+        
                     >
                       <Input
                         type="text"

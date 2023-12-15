@@ -18,7 +18,7 @@ function Home() {
   const [loadingHotels, setloadingHotels] = useState(false);
   const [initialDataLoaded, setInitialDataLoaded] = useState(false);
   const [initialConfigData, setInitialConfigData] = useState(null);
-
+     
   const [lastChange, setLastChange] = useState(null);
   const [startEndDate, setStartEndDate] = useState({});
 
@@ -59,9 +59,9 @@ function Home() {
   };
 
   const setConfigFromInitialAppState = () => {
-    const checkin = searchParams.get("checkin");
+    const checkin = searchParams.get("checkIn");
     const checkout = searchParams.get("checkout");
-
+    console.log(checkin,checkout)
     const config = {
       fascio: initialConfigData?.fascio[0],
       distance: initialConfigData.distances[0],
