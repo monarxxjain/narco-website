@@ -21,12 +21,13 @@ function Room({ roomData, id, removeRoom, handleUpdateRoom }) {
             else return age;
         });
         // setRoomData(() => ({ ...roomData, ages: changedAges }));
-        handleUpdateRoom({ ...roomData, childAge: changedAges }, id);
+        handleUpdateRoom({ ...roomData, childAge: changedAges,childDis : Array.from({ length: changedAges.length }, () => "€ 0") }, id);
     };
 
     const handleChange = (e) => {
         // setRoomData({ ...roomData, [e.target.name]: e.target.value });
-        handleUpdateRoom({ ...roomData, [e.target.name]: e.target.value }, id);
+        console.log(e.target.value)
+        handleUpdateRoom({ ...roomData, [e.target.name]: e.target.value ,adultPrice : Array.from({ length: e.target.value }, () => 0)}, id);
     };
 
     const handleNoofChildren = (value) => {
@@ -37,7 +38,8 @@ function Room({ roomData, id, removeRoom, handleUpdateRoom }) {
             childAge = childAge.concat(Array(dataDiff).fill(12));
         }
 
-        handleUpdateRoom({ ...roomData, childAge, child: value }, id);
+        handleUpdateRoom({ ...roomData, childAge,childDis : Array.from({ length: value }, () => "€ 0")
+        , child: value }, id);
     };
     return (
         <div>

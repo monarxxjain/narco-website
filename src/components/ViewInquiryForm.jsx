@@ -419,7 +419,7 @@ const ViewInquiryForm = (
   const handleAddRoom = () => {
     setUserData({
       ...userData,
-      rooms: [...userData.rooms, { adult: 2, child: 0, childAge: [] }],
+      rooms: [...userData.rooms, { adult: 2, child: 1, childAge: [1] ,totDisc:0,childDis: ["€ 0"],adultPrice:[0,0] }],
     });
   };
 

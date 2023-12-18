@@ -28,7 +28,7 @@ const MainSection = ({
     carSize :null,
     arrival: null,
     packageBoard: null,
-    rooms: [{ adult: 2, child: 0, childAge: [] }],
+    rooms: [{ adult: 2, child: 1, childAge: [1] ,totDisc:"€ 0",childDis:["€ 0"],adultPrice:[0,0] }],
     Citta: null,
     note: "",
     Modulo: "infoischia",
@@ -313,7 +313,7 @@ const MainSection = ({
         "boardType": localStorage.getItem("selectedPackage")
       })
       .then((res) => {
-        console.log(res.data?.dates[0],"h")
+        console.log(res.data,"h")
         toast.success("Success");
         setSending(false);
         setButtonDisabled(true);
@@ -336,7 +336,7 @@ const MainSection = ({
           carSize :null,
           arrival: null,
           packageBoard: null,
-          rooms: [{ adult: 2, child: 0, childAge: [] }],
+          rooms: [{ adult: 2, child: 1, childAge: [1] ,totDisc:0,childDis: ["€ 0"],adultPrice:[0,0] }],
           Citta: null,
           note: "",
           Modulo: "infoischia",
