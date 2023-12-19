@@ -166,7 +166,7 @@ const ViewInquiryForm = (
   }
 
   useEffect(()=>{
-    console.log(offer)
+    console.log(offer,"offer")
     window.actualOffer = offer
     localStorage.setItem("offer",offer?.id)
     localStorage.setItem("hotel",Hotel.id)
@@ -414,12 +414,12 @@ const ViewInquiryForm = (
         setPersistReadOnlyArrival(persistReadOnlyNewArrival)
         setReadOnlyArrival(persistReadOnlyNewArrival[idx])
     }
-    localStorage.setItem("selectedPackage","Pensione completa")
+    localStorage.setItem("selectedPackage",selectedPackage[0].name)
   },[idx])
   const handleAddRoom = () => {
     setUserData({
       ...userData,
-      rooms: [...userData.rooms, { adult: 2, child: 1, childAge: [1] ,totDisc:"€ 0",childDis: ["€ 0"],adultPrice:[0,0] }],
+      rooms: [...userData.rooms, { adult: 2, child: 1, childAge: [1] ,totDisc:"€ 0",childDis: ["€ 0"],adultPrice:[0,0],board:localStorage.getItem("selectedPackage")}],
     });
   };
 

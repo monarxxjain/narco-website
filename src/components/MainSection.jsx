@@ -28,12 +28,11 @@ const MainSection = ({
     carSize :null,
     arrival: null,
     packageBoard: null,
-    rooms: [{ adult: 2, child: 1, childAge: [1] ,totDisc:"€ 0",childDis:["€ 0"],adultPrice:[0,0] }],
+    rooms: [{ adult: 2, child: 1, childAge: [1] ,totDisc:"€ 0",childDis:["€ 0"],adultPrice:[0,0],board:localStorage.getItem("selectedPackage") }],
     Citta: null,
     note: "",
     Modulo: "infoischia",
     Hotel: null,
-
     numeroBagagliAlis: "1",
     ferry:
       "traghetto con auto fino 4 mt. da Pozzuoli A/R € 75 - passeggeri € 22",
@@ -80,6 +79,9 @@ const MainSection = ({
       pricePerPerson: totalPriceForUser,
       packageBoard,
     };
+    for(let i =0;i<userData.rooms.length;i++){
+      userData.rooms[i].board = localStorage.getItem("selectedPackage"); 
+    }
     if (buttonDisabled) {
       toast.error("Wait for a while");
       setSending(false)
@@ -254,6 +256,20 @@ const MainSection = ({
       return `${year}-${formattedMonth}-${formattedDay}`;
     }
 
+    for(let i=0;i<userData.rooms.length;i++){
+      userData.rooms[i].adultPrice = userData.rooms[i].adultPrice.map(() => (window.actualOffer.breakdown.find(item => item.name == localStorage.getItem("selectedPackage"))).price);
+      for(let j=0;j<userData.rooms[i].childAge.length;j++){
+        let disc =0;
+        for(let k =0;k<window.actualOffer?.ageReduction.length;k++){
+          if(window.actualOffer?.ageReduction[k].agelimit>userData.rooms[i].childAge[j]){
+            disc = window.actualOffer?.ageReduction[k].discount;
+            break;
+          }
+        }
+        userData.rooms[i].childDis[j]=`€ ${disc}`
+      }
+    }
+    console.log(userData.rooms)
     const getMonth =(month) =>{
       if (month === 0) {
         return "gen";
@@ -336,7 +352,7 @@ const MainSection = ({
           carSize :null,
           arrival: null,
           packageBoard: null,
-          rooms: [{ adult: 2, child: 1, childAge: [1] ,totDisc:"€ 0",childDis: ["€ 0"],adultPrice:[0,0] }],
+          rooms: [{ adult: 2, child: 1, childAge: [1] ,totDisc:"€ 0",childDis: ["€ 0"],adultPrice:[0,0],board:localStorage.getItem("selectedPackage") }],
           Citta: null,
           note: "",
           Modulo: "infoischia",
