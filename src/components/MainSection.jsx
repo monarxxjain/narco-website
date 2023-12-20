@@ -255,9 +255,12 @@ const MainSection = ({
     
       return `${year}-${formattedMonth}-${formattedDay}`;
     }
-
     for(let i=0;i<userData.rooms.length;i++){
-      userData.rooms[i].adultPrice = userData.rooms[i].adultPrice.map(() => (window.actualOffer.breakdown.find(item => item.name == localStorage.getItem("selectedPackage"))).price);
+      userData.rooms[i].adultPrice = userData.rooms[i].adultPrice.map(() => (window.actualOffer.breakdown.find(item => item.name === localStorage.getItem("selectedPackage")) || {}).price * (
+        window.actualOffer.minStay === window.actualOffer.maxStay
+          ? (((new Date(localStorage.getItem("prevOutDate")) - new Date(localStorage.getItem("prevInDate"))) / 86400000) / window.actualOffer.maxStay)
+          : ((new Date(localStorage.getItem("prevOutDate")) - new Date(localStorage.getItem("prevInDate"))) / 86400000)
+      ));
       for(let j=0;j<userData.rooms[i].childAge.length;j++){
         let disc =0;
         for(let k =0;k<window.actualOffer?.ageReduction.length;k++){
