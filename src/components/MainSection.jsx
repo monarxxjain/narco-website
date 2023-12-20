@@ -28,7 +28,7 @@ const MainSection = ({
     carSize :null,
     arrival: null,
     packageBoard: null,
-    rooms: [{ adult: 2, child: 1, childAge: [1] ,totDisc:"€ 0",childDis:["€ 0"],adultPrice:[0,0],board:localStorage.getItem("selectedPackage") }],
+    rooms: [{ adult: 2, child: 1, childAge: [1] ,totDisc:"€ 0",childDis:["€ 0"],adultPrice:[0,0],childInit:[],board:localStorage.getItem("selectedPackage")}],
     Citta: null,
     note: "",
     Modulo: "infoischia",
@@ -267,9 +267,9 @@ const MainSection = ({
           }
         }
         userData.rooms[i].childDis[j]=`€ ${disc}`
+        userData.rooms[i].childInit=Array(userData.rooms[i].childAge.length).fill(userData.rooms[0].adultPrice[0])
       }
     }
-    console.log(userData.rooms)
     const getMonth =(month) =>{
       if (month === 0) {
         return "gen";
@@ -352,7 +352,7 @@ const MainSection = ({
           carSize :null,
           arrival: null,
           packageBoard: null,
-          rooms: [{ adult: 2, child: 1, childAge: [1] ,totDisc:"€ 0",childDis: ["€ 0"],adultPrice:[0,0],board:localStorage.getItem("selectedPackage") }],
+          rooms: [{ adult: 2, child: 1, childAge: [1] ,totDisc:"€ 0",childDis: ["€ 0"],adultPrice:[0,0],childInit:[],board:localStorage.getItem("selectedPackage") }],
           Citta: null,
           note: "",
           Modulo: "infoischia",
