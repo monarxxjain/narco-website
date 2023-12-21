@@ -24,11 +24,22 @@ const MainSection = ({
     Phone: "+39",
     postedDate: new Date().toDateString(),
     departure: null,
-    bags :null,
-    carSize :null,
+    bags: null,
+    carSize: null,
     arrival: null,
     packageBoard: null,
-    rooms: [{ adult: 2, child: 1, childAge: [1] ,totDisc:"€ 0",childDis:["€ 0"],adultPrice:[0,0],childInit:[],board:localStorage.getItem("selectedPackage")}],
+    rooms: [
+      {
+        adult: 2,
+        child: 1,
+        childAge: [1],
+        totDisc: "€ 0",
+        childDis: ["€ 0"],
+        adultPrice: [0, 0],
+        childInit: [],
+        board: localStorage.getItem("selectedPackage"),
+      },
+    ],
     Citta: null,
     note: "",
     Modulo: "infoischia",
@@ -57,9 +68,116 @@ const MainSection = ({
 
   const handleChangeValue = (value) => {};
 
+  const [bookings, setBooking] = useState(null);
+    const breakDownTypeChecker = (currentOffer) => {
+      if (currentOffer?.breakdown[1].price != 0) {
+        return currentOffer?.breakdown[1].breakdownId;
+      } else if (currentOffer?.breakdown[0].price != 0) {
+        return currentOffer?.breakdown[0].breakdownId;
+      } else if (currentOffer?.breakdown[2].price != 0) {
+        return currentOffer?.breakdown[2].breakdownId;
+      }
+    };
+  const offerPriceCal = (activeData) => {
+    let temp = 0;
+    const checkinDate = new Date(activeData.checkIn);
+    const checkoutDate = new Date(activeData.checkOut);
+    let calculatedNights = Math.ceil(
+      (checkoutDate - checkinDate) / (24 * 60 * 60 * 1000)
+    );
+    return activeData?.minStay === activeData?.maxStay
+      ? activeData.breakdown[breakDownTypeChecker(activeData) - 1]?.price
+      : (!(activeData?.minStay === activeData?.maxStay) &&
+        activeData?.id === activeData?.id
+          ? temp !== 0
+            ? temp
+            : activeData.breakdown[breakDownTypeChecker(activeData) - 1].price
+          : activeData.breakdown[breakDownTypeChecker(activeData) - 1].price) *
+          calculatedNights;
+  };
+  function filterOffersByCriteria(offers, mainOffer) {
   
-  const [bookings,setBooking] = useState(null);
+    const checkinDate = new Date(mainOffer.checkIn);
+    const checkoutDate = new Date(mainOffer.checkOut);
+    let MainofferNights = Math.ceil(
+      (checkoutDate - checkinDate) / (24 * 60 * 60 * 1000)
+    );
+   
+    // console.log(offers)
+    let list = offers?.filter((offer) => {
+      // if (
+      //   Math.abs(new Date(offer.endDate) - new Date(mainOffer.checkOut)) <=
+      //   3 * 24 * 60 * 60 * 1000
+      // ) {
+      //   console.log(
+      //     Math.abs(new Date(offer.startDate) - new Date(mainOffer.checkIn)) <=
+      //       3 * 24 * 60 * 60 * 1000,
+      //     Math.abs(new Date(offer.endDate) - new Date(mainOffer.checkOut)) <=
+      //       3 * 24 * 60 * 60 * 1000,
+      //     Math.abs(offer.maxStay - MainofferNights) <= 3
+      //   );
+      // }
 
+      return (
+        Math.abs(new Date(offer.startDate) - new Date(mainOffer.checkIn)) <=
+          3 * 24 * 60 * 60 * 1000 &&
+        Math.abs(new Date(offer.endDate) - new Date(mainOffer.checkOut)) <=
+          3 * 24 * 60 * 60 * 1000 &&
+        Math.abs(offer.maxStay - MainofferNights) <= 3
+      );
+    });
+    // console.log(list)
+    return list;
+  }
+
+  // Function to calculate compatibility score based on total price
+  function calculateCompatibilityScore(offer, mainOffer) {
+    let offerPrice = offerPriceCal(offer);
+    // console.log(offerPrice, mainOffer.price);
+    const priceDifference = Math.abs(offerPrice - mainOffer.price);
+
+    if (mainOffer.price <= 500) {
+      return priceDifference <= 100;
+    } else if (mainOffer.price <= 1000) {
+      return priceDifference <= 150;
+    } else if (mainOffer.price <= 2000) {
+      return priceDifference <= 200;
+    } else {
+      return priceDifference <= 300;
+    }
+  }
+
+  // Function to select one compatible offer from each hotel
+  function selectCompatibleOffers(hotels, mainOffer) {
+    const result = [];
+
+    for (const hoteli of hotels) {
+      // console.log(hoteli.id)
+      const compatibleOffers = filterOffersByCriteria(hoteli.offers, mainOffer);
+
+      if (compatibleOffers?.length > 0) {
+        // console.log(compatibleOffers)
+        const selectedOffer = compatibleOffers.find((offer) => {
+          if (offer.id != mainOffer.offerName) {
+            return calculateCompatibilityScore(offer, mainOffer);
+          }
+        });
+        // console.log(selectedOffer.id, mainOffer.offerName);
+        if (selectedOffer) {
+          result.push({
+            hotel: {
+              id: hoteli.id,
+              hotelName: hoteli.name,
+              ofFerId: selectedOffer.id,
+            },
+            offer: selectedOffer,
+          });
+        }
+      }
+    }
+
+    return result;
+  }
   const handleSubmit = async (
     arrival,
     departure,
@@ -79,42 +197,42 @@ const MainSection = ({
       pricePerPerson: totalPriceForUser,
       packageBoard,
     };
-    for(let i =0;i<userData.rooms.length;i++){
-      userData.rooms[i].board = localStorage.getItem("selectedPackage"); 
+    for (let i = 0; i < userData.rooms.length; i++) {
+      userData.rooms[i].board = localStorage.getItem("selectedPackage");
     }
     if (buttonDisabled) {
       toast.error("Wait for a while");
-      setSending(false)
+      setSending(false);
       return;
-    } 
+    }
     if (!userData.Nome) {
       toast.error("Devi inserire name");
-      setSending(false)
+      setSending(false);
       return;
     }
     if (!userData.Cognome) {
       toast.error("Devi inserire  cognome");
-      setSending(false)
+      setSending(false);
       return;
     }
     if (!userData.Email) {
       toast.error("Devi inserire  email");
-      setSending(false)
+      setSending(false);
       return;
     }
     if (!userData.Phone) {
       toast.error("Devi inserire Numero di Telefono");
-      setSending(false)
+      setSending(false);
       return;
     }
     if (!arrival || !arrival.length || arrival?.split("-")[0] === "NaN") {
       toast.error("Devi inserire Data Check In");
-      setSending(false)
+      setSending(false);
       return;
     }
     if (!departure || !departure.length || departure?.split("-")[0] === "NaN") {
       toast.error("Devi inserire  Data Check Out");
-      setSending(false)
+      setSending(false);
       return;
     }
 
@@ -123,18 +241,18 @@ const MainSection = ({
 
     if (!emailRegex.test(userData.Email)) {
       toast.error("si prega di inserire valido email.");
-      setSending(false)
+      setSending(false);
       return;
     }
     if (!phoneRegex.test(userData.Phone)) {
       toast.error("si prega di inserire valido Numero di Telefono.");
-      setSending(false)
+      setSending(false);
       return;
     }
 
     if (!value) {
       toast.error("Seleziona una opzione sopra");
-      setSending(false)
+      setSending(false);
       handleScroll();
       return;
     }
@@ -142,7 +260,7 @@ const MainSection = ({
       case "aliscafo":
         if (!userData.numeroBagagliAlis) {
           toast.error("Devi inserire  Numero di Bagagli");
-          setSending(false)
+          setSending(false);
           return;
         } else
           dataToBePosted.Citta = `Aliscafo + Transfer | ${userData.numeroBagagliAlis}`;
@@ -150,7 +268,7 @@ const MainSection = ({
       case "ferry":
         if (!userData.ferry) {
           toast.error("Devi inserire  Dimensione Auto");
-          setSending(false)
+          setSending(false);
           return;
         } else
           dataToBePosted.Citta = `Traghetto + Transfer | ${userData.ferry}`;
@@ -169,44 +287,41 @@ const MainSection = ({
       var userId = 0;
       if (res1.data == null) {
         try {
-          const newUser = await axios.post(
-            `${values.url}/booking/user`,
-            {
-              fName: userData.Nome,
-              lName: userData.Cognome,
-              email: userData.Email,
-              phone: userData.Phone,
-              lastQuoteSent: new Date(),
-              quoteSent: 1,
-              tag :[]
-            }
-          );
+          const newUser = await axios.post(`${values.url}/booking/user`, {
+            fName: userData.Nome,
+            lName: userData.Cognome,
+            email: userData.Email,
+            phone: userData.Phone,
+            lastQuoteSent: new Date(),
+            quoteSent: 1,
+            tag: [],
+          });
           userId = newUser.data._id;
         } catch (newUserError) {
-          const newUser = await axios.post(
-            `${values.url}/booking/user`,
-            {
-              fName: userData.Nome,
-              lName: userData.Cognome,
-              email: userData.Email,
-              phone: userData.Phone,
-              lastQuoteSent: new Date(),
-              quoteSent: 1,
-              tag :[]
-            }
-          );
+          const newUser = await axios.post(`${values.url}/booking/user`, {
+            fName: userData.Nome,
+            lName: userData.Cognome,
+            email: userData.Email,
+            phone: userData.Phone,
+            lastQuoteSent: new Date(),
+            quoteSent: 1,
+            tag: [],
+          });
           userId = newUser.data._id;
         }
       } else {
         try {
-          const response = await axios.put(`${values.url}/booking/updating/${userData.Phone}`, {
-            email:  userData.Email,
-            fName:userData.Nome,
-            lName:userData.Cognome,
-          });
-          console.log('User updated successfully:', response.data);
+          const response = await axios.put(
+            `${values.url}/booking/updating/${userData.Phone}`,
+            {
+              email: userData.Email,
+              fName: userData.Nome,
+              lName: userData.Cognome,
+            }
+          );
+          console.log("User updated successfully:", response.data);
         } catch (error) {
-          console.error('Error updating user:', error.response.data);
+          console.error("Error updating user:", error.response.data);
         }
         userId = res1.data._id;
       }
@@ -244,36 +359,53 @@ const MainSection = ({
     //   ],
     //   boardType: "Mezza Pensione",
     // }
+
     function formatDate(date) {
       const day = date.getDate();
       const month = date.getMonth() + 1; // Months are zero-based
       const year = date.getFullYear();
-    
+
       // Pad day and month with leading zeros if needed
       const formattedDay = day < 10 ? `0${day}` : day;
       const formattedMonth = month < 10 ? `0${month}` : month;
-    
+
       return `${year}-${formattedMonth}-${formattedDay}`;
     }
-    for(let i=0;i<userData.rooms.length;i++){
-      userData.rooms[i].adultPrice = userData.rooms[i].adultPrice.map(() => (window.actualOffer.breakdown.find(item => item.name === localStorage.getItem("selectedPackage")) || {}).price * (
-        window.actualOffer.minStay === window.actualOffer.maxStay
-          ? (((new Date(localStorage.getItem("prevOutDate")) - new Date(localStorage.getItem("prevInDate"))) / 86400000) / window.actualOffer.maxStay)
-          : ((new Date(localStorage.getItem("prevOutDate")) - new Date(localStorage.getItem("prevInDate"))) / 86400000)
-      ));
-      for(let j=0;j<userData.rooms[i].childAge.length;j++){
-        let disc =0;
-        for(let k =0;k<window.actualOffer?.ageReduction.length;k++){
-          if(window.actualOffer?.ageReduction[k].agelimit>userData.rooms[i].childAge[j]){
+    for (let i = 0; i < userData.rooms.length; i++) {
+      userData.rooms[i].adultPrice = userData.rooms[i].adultPrice.map(
+        () =>
+          (
+            window.actualOffer.breakdown.find(
+              (item) => item.name === localStorage.getItem("selectedPackage")
+            ) || {}
+          ).price *
+          (window.actualOffer.minStay === window.actualOffer.maxStay
+            ? (new Date(localStorage.getItem("prevOutDate")) -
+                new Date(localStorage.getItem("prevInDate"))) /
+              86400000 /
+              window.actualOffer.maxStay
+            : (new Date(localStorage.getItem("prevOutDate")) -
+                new Date(localStorage.getItem("prevInDate"))) /
+              86400000)
+      );
+      for (let j = 0; j < userData.rooms[i].childAge.length; j++) {
+        let disc = 0;
+        for (let k = 0; k < window.actualOffer?.ageReduction.length; k++) {
+          if (
+            window.actualOffer?.ageReduction[k].agelimit >
+            userData.rooms[i].childAge[j]
+          ) {
             disc = window.actualOffer?.ageReduction[k].discount;
             break;
           }
         }
-        userData.rooms[i].childDis[j]=`€ ${disc}`
-        userData.rooms[i].childInit=Array(userData.rooms[i].childAge.length).fill(userData.rooms[0].adultPrice[0])
+        userData.rooms[i].childDis[j] = `€ ${disc}`;
+        userData.rooms[i].childInit = Array(
+          userData.rooms[i].childAge.length
+        ).fill(userData.rooms[0].adultPrice[0]);
       }
     }
-    const getMonth =(month) =>{
+    const getMonth = (month) => {
       if (month === 0) {
         return "gen";
       } else if (month === 1) {
@@ -283,60 +415,119 @@ const MainSection = ({
       } else if (month === 3) {
         return "apr";
       } else if (month === 4) {
-        return "mag"; 
+        return "mag";
       } else if (month === 5) {
-        return "giu"; 
+        return "giu";
       } else if (month === 6) {
-        return "lug"; 
+        return "lug";
       } else if (month === 7) {
-        return "ago"; 
+        return "ago";
       } else if (month === 8) {
-        return "set"; 
+        return "set";
       } else if (month === 9) {
-        return "ott"; 
+        return "ott";
       } else if (month === 10) {
         return "nov";
       } else if (month === 11) {
-        return "dic"; 
+        return "dic";
       }
-    }
-    axios
-      .post(`${values.url}/booking`,{
-        "id" : bookings +1 ,
-        "userId":  userId,
-        "msg": userData.note,
-        "tag": [],
-        "date":  new Date().toLocaleString('en-US', { timeZone: 'Europe/Berlin', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' }),
-        "dateLine": `${new Date(localStorage.getItem("prevInDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevInDate")).getMonth())} - ${new Date(localStorage.getItem("prevOutDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevOutDate")).getMonth())}`,
-        "periodo": `${(new Date(localStorage.getItem("prevOutDate")) - new Date(localStorage.getItem("prevInDate")))/86400000} notti, ${localStorage.getItem("price")}€ per persona`,
-        "module": userData.Modulo,
-        "guestDetails": userData.rooms,
-        "trasporto": userData.trasporto?userData.trasporto : "Nessuna Trasporto",
-        "citta": `${userData.Citta? userData.Citta : "Nessuna"}`,
-        "periodOfStay": "1 week",
-        "bags" : `${userData.bags?userData.bags : "Nessuna"}`,
-        "carSize":`${userData.carSize?userData.carSize:"Nessuna"}`,
-        "dates": [
+    };
+    const Mainoffer= [
           {
-            "checkIn" : formatDate(new Date(localStorage.getItem("prevInDate"))),
-            "checkOut" : formatDate(new Date(localStorage.getItem("prevOutDate"))),
-            "start":`${new Date(localStorage.getItem("prevInDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevInDate")).getMonth())}`,
-            "end": `${new Date(localStorage.getItem("prevOutDate")).getDate()} ${getMonth(new Date(localStorage.getItem("prevOutDate")).getMonth())}`,
-            "price": localStorage.getItem("price"),
-            "hotelName": `${localStorage.getItem("hotel")}`,
-            "offerName": localStorage.getItem("offer"),
-            "actualName" : localStorage.getItem("actualName"),
-            "actualOffer" : window.actualOffer,
-          }
+            checkIn: formatDate(new Date(localStorage.getItem("prevInDate"))),
+            checkOut: formatDate(new Date(localStorage.getItem("prevOutDate"))),
+            start: `${new Date(
+              localStorage.getItem("prevInDate")
+            ).getDate()} ${getMonth(
+              new Date(localStorage.getItem("prevInDate")).getMonth()
+            )}`,
+            end: `${new Date(
+              localStorage.getItem("prevOutDate")
+            ).getDate()} ${getMonth(
+              new Date(localStorage.getItem("prevOutDate")).getMonth()
+            )}`,
+            price: localStorage.getItem("price"),
+            hotelName: `${localStorage.getItem("hotel")}`,
+            offerName: localStorage.getItem("offer"),
+            actualName: localStorage.getItem("actualName"),
+            actualOffer: window.actualOffer,
+          }]
+    await axios
+      .get(`${values.url}/app/hotels`)
+      .then(async (response) => {
+          
+        console.log(selectCompatibleOffers(response.data,Mainoffer[0]));
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+    axios
+      .post(`${values.url}/booking`, {
+        id: bookings + 1,
+        userId: userId,
+        msg: userData.note,
+        tag: [],
+        date: new Date().toLocaleString("en-US", {
+          timeZone: "Europe/Berlin",
+          year: "numeric",
+          month: "numeric",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+        }),
+        dateLine: `${new Date(
+          localStorage.getItem("prevInDate")
+        ).getDate()} ${getMonth(
+          new Date(localStorage.getItem("prevInDate")).getMonth()
+        )} - ${new Date(
+          localStorage.getItem("prevOutDate")
+        ).getDate()} ${getMonth(
+          new Date(localStorage.getItem("prevOutDate")).getMonth()
+        )}`,
+        periodo: `${
+          (new Date(localStorage.getItem("prevOutDate")) -
+            new Date(localStorage.getItem("prevInDate"))) /
+          86400000
+        } notti, ${localStorage.getItem("price")}€ per persona`,
+        module: userData.Modulo,
+        guestDetails: userData.rooms,
+        trasporto: userData.trasporto
+          ? userData.trasporto
+          : "Nessuna Trasporto",
+        citta: `${userData.Citta ? userData.Citta : "Nessuna"}`,
+        periodOfStay: "1 week",
+        bags: `${userData.bags ? userData.bags : "Nessuna"}`,
+        carSize: `${userData.carSize ? userData.carSize : "Nessuna"}`,
+        dates: [
+          {
+            checkIn: formatDate(new Date(localStorage.getItem("prevInDate"))),
+            checkOut: formatDate(new Date(localStorage.getItem("prevOutDate"))),
+            start: `${new Date(
+              localStorage.getItem("prevInDate")
+            ).getDate()} ${getMonth(
+              new Date(localStorage.getItem("prevInDate")).getMonth()
+            )}`,
+            end: `${new Date(
+              localStorage.getItem("prevOutDate")
+            ).getDate()} ${getMonth(
+              new Date(localStorage.getItem("prevOutDate")).getMonth()
+            )}`,
+            price: localStorage.getItem("price"),
+            hotelName: `${localStorage.getItem("hotel")}`,
+            offerName: localStorage.getItem("offer"),
+            actualName: localStorage.getItem("actualName"),
+            actualOffer: window.actualOffer,
+          },
         ],
-        "boardType": localStorage.getItem("selectedPackage")
+        boardType: localStorage.getItem("selectedPackage"),
       })
       .then((res) => {
-        console.log(res.data,"h")
+        console.log(res.data, "h");
         toast.success("Success");
         setSending(false);
         setButtonDisabled(true);
-        setBooking(bookings+1);
+        setBooking(bookings + 1);
         setTimeout(() => {
           handleOfferClose();
         }, 8000);
@@ -351,16 +542,27 @@ const MainSection = ({
           Phone: "+39",
           postedDate: new Date().toDateString(),
           departure: null,
-          bags :null,
-          carSize :null,
+          bags: null,
+          carSize: null,
           arrival: null,
           packageBoard: null,
-          rooms: [{ adult: 2, child: 1, childAge: [1] ,totDisc:"€ 0",childDis: ["€ 0"],adultPrice:[0,0],childInit:[],board:localStorage.getItem("selectedPackage") }],
+          rooms: [
+            {
+              adult: 2,
+              child: 1,
+              childAge: [1],
+              totDisc: "€ 0",
+              childDis: ["€ 0"],
+              adultPrice: [0, 0],
+              childInit: [],
+              board: localStorage.getItem("selectedPackage"),
+            },
+          ],
           Citta: null,
           note: "",
           Modulo: "infoischia",
           Hotel: null,
-      
+
           numeroBagagliAlis: "1",
           ferry:
             "traghetto con auto fino 4 mt. da Pozzuoli A/R € 75 - passeggeri € 22",
@@ -368,7 +570,7 @@ const MainSection = ({
           numeroBagagliViaggio: "",
           pricePerPerson: "",
           selectedCitta: "",
-        })
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -493,16 +695,16 @@ const MainSection = ({
     // console.log("Filtered Hotels :: ", hotels);
   }, [filters]);
 
-  useEffect(()=>{
-
-    axios.get(`${values.url}/booking`) 
-    .then(response => {
-      setBooking(response.data.length);
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
-  },[])
+  useEffect(() => {
+    axios
+      .get(`${values.url}/booking`)
+      .then((response) => {
+        setBooking(response.data.length);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
   return (
     <>

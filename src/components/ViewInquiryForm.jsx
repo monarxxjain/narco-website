@@ -166,7 +166,7 @@ const ViewInquiryForm = (
   }
 
   useEffect(()=>{
-    console.log(offer,"offer")
+    // console.log(offer,"offer")
     window.actualOffer = offer
     localStorage.setItem("offer",offer?.id)
     localStorage.setItem("hotel",Hotel.id)
